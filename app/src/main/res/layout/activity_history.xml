@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relLayoutParent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CartActivity.CartActivity"
+    android:background="@color/colorPrimary">
+
+
+    <RelativeLayout
+
+        android:id="@+id/topViewParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/fragment2"
+            android:name="com.example.dontforgettograbthat.CommonFragments.TopTitleFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topViewParent"
+        android:layout_centerHorizontal="true"
+        >
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="372dp"
+            android:layout_height="625dp"
+            android:layout_marginBottom="50dp"></android.support.v7.widget.RecyclerView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/list"
+            android:layout_marginTop="-50dp">
+
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="Total:  "
+                android:textColor="@color/gwhite"
+                android:textSize="24sp"
+                android:paddingRight="20dp"
+                tools:layout_marginEnd="20dp"  />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+
+
+    <!-- Bottom Navigation View-->
+
+
+
+</RelativeLayout>

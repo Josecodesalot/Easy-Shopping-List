@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "796943486646",
+    "firebase_url": "https://dontforgettograbthat.firebaseio.com",
+    "project_id": "dontforgettograbthat",
+    "storage_bucket": "dontforgettograbthat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796943486646:android:c20bb52b1bf7c3c9",
+        "android_client_info": {
+          "package_name": "com.example.dontforgettograbthat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796943486646-i2u4iovtd1lblnk1oc6ct1q3b50akv2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQr-4l1ZYj59yGeO0KTRPABGbMqsNNZnU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796943486646-i2u4iovtd1lblnk1oc6ct1q3b50akv2q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

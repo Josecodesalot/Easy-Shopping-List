@@ -1,0 +1,215 @@
+Index: app/src/main/java/com/example/dontforgettograbthat/utils/FirebaseMethods.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/dontforgettograbthat/utils/FirebaseMethods.java	(date 1559175157717)
++++ app/src/main/java/com/example/dontforgettograbthat/utils/FirebaseMethods.java	(date 1559175157717)
+@@ -130,46 +130,39 @@
+         Log.d(TAG, "getUserAccountSettings: retrieving user account settings from firebase.");
+ 
+ 
+-        User settings = new User();
+         User user = new User();
+ 
+         for (DataSnapshot ds : dataSnapshot.getChildren()) {
+-
+-            // user_account_settings node
+-            if (ds.getKey().equals(mContext.getString(R.string.dbname_user_account_settings))) {
+-                Log.d(TAG, "getUserAccountSettings: datasnapshot: " + ds);
+-
++            Log.d(TAG, "getUser: getting useer");
+                 try {
+-                    settings.setFamily_name(
++                    user.setFamily_name(
+                             ds.child(userID)
+                                     .getValue(User.class)
+                                     .getUser_id()
+                     );
+-                    settings.setUsername(
++                    user.setUsername(
+                             ds.child(userID)
+                                     .getValue(User.class)
+                                     .getUsername()
+                     );
+-                    settings.setUser_id(
++                    user.setUser_id(
+                             ds.child(userID)
+                                     .getValue(User.class)
+                                     .getFamily_name()
+                     );
+-                    settings.setEmail(
++                    user.setEmail(
+                             ds.child(userID)
+                                     .getValue(User.class)
+                                     .getEmail()
+                     );
+-                    Log.d(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + settings.toString());
++                    Log.d(TAG, "getUserAccountSettings: retrieved user_account_settings information: " + user.toString());
+                 } catch (NullPointerException e) {
+                     Log.e(TAG, "getUserAccountSettings: NullPointerException: " + e.getMessage());
+                 }
+ 
+-
+                 Log.d(TAG, "getUserAccountSettings: retrieved users information: " + user.toString());
+             }
+-        }
+-        return settings;
++        return user;
+     }
+ 
+ 
+Index: app/src/main/java/com/example/dontforgettograbthat/Request/RequestActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/dontforgettograbthat/Request/RequestActivity.java	(date 1559176666887)
++++ app/src/main/java/com/example/dontforgettograbthat/Request/RequestActivity.java	(date 1559176666887)
+@@ -43,15 +43,12 @@
+ import java.util.Map;
+ 
+ public class RequestActivity extends AppCompatActivity{
+-
+     private static final String TAG = "CartActivity";
+     private Context mContext = RequestActivity.this;
+     private final int ACTIVITY_NUM = 1;
+-
+     public DatabaseReference reference;
+ 
+     //Constants
+-
+     private String REFRESH_CODE="REFRESH_CODE";
+ 
+     //Widgets
+@@ -64,12 +61,10 @@
+     private FirebaseAuth.AuthStateListener mAuthListener;
+     private FirebaseMethods firebase;
+     private String UID;
+-
+     private FirebaseDatabase database;
+     private DatabaseReference myRef;
+ 
+     //vars
+-
+     private ArrayList<String> itemList;
+     private ArrayList<String> itemNames;
+     private ArrayList<Double> itemPrice;
+@@ -78,12 +73,16 @@
+     private RecyclerViewAdapter adapter;
+     private String familyName;
+ 
++    private User user;
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+-        setContentView(R.layout.activity_requests);
++
++
+         Log.d(TAG, "onCreate: started");
+         setupFirebaseAuth();
++
+         database = FirebaseDatabase.getInstance();
+         itemList = new ArrayList<>();
+         itemNames = new ArrayList<>();
+@@ -92,53 +91,59 @@
+         id = new ArrayList<>();
+ 
+ 
+-        if (mAuth.getCurrentUser()!=null) {
++
+             UID= mAuth.getCurrentUser().getUid();
+             firebaseDataExchangeListener();
++            updateFamilyName();
++//            setUpTotal();
++        setContentView(R.layout.activity_requests);
+             referenceWidgets();
+-            firebaseRetrieve();
+-            setUpTotal();
+-        }
+-    }
++
+ 
+ 
++    }
+ 
+-    private void firebaseRetrieve() {
++    private void updateFamilyName() {
+         Log.d(TAG, "firebaseRetrieve: creating database and getting a  reference");
+-
+         Log.d(TAG, "firebaseRetrieve: UID= " + mAuth.getCurrentUser().getUid());
+-
++        Query qry =
++                FirebaseDatabase.getInstance()
++                        .getReference()
++                        .child("users")
++                        .child(mAuth.getCurrentUser().getUid());
++        Log.d(TAG, "firebaseRetrieve: " + qry.toString());
+ 
+-
+-
+-        Query qry = database.getReference().child("users").child(UID);
+         qry.addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+-                Log.d(TAG, "onDataChange: " + dataSnapshot.toString());
+-                User UserDetails = new User();
+-                UserDetails = dataSnapshot.getValue(User.class);
+-                familyName = UserDetails.getFamily_name();
+-
++                Log.d(TAG, "setting up FamilyName" + dataSnapshot.getValue(User.class).getFamily_name());
++                User mUser = new User(
++                        dataSnapshot.getValue(User.class).getUser_id(),
++                        dataSnapshot.getValue(User.class).getEmail(),
++                        dataSnapshot.getValue(User.class).getEmail(),
++                        dataSnapshot.getValue(User.class).getFamily_name()
++                        );
++                Log.d(TAG, "onDataChange: family name has been set to " + mUser.getFamily_name());
++                setFamilyName(mUser.getFamily_name());
++                firebaseRetrieve();
++            }
+ 
+-            }
+             @Override
+             public void onCancelled(DatabaseError databaseError) {
+-                Log.d(TAG, "onCancelled: query cancelled.");
++                // ...
+             }
+         });
+-
++    }
+ 
++    private void firebaseRetrieve() {
+         Log.d(TAG, "firebaseRetrieve: " + familyName);
+-        Query query = myRef.child("items").child(familyName);
+-
+-
++        Query query = myRef.child("items").child("lara");
+ 
+         query.addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
++
+                 for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
+-
+                     if (singleSnapshot!=null) {
+                         id.add(singleSnapshot.getValue(Item.class).getItemKey());
+                         itemNames.add(singleSnapshot.getValue(Item.class).getItem_name());
+@@ -189,8 +194,6 @@
+         });
+     }
+ 
+-
+-
+     //----------------------------Firebase Code-----------------------------------
+ 
+     private void setupFirebaseAuth() {
+@@ -218,6 +221,7 @@
+         };
+     }
+     private void setFamilyName(String name){
++        Log.d(TAG, "setFamilyName: setting family name " + name);
+         familyName=name;
+     }
+ 

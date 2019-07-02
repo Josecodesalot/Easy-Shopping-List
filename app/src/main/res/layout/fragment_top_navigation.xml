@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relLayoutParent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".CartActivity.CartActivity"
+    android:background="@color/colorPrimary">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/tvTitlePage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="@string/shopping_list"
+            android:textAlignment="center"
+            android:textColor="@color/gwhite"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/addIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ic_add_circle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitlePage" />
+
+        <ImageView
+            android:id="@+id/requestIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ic_clip"
+            app:layout_constraintStart_toEndOf="@+id/addIcon"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitlePage"
+            tools:layout_gravity="center_vertical"
+            tools:layout_marginLeft="25dp" />
+
+        <ImageView
+            android:id="@+id/analyticsIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/ic_upwards"
+            app:layout_constraintEnd_toStartOf="@+id/addIcon"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitlePage" />
+
+        <ImageView
+            android:id="@+id/cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/ic_list"
+            app:layout_constraintEnd_toStartOf="@+id/analyticsIcon"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitlePage" />
+
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ic_profile"
+            app:layout_constraintStart_toEndOf="@+id/requestIcon"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitlePage" />
+    </android.support.constraint.ConstraintLayout>
+
+</RelativeLayout>
+
