@@ -64,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void referenceWidgets (){
         username = findViewById(R.id.tvUserName);
-        email = findViewById(R.id.tvEmail);
+        email = findViewById(R.id.tvLogin);
         familyname = findViewById(R.id.etFamilyName);
         signoutBtn = findViewById(R.id.btnSignout);
         btnSetChange = findViewById(R.id.setChangeBtn);

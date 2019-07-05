@@ -43,6 +43,7 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
     private String mEmail;
     private String familyName;
     private User user;
+
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;

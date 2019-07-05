@@ -34,7 +34,7 @@
         >
 
         <TextView
-            android:id="@+id/tvEmail"
+            android:id="@+id/tvLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -48,7 +48,7 @@
             android:id="@+id/etEmail"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvEmail"
+            android:layout_below="@+id/tvLogin"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
             android:hint="E-mail"

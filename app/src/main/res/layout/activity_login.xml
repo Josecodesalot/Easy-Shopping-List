@@ -1,99 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login.LoginActivity"
-    android:orientation="vertical">
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".Login.LoginActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="20">
+        android:id="@+id/TopTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
+            android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
-            android:textColor="@color/black"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/background_rounded_gwhite"
+            android:padding="21dp"
+            android:text="Dont Forget"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
             android:textSize="30sp"
-            />
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="80">
+        android:layout_alignParentStart="false"
+        android:layout_marginTop="32dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/TopTitle"
+        tools:layout_editor_absoluteX="-16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="@string/email_address"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/tvEmail"
-            />
-        <EditText
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvEmail"
-            android:textSize="25sp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:hint="E-mail"
-            android:textAlignment="center"
-            android:id="@+id/etEmail"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Password"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="20dp"
-            android:layout_below="@+id/etEmail"
-            android:id="@+id/tvPassword"
-            />
-        <EditText
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvPassword"
-            android:textSize="25sp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="25dp"
-            android:hint="password"
-            android:textAlignment="center"
-            android:id="@+id/etPassword"
-            android:inputType="textPassword"/>
 
-        <Button
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:text="@string/submit"
-            android:id="@+id/btnSubmit"
-            android:layout_below="@+id/etPassword"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/grey_border_topandbottom"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvCreateAccount"
-            android:layout_below="@id/btnSubmit"
-            android:layout_centerHorizontal="true"
-            android:textSize="15sp"
-            android:text="@string/create_account"
-            android:textColor="@color/link_blue"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/background_rounded_gwhite">
+
+        </android.support.v4.view.ViewPager>
     </RelativeLayout>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
