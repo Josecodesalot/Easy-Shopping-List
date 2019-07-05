@@ -3,6 +3,7 @@ package com.example.dontforgettograbthat.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.solver.widgets.Snapshot;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.dontforgettograbthat.Login.LoginActivity;
@@ -17,6 +18,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.FormatFlagsConversionMismatchException;
 
 
 public class FirebaseMethods {
@@ -44,6 +47,8 @@ public class FirebaseMethods {
             userID = mAuth.getCurrentUser().getUid();
         }
     }
+
+
 
 
     public void deleteItem(String itemKey) {

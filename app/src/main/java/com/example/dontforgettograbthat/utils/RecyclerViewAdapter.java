@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.HideReturnsTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,9 +72,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.tvItemListName.setText(mItemListName.get(position));
         holder.tvItemName.setText(mItemNames.get(position));
         holder.tvPrice.setText("$" + mItemPrice.get(position));
+        if (mItemPrice.get(position)==0.0){
+            holder.tvPrice.setVisibility(View.GONE);
+        }
         holder.tvItemCount.setText("x" + mItemCount.get(position));
+        if (mItemCount.get(position)==1){
+            holder.tvItemCount.setVisibility(View.GONE);
+        }
         holder.tvItemListName.setBackground(getDrawable(mItemListName.get(position)));
 
+        //this method will hide un used features in the recyclerview
 
 
 
@@ -117,6 +125,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         });
     }
+
 
     private Drawable getDrawable (String tvListName){
         Drawable color;
