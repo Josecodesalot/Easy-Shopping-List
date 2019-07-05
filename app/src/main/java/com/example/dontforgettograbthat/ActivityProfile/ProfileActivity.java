@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import javax.xml.datatype.Duration;
+
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -46,13 +48,14 @@ public class ProfileActivity extends AppCompatActivity {
 
     //vars
     private User user;
+    private Boolean allowFamilyNameRequest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Log.d(TAG, "onCreate: Started");
-
+        allowFamilyNameRequest = false;
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
         firebase = new FirebaseMethods(mContext);
@@ -83,18 +86,48 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+
         btnSetChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebase.addNewUser(user.getEmail(),user.getUsername(),familyname.getText().toString());
-                user.setFamily_name(familyname.getText().toString());
-                ((UserClient)(getApplicationContext())).setUser(user);
-                recreate();
-                Toast.makeText(mContext, "Family Name Changed.", Toast.LENGTH_SHORT).show();
+                final String familyName = familyname.getText().toString();
+
+                DatabaseReference ref = database.getReference().child("users");
+
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (firebase.familyNameExists(user, familyName, dataSnapshot)) {
+                                allowFamilyNameRequest=true;
+                                requestAndToast();
+                            }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        
+                    }
+                });
+                
+                if (allowFamilyNameRequest=false){
+                    Log.d(TAG, "onClick: allowFamilyNameRequests = false" );
+                    Toast.makeText(mContext, "False", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
 
 
+    }
+
+    private void requestAndToast() {
+        if (allowFamilyNameRequest){
+            firebase.sendParentRequest(familyname.getText().toString(), user.getUser_id(), user);
+            Toast.makeText(mContext, "Family Request Sent", Toast.LENGTH_SHORT).show();
+        }else{
+            Log.d(TAG, "onClick: allow familyNameRequest is false");
+            Toast.makeText(mContext, "The family name entered doesn't exist. Please Double Check With The Parent", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //Firebase Code

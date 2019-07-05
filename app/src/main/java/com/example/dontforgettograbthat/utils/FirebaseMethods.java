@@ -48,6 +48,25 @@ public class FirebaseMethods {
         }
     }
 
+    public boolean checkIfUsernameExists(String username, DataSnapshot datasnapshot){
+        Log.d(TAG, "checkIfUsernameExists: checking if " + username + " already exists.");
+
+        User user = new User();
+
+        for (DataSnapshot ds: datasnapshot.getChildren()){
+            Log.d(TAG, "checkIfUsernameExists: datasnapshot: " + ds);
+
+            user.setUsername(ds.getValue(User.class).getUsername());
+            Log.d(TAG, "checkIfUsernameExists: username: " + user.getUsername());
+
+            if(user.getUsername().equals(username)) {
+                Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + user.getUsername());
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
 
@@ -218,5 +237,24 @@ public class FirebaseMethods {
                 dataSnapshot.getValue(User.class).getFamily_name()
         );
             return user;
+    }
+
+    public void sendParentRequest(String familyName, String user_id, User user) {
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("request").child(familyName).child(user_id);
+        ref.setValue(user);
+    }
+
+    public boolean familyNameExists(User user, String familyname, DataSnapshot dataSnapshot) {
+        Log.d(TAG, "check if Family Name Exists: checking if " + familyname + " already exists.");
+
+        for (DataSnapshot ds: dataSnapshot.getChildren()){
+            Log.d(TAG, "checkIfUsernameExists: datasnapshot: " + ds);
+
+            if(familyname.equals(ds.getValue(User.class).getFamily_name())) {
+                Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + familyname );
+                return true;
+            }
+        }
+        return false;
     }
 }

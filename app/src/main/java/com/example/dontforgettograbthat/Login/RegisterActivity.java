@@ -46,11 +46,13 @@ public class RegisterActivity extends AppCompatActivity {
 
     //vars
     private String email, username, password, familyName;
+    private Boolean allowUserToRegister;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        allowUserToRegister=false;
         setContentView(R.layout.activity_register);
         Log.d(TAG, "onCreate: started");
         firebaseMethods = new FirebaseMethods(mContext);
@@ -80,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
                 password = mPassword.getText().toString();
                 familyName = mFamilyName.getText().toString();
 
-                if(checkInputs(email, username, password)){
+                if(checkInputs(email, username, password)&&allowUserToRegister){
                     ///mProgressBar.setVisibility(View.VISIBLE);
                    // loadingPleaseWait.setVisibility(View.VISIBLE);
 
@@ -101,6 +103,27 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(mContext, "All fields must be filled out.", Toast.LENGTH_SHORT).show();
             return false;
         }
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    if (firebaseMethods.checkIfUsernameExists(mUsername.getText().toString(), dataSnapshot)){
+                        Toast.makeText(mContext, "Username is taken, please choose a new one.", Toast.LENGTH_SHORT).show();
+                        allowUserToRegister =false;
+
+                    }else{
+                        allowUserToRegister =true;
+                    }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         return true;
     }
      /*
@@ -112,6 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
              @Override
              public void onDataChange(DataSnapshot dataSnapshot) {
                  Log.d(TAG, "onDataChange: data has changed" + dataSnapshot.toString());
+
              }
 
              @Override
