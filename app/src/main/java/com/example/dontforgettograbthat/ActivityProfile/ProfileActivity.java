@@ -97,6 +97,7 @@ public class ProfileActivity extends AppCompatActivity {
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                             if (firebase.familyNameExists(user, familyName, dataSnapshot)) {
                                 allowFamilyNameRequest=true;
                                 requestAndToast();
@@ -108,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
                 
-                if (allowFamilyNameRequest=false){
+                if (allowFamilyNameRequest= allowFamilyNameRequest == null){
                     Log.d(TAG, "onClick: allowFamilyNameRequests = false" );
                     Toast.makeText(mContext, "False", Toast.LENGTH_SHORT).show();
                 }

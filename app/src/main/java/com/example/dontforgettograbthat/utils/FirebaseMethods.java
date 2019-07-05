@@ -48,26 +48,24 @@ public class FirebaseMethods {
         }
     }
 
-    public boolean checkIfUsernameExists(String username, DataSnapshot datasnapshot){
+    public boolean checkIfUsernameExists(String username, DataSnapshot datasnapshot) {
         Log.d(TAG, "checkIfUsernameExists: checking if " + username + " already exists.");
 
         User user = new User();
 
-        for (DataSnapshot ds: datasnapshot.getChildren()){
+        for (DataSnapshot ds : datasnapshot.getChildren()) {
             Log.d(TAG, "checkIfUsernameExists: datasnapshot: " + ds);
 
             user.setUsername(ds.getValue(User.class).getUsername());
             Log.d(TAG, "checkIfUsernameExists: username: " + user.getUsername());
 
-            if(user.getUsername().equals(username)) {
+            if (user.getUsername().equals(username)) {
                 Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + user.getUsername());
                 return true;
             }
         }
         return false;
     }
-
-
 
 
     public void deleteItem(String itemKey) {
@@ -89,6 +87,7 @@ public class FirebaseMethods {
             loginToast();
         }
     }
+
     public void deleteRequest(String itemKey, String familyName) {
 
 
@@ -106,7 +105,7 @@ public class FirebaseMethods {
 
     public void addItemToList(String item_name, String list_name, long quantity, Double price) {
 
-        if (mAuth.getCurrentUser() != null){
+        if (mAuth.getCurrentUser() != null) {
             String id = myRef.push().getKey();
 
             Item item = new Item(item_name, list_name, quantity, price, id);
@@ -114,7 +113,7 @@ public class FirebaseMethods {
             myRef.child("items")
                     .child(mAuth.getCurrentUser().getUid()).child(id)
                     .setValue(item);
-        }else
+        } else
             Toast.makeText(mContext, "Error, Login, SignUp, or Send this to your won account through the Email Feature", Toast.LENGTH_LONG).show();
 
     }
@@ -123,45 +122,45 @@ public class FirebaseMethods {
                             String familyName, DataSnapshot shot) {
         Log.d(TAG, "sendRequest: started");
 
-        if (mAuth.getCurrentUser() != null){
+        if (mAuth.getCurrentUser() != null) {
             String id = myRef.push().getKey();
 
             Item item = new Item(item_name, list_name, quantity, price, id);
             myRef.getRoot().child("requests").child(familyName).child(id).setValue(item);
 
-        }else
+        } else
             Toast.makeText(mContext, "Error, Login, SignUp, or Send this to your won account through the Email Feature", Toast.LENGTH_LONG).show();
     }
 
     public void addItemToHistory(String item_name, String list_name, long quantity, Double price, String id) {
 
-        if (mAuth.getCurrentUser() != null){
+        if (mAuth.getCurrentUser() != null) {
 
             Item item = new Item(item_name, list_name, quantity, price, id);
 
             myRef.child("history")
                     .child(mAuth.getCurrentUser().getUid()).child(id)
                     .setValue(item);
-        }else
+        } else
             Toast.makeText(mContext, "Error, Login, SignUp, or Send this to your won account through the Email Feature", Toast.LENGTH_LONG).show();
 
     }
 
     public void restoreItem(String item_name, String list_name, long quantity, Double price, String id) {
 
-        if (mAuth.getCurrentUser() != null){
+        if (mAuth.getCurrentUser() != null) {
 
             Item item = new Item(item_name, list_name, quantity, price, id);
 
             myRef.child("items")
                     .child(mAuth.getCurrentUser().getUid()).child(id)
                     .setValue(item);
-        }else
+        } else
             Toast.makeText(mContext, "Error, Login, SignUp, or Send this to your won account through the Email Feature", Toast.LENGTH_LONG).show();
 
     }
 
-    public void registerNewEmail(final String email, String password, final String username, final String family_name){
+    public void registerNewEmail(final String email, String password, final String username, final String family_name) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -175,10 +174,9 @@ public class FirebaseMethods {
                             Toast.makeText(mContext, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
 
-                        }
-                        else if (task.isSuccessful()){
+                        } else if (task.isSuccessful()) {
                             //add userInfo
-                            addNewUser(email,username,family_name);
+                            addNewUser(email, username, family_name);
                             //send verificaton email
                             sendVerificationEmail();
 
@@ -191,18 +189,18 @@ public class FirebaseMethods {
     }
 
 
-    public void sendVerificationEmail(){
+    public void sendVerificationEmail() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(user != null){
+        if (user != null) {
             user.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 logoutAndClearStack();
 
-                            }else{
+                            } else {
                                 Toast.makeText(mContext, "couldn't send verification email.", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -221,7 +219,7 @@ public class FirebaseMethods {
 
     }
 
-    public void addNewUser(String email, String username, String familyname){
+    public void addNewUser(String email, String username, String familyname) {
         User user = new User(mAuth.getCurrentUser().getUid(), email, username, familyname);
         myRef.child(mContext.getString(R.string.dbname_users))
                 .child(mAuth.getCurrentUser().getUid())
@@ -236,7 +234,7 @@ public class FirebaseMethods {
                 dataSnapshot.getValue(User.class).getUsername(),
                 dataSnapshot.getValue(User.class).getFamily_name()
         );
-            return user;
+        return user;
     }
 
     public void sendParentRequest(String familyName, String user_id, User user) {
@@ -247,14 +245,22 @@ public class FirebaseMethods {
     public boolean familyNameExists(User user, String familyname, DataSnapshot dataSnapshot) {
         Log.d(TAG, "check if Family Name Exists: checking if " + familyname + " already exists.");
 
-        for (DataSnapshot ds: dataSnapshot.getChildren()){
-            Log.d(TAG, "checkIfUsernameExists: datasnapshot: " + ds);
+        if (user.getFamily_name().equals(familyname)) {
+            Toast.makeText(mContext, "That is your family name, To add an Item to your List user other button, If you want to add this item to your providers list, ask for their family name ", Toast.LENGTH_LONG).show();
+            return false;
+        } else {
+            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                Log.d(TAG, "checkIfUsernameExists: datasnapshot: " + ds);
 
-            if(familyname.equals(ds.getValue(User.class).getFamily_name())) {
-                Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + familyname );
-                return true;
+                if (familyname.equals(ds.getValue(User.class).getFamily_name())) {
+                    Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + familyname);
+                    return true;
+                }
             }
+            Log.d(TAG, "familyNameExists: familyName " + familyname + " Doesnt exist");
+            Toast.makeText(mContext, "Family doesnt exist", Toast.LENGTH_SHORT).show();
+            return false;
         }
-        return false;
+
     }
 }
