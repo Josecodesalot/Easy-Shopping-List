@@ -36,7 +36,7 @@ dependencies {
     //implementation 'de.hdodenhof:circleimageview:3.0.0'
 
     //universal image loader
-   // implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    // implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
     //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.9'

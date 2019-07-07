@@ -52,13 +52,13 @@
             android:textColor="@color/gwhite"/>
 
         <Button
-            android:id="@+id/setChangeBtn"
+            android:id="@+id/btnSelectFamily"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:background="@drawable/background_rounded_gwhite"
             android:fontFamily="@font/asap_medium"
-            android:text="SET CHANGE" />
+            android:text="Set Family" />
 
         <Button
             android:layout_width="match_parent"
@@ -69,6 +69,15 @@
             android:fontFamily="@font/asap_medium"
             android:background="@drawable/background_rounded_gwhite"/>
 
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnRequests"
+            android:layout_marginTop="25dp"
+            android:text="Requests"
+            android:fontFamily="@font/asap_medium"
+            android:background="@drawable/background_rounded_gwhite"/>
 
     </LinearLayout>
 

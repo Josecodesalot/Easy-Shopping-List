@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dontforgettograbthat">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".utils.UserClient"
@@ -11,8 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme">
+        <activity android:name=".ActivityProfile.RequestActivity"></activity>
         <activity android:name=".CartActivity.CartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,24 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login.RegisterActivity">
-        </activity>
-        <activity android:name=".Login.LoginActivity">
-        </activity>
-
-        <activity android:name=".AddItemActivity.AddItemActivity">
-        </activity>
-        <activity android:name=".HistoryActivity.HistoryActivity">
-        </activity>
-        <activity android:name=".Request.RequestActivity">
-        </activity>
-        <activity android:name=".ActivityProfile.ProfileActivity">
-        </activity>
+        <activity android:name=".Login.RegisterActivity"></activity>
+        <activity android:name=".Login.LoginActivity"></activity>
+        <activity android:name=".AddItemActivity.AddItemActivity"></activity>
+        <activity android:name=".HistoryActivity.HistoryActivity"></activity>
+        <activity android:name=".Request.RequestActivity"></activity>
+        <activity android:name=".ActivityProfile.ProfileActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

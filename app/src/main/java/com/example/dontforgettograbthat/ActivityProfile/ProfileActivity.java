@@ -26,8 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import javax.xml.datatype.Duration;
-
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -37,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     //WIdgets
     private TextView username, email;
     private EditText familyname;
-    private Button signoutBtn, btnSetChange;
+    private Button signoutBtn, selectFamily, requestsBtn ;
 
     //firebase
     private FirebaseAuth mAuth;
@@ -66,11 +64,16 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void referenceWidgets (){
+
         username = findViewById(R.id.tvUserName);
         email = findViewById(R.id.tvLogin);
         familyname = findViewById(R.id.etFamilyName);
+        //signoutBtn has an onclick which creates a Signout
         signoutBtn = findViewById(R.id.btnSignout);
-        btnSetChange = findViewById(R.id.setChangeBtn);
+        //selectFamily is a button that sends a request to the family defined in etFamilyName if that family exists
+        //the request will give the family manager the choice to allow items into their Main ShoppingCart
+        selectFamily = findViewById(R.id.btnSelectFamily);
+        requestsBtn = findViewById(R.id.btnRequests);
 
         user = new User();
         user = ((UserClient)(getApplicationContext())).getUser();
@@ -87,7 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        btnSetChange.setOnClickListener(new View.OnClickListener() {
+        selectFamily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String familyName = familyname.getText().toString();
@@ -118,6 +121,13 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        requestsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, RequestActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
