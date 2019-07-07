@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.dontforgettograbthat.ActivityProfile.RequestActivity;
 import com.example.dontforgettograbthat.CartActivity.CartActivity;
 import com.example.dontforgettograbthat.Dialogs.HistoryDialog;
 import com.example.dontforgettograbthat.Dialogs.ItemDialog;
 import com.example.dontforgettograbthat.Dialogs.RequestDialog;
 import com.example.dontforgettograbthat.HistoryActivity.HistoryActivity;
+import com.example.dontforgettograbthat.Interface.AcceptDeleteOrHoldInterface;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 
@@ -27,11 +29,9 @@ import java.util.ArrayList;
 public class RequestRvAdapter extends RecyclerView.Adapter<RequestRvAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
+
     private ArrayList<User> mUser = new ArrayList<>();
-
-
-
-    public RequestRvAdapter(Context context,ArrayList<User> mUser) {
+    public RequestRvAdapter(Context mcontext, ArrayList<User> mUser) {
         this.mUser = mUser;
 
     }
@@ -44,7 +44,7 @@ public class RequestRvAdapter extends RecyclerView.Adapter<RequestRvAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
 
 
@@ -61,6 +61,7 @@ public class RequestRvAdapter extends RecyclerView.Adapter<RequestRvAdapter.View
             @Override
             public void onClick(View view) {
                 //TODO Open up a Dialog do that you can either add or delete this person.
+                holder.mInterface.dialog(position);
             }
         });
     }
@@ -79,13 +80,14 @@ public class RequestRvAdapter extends RecyclerView.Adapter<RequestRvAdapter.View
         TextView tvUserName;
         TextView tvUserEmail;
         ConstraintLayout parentLayout;
-
+        AcceptDeleteOrHoldInterface mInterface;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvUserEmail = itemView.findViewById(R.id.tvUserEmail);
             tvUserName = itemView.findViewById(R.id.tvUserName);
             parentLayout = itemView.findViewById(R.id.list_root);
+            mInterface = (RequestActivity)  itemView.getContext();
         }
     }
 }

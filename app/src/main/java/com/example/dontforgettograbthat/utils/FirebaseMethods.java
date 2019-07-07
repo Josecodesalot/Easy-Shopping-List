@@ -88,7 +88,7 @@ public class FirebaseMethods {
         }
     }
 
-    public void deleteRequest(String itemKey, String familyName) {
+    public void deleteRequestedItem(String itemKey, String familyName) {
 
 
         if (userID != null) {
@@ -262,5 +262,24 @@ public class FirebaseMethods {
             return false;
         }
 
+    }
+
+    public void acceptRequest (String familyName , User user){
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(familyName);
+        ref.setValue(user);
+    }
+    //TODO below 3 methods are still under construction
+    public void sendUserToRequest (String familyName , User user){
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(familyName);
+        //TODO test if this actually removes the user
+        ref.removeValue((DatabaseReference.CompletionListener) user);
+    }
+    public void deleteRequest (String familyName , User user){
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(familyName);
+        ref.removeValue();
+    }
+    public void  deleteFamilyMember (String familyName , User user){
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(familyName);
+        ref.setValue(user);
     }
 }

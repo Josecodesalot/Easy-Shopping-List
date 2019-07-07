@@ -65,7 +65,7 @@ public class RequestDialog extends DialogFragment {
                         bundle.getDouble("tvPrice"),
                         bundle.getString("id"));
 
-                firebase.deleteRequest(bundle.getString("id"),familyName);
+                firebase.deleteRequestedItem(bundle.getString("id"),familyName);
                 mInterface.delete("delete");
                 dismiss();
             }
@@ -74,7 +74,7 @@ public class RequestDialog extends DialogFragment {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebase.deleteRequest(bundle.getString("id"), familyName);
+                firebase.deleteRequestedItem(bundle.getString("id"), familyName);
                 Log.d(TAG, "onClick: should delete key " + bundle.getString("id"));
                 mInterface.delete("delete");
                 dismiss();
