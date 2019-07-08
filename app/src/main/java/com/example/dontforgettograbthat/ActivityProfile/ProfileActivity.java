@@ -34,7 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     //WIdgets
     private TextView username, email;
-    private EditText familyname;
+    private EditText parentName;
     private Button signoutBtn, selectFamily, requestsBtn ;
 
     //firebase
@@ -46,14 +46,14 @@ public class ProfileActivity extends AppCompatActivity {
 
     //vars
     private User user;
-    private Boolean allowFamilyNameRequest;
+    private Boolean allowParentname;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Log.d(TAG, "onCreate: Started");
-        allowFamilyNameRequest = false;
+        allowParentname = false;
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
         firebase = new FirebaseMethods(mContext);
@@ -67,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         username = findViewById(R.id.tvUserName);
         email = findViewById(R.id.tvLogin);
-        familyname = findViewById(R.id.etFamilyName);
+        parentName = findViewById(R.id.etUsername);
         //signoutBtn has an onclick which creates a Signout
         signoutBtn = findViewById(R.id.btnSignout);
         //selectFamily is a button that sends a request to the family defined in etFamilyName if that family exists
@@ -80,7 +80,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         username.setText(user.getUsername());
         email.setText(user.getUsername());
-        familyname.setText(user.getFamily_name());
+        if (user.getParent_name().equals("")){
+            parentName.setHint("Type in your parents username");
+        }else {
+            parentName.setText(user.getParent_name());
+        }
 
         signoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +97,7 @@ public class ProfileActivity extends AppCompatActivity {
         selectFamily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String familyName = familyname.getText().toString();
+                final String familyName = parentName.getText().toString();
 
                 DatabaseReference ref = database.getReference().child("users");
 
@@ -102,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                             if (firebase.familyNameExists(user, familyName, dataSnapshot)) {
-                                allowFamilyNameRequest=true;
+                                allowParentname =true;
                                 requestAndToast();
                             }
                     }
@@ -112,7 +116,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
                 
-                if (allowFamilyNameRequest= allowFamilyNameRequest == null){
+                if (allowParentname = allowParentname == null){
                     Log.d(TAG, "onClick: allowFamilyNameRequests = false" );
                     Toast.makeText(mContext, "False", Toast.LENGTH_SHORT).show();
                 }
@@ -132,13 +136,15 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void requestAndToast() {
-        if (allowFamilyNameRequest){
-            firebase.sendParentRequest(familyname.getText().toString(), user.getUser_id(), user);
+
+        if (allowParentname){
+            firebase.sendParentRequest(parentName.getText().toString(), user.getUser_id(), user);
             Toast.makeText(mContext, "Family Request Sent", Toast.LENGTH_SHORT).show();
         }else{
             Log.d(TAG, "onClick: allow familyNameRequest is false");
             Toast.makeText(mContext, "The family name entered doesn't exist. Please Double Check With The Parent", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     //Firebase Code
@@ -158,12 +164,9 @@ public class ProfileActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-
-
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-
                 }
                 // ...
             }
@@ -192,7 +195,7 @@ public class ProfileActivity extends AppCompatActivity {
         Log.d(TAG, "onStart: started get extras");
         mAuth.addAuthStateListener(mAuthListener);
         checkCurrentUser(mAuth.getCurrentUser());
-        Bundle bundle = getIntent().getExtras();
+
     }
 
     @Override

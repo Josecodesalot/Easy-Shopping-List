@@ -5,20 +5,22 @@ import android.app.Application;
 import com.example.dontforgettograbthat.Models.User;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class UserClient extends Application {
+import java.util.ArrayList;
 
-    @Override
+public class UserClient extends Application {
+    private User user = null;
+
     public void onCreate() {
         super.onCreate();
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);    }
-
-    private User user = null;
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+    }
 
     public User getUser() {
         return user;
     }
-
     public void setUser(User user){
         this.user = user;
     }
+
+
 }

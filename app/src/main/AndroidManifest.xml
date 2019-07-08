@@ -24,7 +24,7 @@
         <activity android:name=".Login.LoginActivity"></activity>
         <activity android:name=".AddItemActivity.AddItemActivity"></activity>
         <activity android:name=".HistoryActivity.HistoryActivity"></activity>
-        <activity android:name=".Request.RequestActivity"></activity>
+        <activity android:name=".ActivityRequestItems.RequestItemsActivity"></activity>
         <activity android:name=".ActivityProfile.ProfileActivity"></activity>
 
         <meta-data

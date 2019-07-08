@@ -14,21 +14,19 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.dontforgettograbthat.CartActivity.CartActivity;
-import com.example.dontforgettograbthat.Interface.DialogInterface;
+import com.example.dontforgettograbthat.Interface.CartInterface;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
+import com.google.android.gms.dynamic.IFragmentWrapper;
 
 
-public class AddItemDialog extends DialogFragment {
+public class CartAddItemDialog extends DialogFragment {
     private Context mContext = getActivity();
-    private static final String TAG = "AddItemDialog";
-    private EditText etItemName, etItemCount;
+    private static final String TAG = "CartAddItemDialog";
+    private EditText etItemName, etQuantity;
     private ImageView addBtn;
-
-    private String ItemName;
-    private Long ItemCount;
-
-    DialogInterface mInterface;
+    public Item item;
+    CartInterface mInterface;
 
     @Nullable
     @Override
@@ -48,31 +46,21 @@ public class AddItemDialog extends DialogFragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setUpItemNameAndCountVars();
 
-                //sends Item Count and Name to CartActivity
-                mInterface.ItemCount(ItemCount);
-                mInterface.ItemName(ItemName);
-                mInterface.trigger(1);
+                item = new Item(etItemName.getText().toString(), "default", 1,0.0,"");
+                Log.d(TAG, "onClick: Item = " + item.toString());
+                //sends Item to CartActivity so that cart activity can send it to Firebase and add it to the recyclerView
+                mInterface.addItem(item);
                 dismiss();
             }
         });
     }
 
-    private void setUpItemNameAndCountVars() {
-        try {
-            ItemName = etItemName.getText().toString();
-            ItemCount = Long.parseLong(etItemCount.getText().toString());
-        }catch (Exception e){
-            Toast.makeText(mContext, "Error: Please put a valid decimal on the Item Count Section", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "setUpItemNameAndCountVars: caght exeption e + " + e.getMessage());
-        }
-        }
 
     private void ReferenceViews(View view) {
         Log.d(TAG, "ReferenceViews: Started");
         addBtn = view.findViewById(R.id.imgAdd);
         etItemName = view.findViewById(R.id.etItemName);
-        etItemCount = view.findViewById(R.id.etItemCount);
+        etQuantity = view.findViewById(R.id.etItemCount);
     }
 }

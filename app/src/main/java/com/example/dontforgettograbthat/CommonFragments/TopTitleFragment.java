@@ -15,7 +15,7 @@ import com.example.dontforgettograbthat.AddItemActivity.AddItemActivity;
 import com.example.dontforgettograbthat.HistoryActivity.HistoryActivity;
 import com.example.dontforgettograbthat.CartActivity.CartActivity;
 import com.example.dontforgettograbthat.R;
-import com.example.dontforgettograbthat.Request.RequestActivity;
+import com.example.dontforgettograbthat.ActivityRequestItems.RequestItemsActivity;
 
 public class TopTitleFragment extends android.support.v4.app.Fragment {
     private ImageView analytics, add, request, profile, cart;
@@ -38,7 +38,7 @@ public class TopTitleFragment extends android.support.v4.app.Fragment {
         if (getActivity() instanceof ProfileActivity){
             title.setText("Your Profile");
         }
-        if (getActivity() instanceof RequestActivity){
+        if (getActivity() instanceof RequestItemsActivity){
             title.setText("Your Requests");
         }
         if (getActivity() instanceof HistoryActivity){
@@ -68,7 +68,7 @@ public class TopTitleFragment extends android.support.v4.app.Fragment {
         request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RequestActivity.class);
+                Intent intent = new Intent(getActivity(), RequestItemsActivity.class);
                 startActivity(intent);
             }
         });

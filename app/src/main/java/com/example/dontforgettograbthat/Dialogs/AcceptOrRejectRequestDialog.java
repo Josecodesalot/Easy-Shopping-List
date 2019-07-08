@@ -14,21 +14,37 @@ import android.widget.Toast;
 
 import com.example.dontforgettograbthat.ActivityProfile.RequestActivity;
 import com.example.dontforgettograbthat.Interface.AcceptDeleteOrHoldInterface;
+import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
 
-public class AcceptOrRejectRequestDialog extends DialogFragment{
+import java.util.ArrayList;
+
+public class AcceptOrRejectRequestDialog extends DialogFragment {
 
     TextView username;
     Button deleteRequest, acceptIntoFamily;
     AcceptDeleteOrHoldInterface mInterface;
     int position;
     private static final String TAG = "AcceptOrRejectRequestDi";
+    ArrayList<Item> items;
+
+    public static AcceptOrRejectRequestDialog newInstanceOfAcceptOrRejectDialog(ArrayList<Item> items) {
+        AcceptOrRejectRequestDialog dialog = new AcceptOrRejectRequestDialog();
+        dialog.setItems(items);
+        return dialog;
+    }
+
+
+    public void setItems(ArrayList<Item> items) {
+        this.items=items;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dailog_add_reject_user, container, false);
         mInterface = (RequestActivity) getContext();
+        setRetainInstance(true);
         referenceViews(view);
         position = 69;
 

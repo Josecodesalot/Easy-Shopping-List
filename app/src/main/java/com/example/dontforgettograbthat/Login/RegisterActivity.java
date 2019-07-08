@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +18,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
@@ -38,7 +36,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mEmail;
     private EditText mPassword;
     private EditText mUsername;
-    private EditText mFamilyName;
     private Button submitBtn;
 
     //Constants
@@ -46,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //vars
     private String email, username, password, familyName;
-    private Boolean allowUserToRegister;
+    private Boolean allowUserToRegister, emailExists, usernameExists;
 
 
     @Override
@@ -68,8 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "referenceWidgets: started");
         mEmail = findViewById(R.id.etEmail);
         mPassword = findViewById(R.id.etPassword);
-        mUsername = findViewById(R.id.etUserName);
-        mFamilyName = findViewById(R.id.etFamilyName);
+        mUsername = findViewById(R.id.etUsername);
         submitBtn = findViewById(R.id.btnSubmit);
     }
 
@@ -77,28 +73,62 @@ public class RegisterActivity extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 email = mEmail.getText().toString();
-                username = mUsername.getText().toString();
+                username = mUsername.getText().toString().toLowerCase();
                 password = mPassword.getText().toString();
-                familyName = mFamilyName.getText().toString();
 
-                if(checkInputs(email, username, password)&&allowUserToRegister){
-                    ///mProgressBar.setVisibility(View.VISIBLE);
-                   // loadingPleaseWait.setVisibility(View.VISIBLE);
-
-                    firebaseMethods.registerNewEmail( email, password, username, familyName);
-
-
-
-                    mAuth.signOut();
-
-                }
+                emailExists(email);
+                usernameExists(username);
             }
         });
     }
 
-    private boolean checkInputs(String email, String username, String password){
-        Log.d(TAG, "checkInputs: checking inputs for null values.");
+    private void singUp (){
+        if(inputsArentEmpty(email, username, password)&&allowUserToRegister&&!emailExists){
+
+            ////mProgressBar.setVisibility(View.VISIBLE);
+            // loadingPleaseWait.setVisibility(View.VISIBLE);
+
+            firebaseMethods.registerNewEmail( email, password, username);
+            mAuth.signOut();
+
+        }
+    }
+
+    private void usernameExists(final String username){
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("users");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usernameExists = firebaseMethods.checkIfUsernameExists(username, dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        singUp();
+    }
+    private void emailExists(final String email){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                emailExists = firebaseMethods.emailExists(email,dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private boolean inputsArentEmpty(String email, String username, String password){
+        Log.d(TAG, "inputsArentEmpty: checking inputs for null values.");
         if(email.equals("") || username.equals("") || password.equals("")){
             Toast.makeText(mContext, "All fields must be filled out.", Toast.LENGTH_SHORT).show();
             return false;
@@ -109,10 +139,9 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    if (firebaseMethods.checkIfUsernameExists(mUsername.getText().toString(), dataSnapshot)){
+                    if (firebaseMethods.checkIfUsernameExists(mUsername.getText().toString().toLowerCase(), dataSnapshot)){
                         Toast.makeText(mContext, "Username is taken, please choose a new one.", Toast.LENGTH_SHORT).show();
                         allowUserToRegister =false;
-
                     }else{
                         allowUserToRegister =true;
                     }

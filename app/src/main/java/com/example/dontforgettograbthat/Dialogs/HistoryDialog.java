@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,13 @@ import android.widget.TextView;
 
 import com.example.dontforgettograbthat.HistoryActivity.HistoryActivity;
 import com.example.dontforgettograbthat.Interface.DialogInterface;
+import com.example.dontforgettograbthat.Interface.HistoryInterface;
+import com.example.dontforgettograbthat.Interface.RecyclerViewInterface;
+import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
+
+import java.util.ArrayList;
 
 public class HistoryDialog extends DialogFragment {
 
@@ -23,8 +29,20 @@ public class HistoryDialog extends DialogFragment {
     private Button btnDelete, btnRestore;
     private TextView tvItemName, tvListname, tvPrice;
     private FirebaseMethods firebase;
-    DialogInterface mInterface;
+    HistoryInterface mInterface;
     private Context mContext = getActivity();
+    Item item;
+
+    public static HistoryDialog newInstance(Item item) {
+        HistoryDialog frag = new HistoryDialog();
+        frag.setItems(item);
+        return frag;
+    }
+
+    public void setItems(Item item) {
+        this.item=item;
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -52,14 +70,7 @@ public class HistoryDialog extends DialogFragment {
         btnRestore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebase.restoreItem(
-                        bundle.getString("tvItemName"),
-                        bundle.getString("tvListName"),
-                        bundle.getLong("tvQuantity"),
-                        bundle.getDouble("tvPrice"),
-                        bundle.getString("id"));
-                firebase.deleteHistory(bundle.getString("id"));
-                mInterface.delete("delete");
+                mInterface.restoreToCart(item);
                 dismiss();
             }
         });
@@ -67,9 +78,7 @@ public class HistoryDialog extends DialogFragment {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebase.deleteHistory(bundle.getString("id"));
-                Log.d(TAG, "onClick: should delete key " + bundle.getString("id"));
-                mInterface.delete("delete");
+                mInterface.deleteFromHistory(item.getItemKey());
                 dismiss();
             }
         });

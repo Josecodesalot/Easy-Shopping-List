@@ -3,6 +3,7 @@ package com.example.dontforgettograbthat.CartActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,8 +14,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.Dialogs.AddItemDialog;
-import com.example.dontforgettograbthat.Interface.DialogInterface;
+import com.example.dontforgettograbthat.Dialogs.CartAddItemDialog;
+import com.example.dontforgettograbthat.Dialogs.CartItemDialog;
+import com.example.dontforgettograbthat.Interface.CartInterface;
+import com.example.dontforgettograbthat.Interface.RecyclerViewInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
@@ -32,7 +35,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
-public class CartActivity extends AppCompatActivity implements DialogInterface {
+public class CartActivity extends AppCompatActivity implements RecyclerViewInterface, CartInterface {
 
     private static final String TAG = "CartActivity";
     private Context mContext = CartActivity.this;
@@ -55,11 +58,8 @@ public class CartActivity extends AppCompatActivity implements DialogInterface {
     private DatabaseReference myRef;
 
     //vars
-    private ArrayList<String> itemLists;
-    private ArrayList<String> itemNames;
-    private ArrayList<Double> itemPirces;
-    private ArrayList<Long> itemCounts;
-    private ArrayList<String> ids;
+    private ArrayList<Item> items;
+
     private RecyclerViewAdapter adapter;
     public User user;
 
@@ -74,14 +74,18 @@ public class CartActivity extends AppCompatActivity implements DialogInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         Log.d(TAG, "onCreate: started");
-
+        user = new User();
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
         firebase = new FirebaseMethods(mContext);
 
         if (mAuth.getCurrentUser()!=null) {
+
             //an listener which prints out the data being exchanged for debugging reasons
             firebaseDataExchangeListener();
+            //sets up User Clinent Singleton. This allows the user to User Data from the current user from
+            //any activity.
+            setUpUserClient();
             //Widget are referenced and simple onClicks are set up
             referenceWidgets();
             //This method sets up the recyclerView which displays Items in the Cart and their onClickListeners
@@ -89,9 +93,7 @@ public class CartActivity extends AppCompatActivity implements DialogInterface {
             fromFirebaseToRecyclerView();
             //total count of all items in the recyclerView
             setUpTotal();
-            //sets up User Clinent Singleton. This allows the user to User Data from the current user from
-            //any activity.
-            setUpUserClient();
+
         }
     }
 
@@ -103,23 +105,15 @@ public class CartActivity extends AppCompatActivity implements DialogInterface {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                user = new User (
-                dataSnapshot.getValue(User.class).getUser_id(),
-                        dataSnapshot.getValue(User.class).getEmail(),
-                        dataSnapshot.getValue(User.class).getUsername(),
-                        dataSnapshot.getValue(User.class).getFamily_name()
-               );
-
+                user = dataSnapshot.getValue(User.class);
+                user.setUser_id(mAuth.getCurrentUser().getUid());
                 setUser();
-               // Log.d(TAG, "onDataChange: " + ((UserClient)(mContext)).getUser().toString());
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
-
         });
+
     }
 
     private void setUser() {
@@ -130,43 +124,30 @@ public class CartActivity extends AppCompatActivity implements DialogInterface {
 
     private void setUpTotal() {
         Log.d(TAG, "setUpTotal: started");
-        double totes = 0;
+        double totalPrice = 0;
 
-        for (int i = 0; i< itemPirces.size(); i++){
-            totes += itemPirces.get(i);
-            Log.d(TAG, "setUpTotal: iteration " + totes);
+        for (int i = 0; i< items.size(); i++){
+            totalPrice += items.get(i).getPrice();
+            Log.d(TAG, "setUpTotal: iteration " + totalPrice);
         }
         Log.d(TAG, "setUpTotal: setText");
-        String s = String.format("%.2f",totes);
+        String s = String.format("%.2f",totalPrice);
         total.setText("Total " + s);
     }
 
     private void fromFirebaseToRecyclerView() {
         Log.d(TAG, "fromFirebaseToRecyclerView: creatiung database and getitnga reference");
-        myRef = database.getReference();
-        Query query = myRef.child("items").child(mAuth.getCurrentUser().getUid());
-         itemLists = new ArrayList<>();
-         itemNames = new ArrayList<>();
-         itemPirces = new ArrayList<>();
-        itemCounts = new ArrayList<>();
-        ids = new ArrayList<>();
-
-
-
+        Log.d(TAG, "fromFirebaseToRecyclerView: user id is = " + user.getUser_id());
+        Query query = FirebaseDatabase.getInstance().getReference().child("items").child(mAuth.getCurrentUser().getUid());
+        items = new ArrayList<>();
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: Called");
                 for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
-
                     if (singleSnapshot!=null) {
-                        ids.add(singleSnapshot.getValue(Item.class).getItemKey());
-                        itemNames.add(singleSnapshot.getValue(Item.class).getItem_name());
-                        itemLists.add(singleSnapshot.getValue(Item.class).getList_name());
-                        itemPirces.add(singleSnapshot.getValue(Item.class).getPrice());
-                        itemCounts.add(singleSnapshot.getValue(Item.class).getQuantity());
-
-                        Log.d(TAG, "onDataChange: " + ids.toString());
+                        items.add(singleSnapshot.getValue(Item.class));
                     }
                     }
                 setUpTotal();
@@ -174,8 +155,7 @@ public class CartActivity extends AppCompatActivity implements DialogInterface {
 
                 adapter = new RecyclerViewAdapter(
                         mContext,
-                        itemNames,itemLists, itemPirces, itemCounts, ids, familyName);
-                Log.d(TAG, "onDataChange: setUp ReciclerView");
+                        items, familyName);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             }
@@ -197,7 +177,7 @@ public class CartActivity extends AppCompatActivity implements DialogInterface {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked AddItemIcon");
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                AddItemDialog userPopUp = new AddItemDialog();
+                CartAddItemDialog userPopUp = new CartAddItemDialog();
                 userPopUp.show(fragmentManager,"!");
 
             }
@@ -209,42 +189,30 @@ public class CartActivity extends AppCompatActivity implements DialogInterface {
 
 
     @Override
-    public void delete(String delete) {
-        if (delete.equals("delete")){
-            Log.d(TAG, "delete: recieved" + delete);
-            //adapter.notifyDataSetChanged();
-            recreate();
-
-        }
+    public void OpenDialog(int position) {
+        Log.d(TAG, "OpenDialog: " + items.get(position).toString());
+        CartItemDialog dialog = CartItemDialog.newInstance(items.get(position));
+        dialog.show(getSupportFragmentManager(),"tag");
     }
-
     @Override
-    public void total(String mTotal) {
-        Log.d(TAG, "total: ");
-
+    public void addToHistory(Item item) {
+        Log.d(TAG, "addToHistory: " + item.toString());
+        firebase.addItemToHistory(item);
+        recreate();
     }
-
     @Override
-    public void ItemName(String ItemName) {
-        Log.d(TAG, "ItemName: set out " + ItemName);
-        itemName = ItemName;
+    public void delete(String itemKey) {
+        Log.d(TAG, "delete: " + itemKey);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("items").child(user.getUser_id()).child(itemKey);
+        Log.d(TAG, "deleteItemFromCart: on references " + ref.toString());
+        ref.removeValue();
+        recreate();
     }
-
     @Override
-    public void ItemCount(long ItemCont) {
-        Log.d(TAG, "ItemCount: recieved " + ItemCont);
-        itemCountLong = ItemCont;
-    }
-
-    @Override
-    public void trigger(int trigger) {
-        if (trigger ==1){
-            Log.d(TAG, "trigger: ItemName = " + itemName);
-            Log.d(TAG, "trigger ItemCount = " + itemCountLong);
-
-            firebase.addItemToList(itemName,"defaultList",itemCountLong, 0.00);
-            recreate();
-        }
+    public void addItem(Item item) {
+        Log.d(TAG, "addItem: called with item = " + item.toString());
+        firebase.addItemToListForTheFirstTime(item);
+        recreate();
     }
 
     //----------------------------Firebase Code-----------------------------------
@@ -321,6 +289,8 @@ public class CartActivity extends AppCompatActivity implements DialogInterface {
             startActivity(intent);
         }
     }
+
+
 }
 
 

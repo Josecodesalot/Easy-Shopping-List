@@ -1,4 +1,4 @@
-package com.example.dontforgettograbthat.Request;
+package com.example.dontforgettograbthat.ActivityRequestItems;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.Interface.DialogInterface;
+import com.example.dontforgettograbthat.Interface.RecyclerViewInterface;
+import com.example.dontforgettograbthat.Interface.RequestItemsActivityInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
@@ -29,10 +30,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class RequestActivity extends AppCompatActivity implements DialogInterface {
+public class RequestItemsActivity extends AppCompatActivity implements RecyclerViewInterface, RequestItemsActivityInterface {
 
     private static final String TAG = "AddItemActivity";
-    private Context mContext = RequestActivity.this;
+    private Context mContext = RequestItemsActivity.this;
     private final int ACTIVITY_NUM = 1;
 
     public DatabaseReference reference;
@@ -56,22 +57,20 @@ public class RequestActivity extends AppCompatActivity implements DialogInterfac
 
     //vars
 
-    private ArrayList<String> itemList;
-    private ArrayList<String> itemNames;
-    private ArrayList<Double> itemPrice;
-    private ArrayList<Long> itemCount ;
-    private ArrayList<String> id;
+
     private RecyclerViewAdapter adapter;
     private User user;
 
-    public String familyName;
+    private ArrayList<Item>items;
+
+    public String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         Log.d(TAG, "onCreate: started");
-
+        user=((UserClient)(getApplicationContext())).getUser();
         database = FirebaseDatabase.getInstance();
 
         firebaseDataExchangeListener();
@@ -82,16 +81,12 @@ public class RequestActivity extends AppCompatActivity implements DialogInterfac
 
     }
 
-
-
-
-
     private void setUpTotal() {
         Log.d(TAG, "setUpTotal: started");
         double totes = 0;
 
-        for (int i = 0; i< itemPrice.size(); i++){
-            totes += itemPrice.get(i);
+        for (int i = 0; i< items.size(); i++){
+            totes += items.get(i).getPrice();
             Log.d(TAG, "setUpTotal: iteration " + totes);
         }
         Log.d(TAG, "setUpTotal: setText");
@@ -100,45 +95,39 @@ public class RequestActivity extends AppCompatActivity implements DialogInterfac
     }
 
     private void firebaseRetrieve() {
-        user = new User();
-        user=((UserClient)(getApplicationContext())).getUser();
-        Log.d(TAG, "getFamilyNameReference: get name" + user.toString() + "\n" + user.getFamily_name());
-        familyName = user.getFamily_name();
 
-        if (familyName!=null) {
+        Log.d(TAG, "getFamilyNameReference: Rerencing " + user.toString() + "\n" + user.getParent_name());
 
-            Log.d(TAG, "firebaseRetrieve: creatiung database and getitnga reference");
+
+        if (user_id!=null) {
+
+            Log.d(TAG, "firebaseRetrieve: creatiung database and getting a reference");
             myRef = database.getReference();
-            Query query = myRef.child("requests").child(familyName);
-            itemList = new ArrayList<>();
-            itemNames = new ArrayList<>();
-            itemPrice = new ArrayList<>();
-            itemCount = new ArrayList<>();
-            id = new ArrayList<>();
+            Query query = myRef.child("requests").child(user.getUsername());
 
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    if (dataSnapshot != null) {
+                        for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                            if (singleSnapshot != null) {
+                                items.add(singleSnapshot.getValue(Item.class));
+                            }
+                            for (int i = 0; i < items.size(); i++) {
+                                Log.d(TAG, "onDataChange: " + items.get(i).toString());
+                            }
 
-                        if (singleSnapshot != null) {
-                            id.add(singleSnapshot.getValue(Item.class).getItemKey());
-                            itemNames.add(singleSnapshot.getValue(Item.class).getItem_name());
-                            itemList.add(singleSnapshot.getValue(Item.class).getList_name());
-                            itemPrice.add(singleSnapshot.getValue(Item.class).getPrice());
-                            itemCount.add(singleSnapshot.getValue(Item.class).getQuantity());
 
-                            Log.d(TAG, "onDataChange: " + id.toString());
+                            setUpTotal();
+                            adapter = new RecyclerViewAdapter(
+                                    mContext,
+                                    items, user.getUser_id());
+                            Log.d(TAG, "onDataChange: setUp ReciclerView");
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
                         }
                     }
-                    setUpTotal();
-                    adapter = new RecyclerViewAdapter(
-                            mContext,
-                            itemNames, itemList, itemPrice, itemCount, id, familyName);
-                    Log.d(TAG, "onDataChange: setUp ReciclerView");
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
                 }
 
                 @Override
@@ -240,33 +229,17 @@ public class RequestActivity extends AppCompatActivity implements DialogInterfac
     }
 
     @Override
-    public void delete(String delete) {
-        if (delete.equals("delete")){
-            Log.d(TAG, "delete: recieved" + delete);
-            //adapter.notifyDataSetChanged();
-            recreate();
-
-        }
-    }
-
-    @Override
-    public void total(String mTotal) {
-        Log.d(TAG, "total: ");
+    public void OpenDialog(int position) {
 
     }
 
     @Override
-    public void ItemName(String ItemName) {
+    public void addToCartList(Item item) {
 
     }
 
     @Override
-    public void ItemCount(long ItemCont) {
-
-    }
-
-    @Override
-    public void trigger(int trigger) {
+    public void deleteFromRequestedItems(String ItemKey) {
 
     }
 }

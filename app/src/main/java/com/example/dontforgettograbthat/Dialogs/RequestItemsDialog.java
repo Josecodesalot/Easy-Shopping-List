@@ -12,18 +12,34 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.CartActivity.CartActivity;
-import com.example.dontforgettograbthat.Interface.DialogInterface;
+import com.example.dontforgettograbthat.Interface.RequestItemsActivityInterface;
+import com.example.dontforgettograbthat.Models.Item;
+import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
 
-public class ItemDialog extends DialogFragment {
+public class RequestItemsDialog extends DialogFragment {
 
     private static final String TAG = "itemDialog";
-    private Button btnDelete, btnSubmit;
+    private Button btnDelete, btnAddToList;
     private TextView tvItemName, tvListname, tvPrice;
     private FirebaseMethods firebase;
-    DialogInterface mInterface;
+    private User user;
+    private String familyName;
+    RequestItemsActivityInterface mInterface;
+    private Context mContext = getContext();
+
+    Item item;
+
+    public static RequestItemsDialog newInstance(Item item) {
+        RequestItemsDialog frag = new RequestItemsDialog();
+        frag.setItems(item);
+        return frag;
+    }
+
+    public void setItems(Item item) {
+        this.item=item;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -34,12 +50,15 @@ public class ItemDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_item, container, false);
+        View view = inflater.inflate(R.layout.dialog_request , container, false);
         referenceWidgets(view);
         final Bundle bundle;
         bundle=getArguments();
-        firebase = new FirebaseMethods(getActivity());
-        mInterface = (CartActivity) getContext();
+
+        mInterface = (RequestItemsActivityInterface) getContext();
+
+        familyName = bundle.getString("familyName");
+        Log.d(TAG, "onCreateView: family name = " +  familyName);
 
         if (bundle!=null){
             tvListname.setText(bundle.getString("tvListName"));
@@ -47,17 +66,15 @@ public class ItemDialog extends DialogFragment {
             tvPrice.setText(String.format("%s", bundle.getDouble("tvPrice")));
         }
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
+
+        btnAddToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebase.addItemToHistory(
-                        bundle.getString("tvItemName"),
-                        bundle.getString("tvListName"),
-                        bundle.getLong("tvQuantity"),
-                        bundle.getDouble("tvPrice"),
-                        bundle.getString("id"));
-                        firebase.deleteItem(bundle.getString("id"));
-                mInterface.delete("delete");
+                firebase.restoreItem(
+                        item);
+
+                mInterface.deleteFromRequestedItems(item.getItemKey());
+                mInterface.addToCartList(item);
                 dismiss();
             }
         });
@@ -65,17 +82,18 @@ public class ItemDialog extends DialogFragment {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebase.deleteItem(bundle.getString("id"));
+                firebase.deleteRequestedItem(bundle.getString("id"), familyName);
                 Log.d(TAG, "onClick: should delete key " + bundle.getString("id"));
-                mInterface.delete("delete");
+                mInterface.deleteFromRequestedItems(item.getItemKey());
                 dismiss();
             }
         });
 
 
-
         return view;
     }
+
+
 
     public void referenceWidgets(View view){
         tvItemName = view.findViewById(R.id.tvItemName);
@@ -83,7 +101,6 @@ public class ItemDialog extends DialogFragment {
         tvPrice =  view.findViewById(R.id.tvPrice);
 
         btnDelete = view.findViewById(R.id.btnDeleteFromList);
-        btnSubmit = view.findViewById(R.id.btnCheckOff);
-
+        btnAddToList = view.findViewById(R.id.btnAccept);
     }
 }

@@ -2,26 +2,22 @@ package com.example.dontforgettograbthat.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.text.method.HideReturnsTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.HistoryActivity.HistoryActivity;
+import com.example.dontforgettograbthat.ActivityRequestItems.RequestItemsActivity;
 import com.example.dontforgettograbthat.CartActivity.CartActivity;
-import com.example.dontforgettograbthat.Dialogs.HistoryDialog;
-import com.example.dontforgettograbthat.Dialogs.ItemDialog;
-import com.example.dontforgettograbthat.Dialogs.RequestDialog;
+import com.example.dontforgettograbthat.HistoryActivity.HistoryActivity;
+import com.example.dontforgettograbthat.Interface.RecyclerViewInterface;
+import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
-import com.example.dontforgettograbthat.Request.RequestActivity;
 
 
 import java.util.ArrayList;
@@ -29,29 +25,17 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mItemNames = new ArrayList<>();
-    private ArrayList<String> mItemListName = new ArrayList<>();
-    private ArrayList<Double> mItemPrice;
-    private ArrayList<Long> mItemCount;
-    private ArrayList<String> mId;
+    private ArrayList<Item> items;
     private Context mContext;
     private FragmentManager manager;
     private String familyName;
-
+    RecyclerViewInterface mInterface;
 
 
     public RecyclerViewAdapter(Context context,
-                               ArrayList<String> itemNames,
-                               ArrayList<String> listNames,
-                               ArrayList<Double> itemPrice,
-                               ArrayList<Long> itemCount,
-                               ArrayList<String> id, String famName) {
-        mItemNames = itemNames;
-        mItemListName = listNames;
-        mItemPrice = itemPrice;
+                               ArrayList<Item> items, String famName) {
+       this.items=items;
         mContext = context;
-        mItemCount = itemCount;
-        mId = id;
         familyName = famName;
         Log.d(TAG, "RecyclerViewAdapter: family name = " + famName + " " + familyName);
     }
@@ -61,6 +45,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
         ViewHolder holder = new ViewHolder(view);
 
+        if (mContext instanceof CartActivity) {
+            Log.d(TAG, "onCreateViewHolder: CartActivity");
+            mInterface = (CartActivity) parent.getContext();
+        }
+        if (mContext instanceof HistoryActivity) {
+            Log.d(TAG, "onCreateViewHolder: HistoryActvity");
+            mInterface = (HistoryActivity) parent.getContext();
+        }
+        if (mContext instanceof RequestItemsActivity) {
+            Log.d(TAG, "onCreateViewHolder: RequestItemsActivity");
+            mInterface = (RequestItemsActivity) parent.getContext();
+        }
         return holder;
     }
 
@@ -69,17 +65,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d(TAG, "onBindViewHolder: called.");
 
 
-        holder.tvItemListName.setText(mItemListName.get(position));
-        holder.tvItemName.setText(mItemNames.get(position));
-        holder.tvPrice.setText("$" + mItemPrice.get(position));
-        if (mItemPrice.get(position)==0.0){
+        holder.tvItemListName.setText(items.get(position).getList_name());
+        holder.tvItemName.setText(items.get(position).getItem_name());
+        String price = "$" + items.get(position).getPrice();
+        holder.tvPrice.setText(price);
+
+        //hide the recyclerView Features
+        if (items.get(position).getPrice()==0.0){
             holder.tvPrice.setVisibility(View.GONE);
         }
-        holder.tvItemCount.setText("x" + mItemCount.get(position));
-        if (mItemCount.get(position)==1){
-            holder.tvItemCount.setVisibility(View.GONE);
+        String quanitity = "x" + items.get(position).getQuantity();
+        holder.tvItemQuantity.setText(quanitity);
+
+        if (items.get(position).getQuantity()==1){
+            holder.tvItemQuantity.setVisibility(View.GONE);
         }
-        holder.tvItemListName.setBackground(getDrawable(mItemListName.get(position)));
+
+        holder.tvItemListName.setBackground(getDrawable(items.get(position).getItem_name()));
 
         //this method will hide un used features in the recyclerview
 
@@ -90,41 +92,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view) {
 
-                Bundle args = new Bundle();
-                args.putString("tvItemName", mItemNames.get(position));
-                args.putString("tvListName", mItemListName.get(position));
-                args.putLong("tvQuantity", mItemCount.get(position));
-                args.putDouble("tvPrice",  mItemPrice.get(position));
-                args.putString("id", mId.get(position));
-                args.putString("familyName", familyName);
-
-
-                if (mContext instanceof CartActivity) {
-                    manager = ((AppCompatActivity)mContext ).getSupportFragmentManager();
-                    ItemDialog alert =  new ItemDialog();
-                    alert.setArguments(args);
-                    assert manager != null;
-                    alert.show(manager, "1");
-                }
-                if (mContext instanceof HistoryActivity) {
-                    Log.d(TAG, "onClick: History Activity ");
-                    manager = ((AppCompatActivity)mContext ).getSupportFragmentManager();
-                    HistoryDialog alert =  new HistoryDialog();
-                    alert.setArguments(args);
-                    assert manager != null;
-                    alert.show(manager, "2");
-                }
-                if (mContext instanceof RequestActivity) {
-                    Log.d(TAG, "onClick: History Activity ");
-                    manager = ((AppCompatActivity)mContext ).getSupportFragmentManager();
-                    RequestDialog alert =  new RequestDialog();
-                    alert.setArguments(args);
-                    assert manager != null;
-                    alert.show(manager, "3");
-                }
+                mInterface.OpenDialog(position);
             }
+
         });
+
     }
+
 
 
     private Drawable getDrawable (String tvListName){
@@ -152,7 +126,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return mItemNames.size();
+        return items.size();
     }
 
 
@@ -161,7 +135,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView tvItemName;
         TextView tvItemListName;
         TextView tvPrice;
-        TextView tvItemCount;
+        TextView tvItemQuantity;
         ConstraintLayout parentLayout;
 
         public ViewHolder(View itemView) {
@@ -170,7 +144,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tvItemListName = itemView.findViewById(R.id.tvListName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             parentLayout = itemView.findViewById(R.id.list_root);
-            tvItemCount =  itemView.findViewById(R.id.tvItemCount);
+            tvItemQuantity =  itemView.findViewById(R.id.tvItemCount);
         }
     }
 }

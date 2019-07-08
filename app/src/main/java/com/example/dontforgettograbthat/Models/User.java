@@ -4,13 +4,13 @@ public class User {
     private String user_id;
     private String email;
     private String username;
-    private String family_name;
+    private String parent_name;
 
-    public User(String user_id, String email, String username, String family_name) {
+    public User(String user_id, String email, String username, String parent_name) {
         this.user_id = user_id;
         this.email = email;
         this.username = username;
-        this.family_name = family_name;
+        this.parent_name = parent_name;
     }
 
     public User(){
@@ -29,8 +29,8 @@ public class User {
         return username;
     }
 
-    public String getFamily_name() {
-        return family_name;
+    public String getParent_name() {
+        return parent_name;
     }
 
     public void setUser_id(String user_id) {
@@ -45,8 +45,8 @@ public class User {
         this.username = username;
     }
 
-    public void setFamily_name(String family_name) {
-        this.family_name = family_name;
+    public void setParent_name(String parent_name) {
+        this.parent_name = parent_name;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class User {
                 "user_id='" + user_id + '\'' +
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
-                ", family_name='" + family_name + '\'' +
+                ", parent_name='" + parent_name + '\'' +
                 '}';
     }
 }

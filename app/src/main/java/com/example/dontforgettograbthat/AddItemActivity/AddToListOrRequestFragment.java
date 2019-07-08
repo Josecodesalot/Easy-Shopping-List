@@ -1,7 +1,6 @@
 package com.example.dontforgettograbthat.AddItemActivity;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -65,8 +64,8 @@ public class AddToListOrRequestFragment extends android.support.v4.app.Fragment 
             public void onClick(View v) {
                 //tells mother activity (AddItemActivity) to send request to database
                 if (user!=null){
-                    tvFamilyName.setText(user.getFamily_name());
-                    Toast.makeText(getActivity(), "Request sent to the list of the follwing Family : " + user.getFamily_name(), Toast.LENGTH_SHORT).show();
+                    tvFamilyName.setText(user.getParent_name());
+                    Toast.makeText(getActivity(), "Request sent to the list of the follwing Family : " + user.getParent_name(), Toast.LENGTH_SHORT).show();
                 }
                 mInterface.triggers(2);
             }
@@ -80,7 +79,7 @@ public class AddToListOrRequestFragment extends android.support.v4.app.Fragment 
                         dataSnapshot.getValue(User.class).getUser_id(),
                         dataSnapshot.getValue(User.class).getEmail(),
                         dataSnapshot.getValue(User.class).getUsername(),
-                        dataSnapshot.getValue(User.class).getFamily_name()
+                        dataSnapshot.getValue(User.class).getParent_name()
                 );
 
                  setFamilyName();
@@ -97,7 +96,7 @@ public class AddToListOrRequestFragment extends android.support.v4.app.Fragment 
 
     private void setFamilyName() {
         if (user!=null) {
-            tvFamilyName.setText(user.getFamily_name());
+            tvFamilyName.setText(user.getParent_name());
         }
     }
 

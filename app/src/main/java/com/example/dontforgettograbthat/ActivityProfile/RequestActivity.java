@@ -1,6 +1,5 @@
 package com.example.dontforgettograbthat.ActivityProfile;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import com.example.dontforgettograbthat.Interface.AcceptDeleteOrHoldInterface;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
-import com.example.dontforgettograbthat.utils.RecyclerViewAdapter;
 import com.example.dontforgettograbthat.utils.RequestRvAdapter;
 import com.example.dontforgettograbthat.utils.UserClient;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +25,7 @@ import java.util.ArrayList;
 
 public class RequestActivity extends AppCompatActivity implements AcceptDeleteOrHoldInterface {
 
-    private static final String TAG = "RequestActivity";
+    private static final String TAG = "RequestItemsActivity";
     private Context mContext = RequestActivity.this;
 
     //  UTILS
@@ -49,15 +47,12 @@ public class RequestActivity extends AppCompatActivity implements AcceptDeleteOr
         setContentView(R.layout.activity_request);
         firebase = new FirebaseMethods(mContext);
         setUpUserList();
-
-
-
     }
 
     private void setUpUserList() {
         Log.d(TAG, "setUpUserList: ");
         currentUser = ((UserClient)(getApplicationContext())).getUser();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("request").child(currentUser.getFamily_name());
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("request").child(currentUser.getParent_name());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -91,14 +86,14 @@ public class RequestActivity extends AppCompatActivity implements AcceptDeleteOr
     @Override
     public void accept(int position) {
         Log.d(TAG, "accept: called for user " + users.get(position).toString());
-        firebase.acceptRequest(currentUser.getFamily_name(), users.get(position));
+        firebase.acceptRequest(currentUser.getParent_name(), users.get(position));
         recreate();
     }
 
     @Override
     public void reject(int position) {
         Log.d(TAG, "reject: called");
-        firebase.deleteRequest(currentUser.getFamily_name(),users.get(position));
+        firebase.deleteRequest(currentUser.getParent_name(),users.get(position));
         recreate();
     }
 
@@ -110,7 +105,7 @@ public class RequestActivity extends AppCompatActivity implements AcceptDeleteOr
 
     @Override
     public void dialog(int position) {
-        Log.d(TAG, "dialog: triggered " + users.get(position).getFamily_name());
+        Log.d(TAG, "dialog: triggered " + users.get(position).getParent_name());
         Bundle bundle = new Bundle();
         bundle.putString("id",users.get(position).getUser_id());
         bundle.putString("username", users.get(position).getUsername());

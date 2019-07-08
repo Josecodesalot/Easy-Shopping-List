@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.WebView;
 import android.widget.Toast;
 import com.example.dontforgettograbthat.CartActivity.CartActivity;
 import com.example.dontforgettograbthat.Interface.IAddItem;
@@ -22,7 +21,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
@@ -64,7 +62,7 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
 
         user =  new User();
         user = ((UserClient)(getApplicationContext())).getUser();
-        familyName = user.getFamily_name();
+        familyName = user.getParent_name();
 
         mItemPrice = 0.0;
         mItemName = " ";
@@ -80,9 +78,11 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
     public interface SelectedBundle {
         void onBundleSelect(Bundle bundle);
     }
+
     public void setOnBundleSelected(SelectedBundle selectedBundle) {
         this.selectedBundle = selectedBundle;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent  data) {
         Bundle bundle = new Bundle();
@@ -131,6 +131,7 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
                 Log.d(TAG, "triggers: everything should be in order attemoting to load data into firebase");
                 String i = d2.format(mItemPrice);
                 mItemPrice = Double.parseDouble(i);
+
                 firebase.addItemToList(mItemName, mListName, mItemQuantity, mItemPrice);
                 Intent intent = new Intent(mContext, CartActivity.class);
                 intent.putExtra("REFRESH_CODE", "REFRESH_CODE");
@@ -144,17 +145,7 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
         }
         if (trigger == 2) {
             Log.d(TAG, "triggers: 2 sending request");
-            DatabaseReference ref = mFirebaseDatabase.getReference().child("users");
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    firebase.sendRequest(mItemName, mListName, mItemQuantity, mItemPrice, user.getFamily_name(),  dataSnapshot);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
+            firebase.sendRequest(mItemName, mListName, mItemQuantity, mItemPrice, user.getParent_name());
         }
     }
 

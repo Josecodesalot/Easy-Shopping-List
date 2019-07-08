@@ -1,12 +1,8 @@
 package com.example.dontforgettograbthat.utils;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,11 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.dontforgettograbthat.ActivityProfile.RequestActivity;
-import com.example.dontforgettograbthat.CartActivity.CartActivity;
-import com.example.dontforgettograbthat.Dialogs.HistoryDialog;
-import com.example.dontforgettograbthat.Dialogs.ItemDialog;
-import com.example.dontforgettograbthat.Dialogs.RequestDialog;
-import com.example.dontforgettograbthat.HistoryActivity.HistoryActivity;
 import com.example.dontforgettograbthat.Interface.AcceptDeleteOrHoldInterface;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;

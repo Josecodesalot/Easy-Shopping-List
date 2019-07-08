@@ -43,12 +43,12 @@
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvPrice"
-            android:id="@+id/btnCheckOff"
+            android:id="@+id/btnBought"
             android:text="Bought!"/>
         <Button
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnCheckOff"
+            android:layout_below="@id/btnBought"
             android:id="@+id/btnDeleteFromList"
             android:text="delete from list"/>
 
