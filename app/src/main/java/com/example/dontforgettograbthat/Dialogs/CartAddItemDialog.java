@@ -11,13 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.dontforgettograbthat.CartActivity.CartActivity;
 import com.example.dontforgettograbthat.Interface.CartInterface;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
-import com.google.android.gms.dynamic.IFragmentWrapper;
 
 
 public class CartAddItemDialog extends DialogFragment {
@@ -31,7 +29,7 @@ public class CartAddItemDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_add_item , container, false);
+        View view = inflater.inflate(R.layout.dialog_cart_add_item, container, false);
         Log.d(TAG, "onCreateView: Started");
 
         mInterface = (CartActivity) getContext();

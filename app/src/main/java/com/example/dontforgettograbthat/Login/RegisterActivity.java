@@ -1,6 +1,7 @@
 package com.example.dontforgettograbthat.Login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -85,13 +86,15 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void singUp (){
+        Log.d(TAG, "singUp: started");
         if(inputsArentEmpty(email, username, password)&&allowUserToRegister&&!emailExists){
-
+            Log.d(TAG, "singUp: shold call firebase methods");
             ////mProgressBar.setVisibility(View.VISIBLE);
             // loadingPleaseWait.setVisibility(View.VISIBLE);
-
             firebaseMethods.registerNewEmail( email, password, username);
             mAuth.signOut();
+            Intent intent = new Intent(mContext, LoginActivity.class);
+            intent.putExtra("key","emailsent");
 
         }
     }

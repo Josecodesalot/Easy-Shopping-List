@@ -48,17 +48,19 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:text="FamilyName"
+            android:inputType="text"
+            android:textAllCaps="false"
             android:fontFamily="@font/asap_medium"
             android:textColor="@color/gwhite"/>
 
         <Button
-            android:id="@+id/btnSelectFamily"
+            android:id="@+id/btnSetParent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:background="@drawable/background_rounded_gwhite"
             android:fontFamily="@font/asap_medium"
-            android:text="Set Family" />
+            android:text="add parent"/>
 
         <Button
             android:layout_width="match_parent"

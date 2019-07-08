@@ -43,7 +43,7 @@ public class CartItemDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_item, container, false);
+        View view = inflater.inflate(R.layout.dialog_cart_item, container, false);
         referenceWidgets(view);
         mInterface = (CartActivity) getContext();
 

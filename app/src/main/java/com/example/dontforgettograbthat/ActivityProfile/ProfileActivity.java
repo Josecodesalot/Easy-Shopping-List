@@ -35,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     //WIdgets
     private TextView username, email;
     private EditText parentName;
-    private Button signoutBtn, selectFamily, requestsBtn ;
+    private Button signoutBtn, setParent, requestsBtn ;
 
     //firebase
     private FirebaseAuth mAuth;
@@ -58,7 +58,8 @@ public class ProfileActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         firebase = new FirebaseMethods(mContext);
         firebaseDataExchangeListener();
-
+        user = new User();
+        user = ((UserClient)(getApplicationContext())).getUser();
         referenceWidgets();
 
     }
@@ -70,17 +71,16 @@ public class ProfileActivity extends AppCompatActivity {
         parentName = findViewById(R.id.etUsername);
         //signoutBtn has an onclick which creates a Signout
         signoutBtn = findViewById(R.id.btnSignout);
-        //selectFamily is a button that sends a request to the family defined in etFamilyName if that family exists
+        //setParent is a button that sends a request to the family defined in etFamilyName if that family exists
         //the request will give the family manager the choice to allow items into their Main ShoppingCart
-        selectFamily = findViewById(R.id.btnSelectFamily);
-        requestsBtn = findViewById(R.id.btnRequests);
+        setParent = findViewById(R.id.btnSetParent);
 
-        user = new User();
-        user = ((UserClient)(getApplicationContext())).getUser();
+        requestsBtn = findViewById(R.id.btnRequests);
 
         username.setText(user.getUsername());
         email.setText(user.getUsername());
         if (user.getParent_name().equals("")){
+            parentName.setText("");
             parentName.setHint("Type in your parents username");
         }else {
             parentName.setText(user.getParent_name());
@@ -94,10 +94,10 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        selectFamily.setOnClickListener(new View.OnClickListener() {
+        setParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String familyName = parentName.getText().toString();
+                final String familyName = parentName.getText().toString().toLowerCase();
 
                 DatabaseReference ref = database.getReference().child("users");
 
@@ -105,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            if (firebase.familyNameExists(user, familyName, dataSnapshot)) {
+                            if (firebase.parentNameExists(user, familyName, dataSnapshot)) {
                                 allowParentname =true;
                                 requestAndToast();
                             }

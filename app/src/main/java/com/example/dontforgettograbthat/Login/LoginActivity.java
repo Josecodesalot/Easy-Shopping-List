@@ -77,8 +77,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
-
-                if(isStringNull(email) && isStringNull(password)){
+                if(isStringNull(email) || isStringNull(password)){
                     Toast.makeText(mContext, "You must fill out all the fields", Toast.LENGTH_SHORT).show();
                 }else{
 
@@ -186,6 +185,15 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+        Intent intent = getIntent();
+        if (intent!=null){
+            Bundle bundle= intent.getExtras();
+            if (bundle!=null){
+                if (bundle.get("key").equals("emailsent")){
+                    Toast.makeText(mContext, "Verification Email Sent, Please Check Email", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     @Override

@@ -165,7 +165,7 @@ public class FirebaseMethods {
     }
 
     public void registerNewEmail(final String email, String password, final String username) {
-
+        Log.d(TAG, "registerNewEmail: this happened");
         //---------------------Authentication
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -182,11 +182,12 @@ public class FirebaseMethods {
                                     Toast.LENGTH_SHORT).show();
 
                         } else if (task.isSuccessful()) {
+
                             //add userInfo
                             addNewUser(email, username, "");
                             //send verificaton email
                             sendVerificationEmail();
-                            Toast.makeText(mContext, "Verification Email Sent", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Verification Email Sent", Toast.LENGTH_LONG).show();
                             userID = mAuth.getCurrentUser().getUid();
                             Log.d(TAG, "onComplete: Authstate changed: " + userID);
                         }
@@ -259,23 +260,24 @@ public class FirebaseMethods {
 
     }
 
-    public boolean familyNameExists(User user, String familyname, DataSnapshot dataSnapshot) {
-        Log.d(TAG, "check if Family Name Exists: checking if " + familyname + " already exists.");
+    public boolean parentNameExists(User user, String parentName, DataSnapshot dataSnapshot) {
+        Log.d(TAG, "check if Family Name Exists: checking if " + parentName + " already exists.");
 
-        if (user.getParent_name().equals(familyname)) {
+        if (user.getParent_name().equals(parentName)) {
             Toast.makeText(mContext, "That is your family name, To add an Item to your List user other button, If you want to add this item to your providers list, ask for their family name ", Toast.LENGTH_LONG).show();
             return false;
         } else {
+            Log.d(TAG, "parentNameExists: is not your own name");
             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                Log.d(TAG, "checkIfUsernameExists: datasnapshot: " + ds);
+                Log.d(TAG, "check if parentNameExiwsts: datasnapshot: " + ds.toString());
 
-                if (familyname.equals(ds.getValue(User.class).getParent_name())) {
-                    Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + familyname);
+                if (parentName.equals(ds.getValue(User.class).getParent_name())) {
+                    Log.d(TAG, "check if parentNameExists: FOUND A MATCH: " + parentName);
                     return true;
                 }
             }
-            Log.d(TAG, "familyNameExists: familyName " + familyname + " Doesnt exist");
-            Toast.makeText(mContext, "Family doesnt exist", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "parentNameExists: familyName " + parentName + " Doesnt exist");
+            Toast.makeText(mContext, "Parent username doesnt exist", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
