@@ -10,55 +10,48 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.ActivityProfile.RequestActivity;
-import com.example.dontforgettograbthat.Interface.AcceptDeleteOrHoldInterface;
+import com.example.dontforgettograbthat.ActivityProfile.ChildrenMangementActivity;
+import com.example.dontforgettograbthat.Interface.ChildrenManagementInterface;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 
 import java.util.ArrayList;
 
-public class RequestRvAdapter extends RecyclerView.Adapter<RequestRvAdapter.ViewHolder>{
-    private static final String TAG = "RecyclerViewAdapter";
+public class RecyclerViewChildrenManagement extends RecyclerView.Adapter<RecyclerViewChildrenManagement.ViewHolder>{
+    private static final String TAG = "RecyclerViewChildr";
 
 
-    private ArrayList<User> mUser = new ArrayList<>();
-    public RequestRvAdapter(Context mcontext, ArrayList<User> mUser) {
+    private ArrayList<User> mUser ;
+
+    public RecyclerViewChildrenManagement(Context mContext, ArrayList<User> mUser) {
         this.mUser = mUser;
-
+        Log.d(TAG, "RecyclerViewChildrenRequests: " + mUser.toString());
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_request_user, parent, false);
-        ViewHolder holder = new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_user, parent, false);
+        RecyclerViewChildrenManagement.ViewHolder holder = new RecyclerViewChildrenManagement.ViewHolder(view);
         return holder;
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final RecyclerViewChildrenManagement.ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-
         holder.tvUserName.setText(mUser.get(position).getUsername());
-        holder.tvUserEmail.setText(mUser.get(position).getUsername());
-
+        holder.tvUserEmail.setText(mUser.get(position).getEmail());
 
         //this method will hide un used features in the recyclerview
-
-
-
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Open up a Dialog do that you can either add or delete this person.
-                holder.mInterface.dialog(position);
+                holder.mInterface.OpenDialog(position);
             }
         });
     }
-
-
-
 
     @Override
     public int getItemCount() {
@@ -71,14 +64,17 @@ public class RequestRvAdapter extends RecyclerView.Adapter<RequestRvAdapter.View
         TextView tvUserName;
         TextView tvUserEmail;
         ConstraintLayout parentLayout;
-        AcceptDeleteOrHoldInterface mInterface;
+        ChildrenManagementInterface mInterface;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvUserEmail = itemView.findViewById(R.id.tvUserEmail);
             tvUserName = itemView.findViewById(R.id.tvUserName);
             parentLayout = itemView.findViewById(R.id.list_root);
-            mInterface = (RequestActivity)  itemView.getContext();
+
+            Log.d(TAG, "ViewHolder: RequestActivity");
+            mInterface = (ChildrenMangementActivity)  itemView.getContext();
+
         }
     }
 }

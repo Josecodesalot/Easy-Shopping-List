@@ -2,10 +2,9 @@ package com.example.dontforgettograbthat.Interface;
 
 import com.example.dontforgettograbthat.Models.User;
 
-public interface AcceptDeleteOrHoldInterface {
-    void accept (int position);
-    void reject (int position );
+public interface ChildrenRequestInterface {
+    void accept (User user);
+    void reject (User user );
     // sends accepted user into the request category
-    void hold (int position );
     void dialog (int position);
 }

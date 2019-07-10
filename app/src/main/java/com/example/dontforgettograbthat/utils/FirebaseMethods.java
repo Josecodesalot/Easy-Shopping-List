@@ -33,7 +33,6 @@ public class FirebaseMethods {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private String userID;
-    private User user;
 
     private Context mContext;
 
@@ -47,29 +46,6 @@ public class FirebaseMethods {
         if (mAuth.getCurrentUser() != null) {
             userID = mAuth.getCurrentUser().getUid();
         }
-    }
-
-    public boolean parentNameExists( String parentName, DataSnapshot dataSnapshot) {
-        Log.d(TAG, "check if Parent Name Exists: checking if " + parentName + " already exists.");
-        return dataSnapshot.exists();
-    }
-
-    public boolean usernameExists( DataSnapshot datasnapshot) {
-        Log.d(TAG, "usernameExists: ");
-        if (datasnapshot.exists()){
-            Log.d(TAG, "usernameExists: exists");
-            return true;
-        }else{
-            Log.d(TAG, "usernameExists: doesnt exist");
-            return false;
-        }
-    }
-
-
-    public void deleteItemFromCart(String itemKey) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("items").child(userID).child(itemKey);
-        Log.d(TAG, "deleteItemFromCart: on references " + ref.toString());
-        ref.removeValue();
     }
 
     public void deleteHistory(String itemKey) {
@@ -235,8 +211,8 @@ public class FirebaseMethods {
         mContext.startActivity(intent);
     }
 
-    public void sendParentRequest(String familyName, User user) {
-        DatabaseReference ref = mFirebaseDatabase.getReference().child("request").child(familyName).child(user.getUser_id());
+    public void sendParentRequest(String parentsUsername, User user) {
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("request").child(parentsUsername).child(user.getUser_id());
         ref.setValue(user);
     }
 
@@ -249,23 +225,33 @@ public class FirebaseMethods {
 
 
 
-    public void acceptRequest (String familyName , User user){
-        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(familyName);
-        ref.setValue(user);
+    public void acceptRequest (String currenUsername , User user){
+        //The User object user, should be the child request user with the updated ParentName from the current user,
+        //the following method will update the child users account
+        addNewUser(user);
+        //The following will delete the request
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(currenUsername).child(user.getUser_id());
+        ref.removeValue();
+        //The following will Add User to FamilyList
+        DatabaseReference thisref = mFirebaseDatabase.getReference().child("family").child(userID).child(user.getUser_id());
+        thisref.setValue(user);
     }
 
     //TODO below 3 methods are still under construction
-    public void sendUserToRequest (String familyName , User user){
-        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(familyName);
-        //TODO test if this actually removes the user
-        ref.removeValue((DatabaseReference.CompletionListener) user);
+    public void sendUserToRequest (String currentUsername , User user){
+        //update child users parent
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("users").child(user.getUser_id());
+        user.setParent_name("");
+        ref.setValue(user);
+        //send user to requests
+        sendParentRequest(currentUsername,user);
     }
-    public void deleteRequest (String familyName , User user){
-        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(familyName);
+    public void deleteRequest (String currentUsername , String userKey){
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(currentUsername).child(userKey);
         ref.removeValue();
     }
-    public void  deleteFamilyMember (String familyName , User user){
-        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(familyName);
+    public void  deleteFamilyMember (String currentUsername , User user){
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(currentUsername).child(user.getUser_id());
         ref.setValue(user);
     }
 }

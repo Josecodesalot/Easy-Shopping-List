@@ -20,7 +20,7 @@
         <!-- Top Title -->
 
 
-        <!--Request button -->
+        <!--SendBack button -->
 
         <fragment
             android:id="@+id/fragment"

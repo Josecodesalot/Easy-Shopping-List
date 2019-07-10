@@ -6,14 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
+import com.example.dontforgettograbthat.Dialogs.ChildrenManagementDialog;
+import com.example.dontforgettograbthat.Interface.ChildrenManagementInterface;
+import com.example.dontforgettograbthat.Interface.ChildrenRequestInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
+import com.example.dontforgettograbthat.utils.RecyclerViewChildrenRequests;
 import com.example.dontforgettograbthat.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,84 +27,75 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 
-public class UserSettingsActivity extends AppCompatActivity {
-
-    private static final String TAG = "UserSettingsActivity";
-    private Context mContext = UserSettingsActivity.this;
-
-    //WIdgets
-    private Button signoutBtn, btnUserSettings, requestsBtn, manageChildrenBtn ;
-
+public class ChildrenMangementActivity extends AppCompatActivity implements ChildrenManagementInterface {
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseMethods firebase;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private User userCurrent;
+    //Vars
+    ArrayList<User> users = new ArrayList<>();
 
-    //vars
-    private User user;
+    //Widgets
+    private RecyclerView recyclerView;
+    private RecyclerViewChildrenRequests adapter;
+
+
+
+    private static final String TAG = "ChildrenMangement";
+    private Context mContext = ChildrenMangementActivity.this;
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_settings);
-        Log.d(TAG, "onCreate: Started");
+
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
         firebase = new FirebaseMethods(mContext);
         firebaseDataExchangeListener();
-        user = new User();
-        user = ((UserClient)(getApplicationContext())).getUser();
-        referenceWidgets();
+        userCurrent = new User();
+        userCurrent = ((UserClient)(getApplicationContext())).getUser();
+        setUpUserList();
 
     }
 
-    public void referenceWidgets (){
-        //signoutBtn has an onclick which creates a Signout
-        signoutBtn = findViewById(R.id.btnSignout);
-        //btnUserSettings is a button that sends a request to the family defined in etParentname if that family exists
-        //the request will give the family manager the choice to allow items into their Main ShoppingCart
-        btnUserSettings = findViewById(R.id.btnProfileInfo);
+    private void setUpUserList() {
+        Log.d(TAG, "setUpUserList: ");
+        userCurrent = ((UserClient)(getApplicationContext())).getUser();
+        DatabaseReference ref = database.getReference().child("family").child(userCurrent.getUser_id());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
-        requestsBtn = findViewById(R.id.btnChildRequests);
-        manageChildrenBtn = findViewById(R.id.btnManageChildren);
-
-        manageChildrenBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent inetnt = new Intent(mContext, ChildrenMangementActivity.class);
-                startActivity(inetnt);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: called");
+                for (DataSnapshot singlesnapshot: dataSnapshot.getChildren()){
+                    users.add(singlesnapshot.getValue(User.class));
+                }
+
+                setUpRecyclerView();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
-
-
-        btnUserSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ProfileInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        signoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebase.logoutAndClearStack();
-            }
-        });
-
-
-        requestsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, RequestActivity.class);
-                startActivity(intent);
-            }
-        });
-
+    }
+    private void setUpRecyclerView() {
+        recyclerView = findViewById(R.id.recyclerView);
+        adapter = new RecyclerViewChildrenRequests(
+                mContext,
+                users);
+        Log.d(TAG, "onCreate: setUp ReciclerView");
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
     }
 
 
@@ -114,10 +109,8 @@ public class UserSettingsActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                //check if the user is logged in
+                //check if the userCurrent is logged in
                 checkCurrentUser(user);
-
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
@@ -168,12 +161,31 @@ public class UserSettingsActivity extends AppCompatActivity {
 
 
     private void checkCurrentUser(FirebaseUser user){
-        Log.d(TAG, "checkCurrentUser: checking if user is logged in.");
+        Log.d(TAG, "checkCurrentUser: checking if userCurrent is logged in.");
 
         if(user == null){
-            Log.d(TAG, "checkCurrentUser: user is null, starting loginActivity");
+            Log.d(TAG, "checkCurrentUser: userCurrent is null, starting loginActivity");
             Intent intent = new Intent(mContext, LoginActivity.class);
             startActivity(intent);
         }
+    }
+
+
+    @Override
+    public void OpenDialog(int position) {
+        ChildrenManagementDialog dialog = ChildrenManagementDialog.newInstance(users.get(position));
+        dialog.show(getSupportFragmentManager(),"");
+    }
+
+    @Override
+    public void Delete(User user) {
+        //FirebaseDeleteUserFromChildren
+        firebase.deleteFamilyMember(userCurrent.getUsername(),user);
+    }
+
+    @Override
+    public void SendBack(User user) {
+        //FirebaseDeleteChild and AddchildToRequests
+        firebase.sendUserToRequest(userCurrent.getUsername(), user);
     }
 }

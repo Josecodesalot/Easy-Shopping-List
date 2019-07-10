@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.dontforgettograbthat.Models.Item;
+import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
 import com.example.dontforgettograbthat.utils.UserClient;
@@ -27,7 +29,7 @@ public class AddFamilyNameDialog extends DialogFragment {
     public String sParentName;
     public Button submit;
     public boolean allowFamilyName;
-    FirebaseMethods firebase;
+    private FirebaseMethods firebase;
     private static final String TAG = "AddFamilyNameDialog";
 
     @Nullable
@@ -53,7 +55,7 @@ public class AddFamilyNameDialog extends DialogFragment {
                             Log.d(TAG, "onDataChange: exists");
                             if (!sParentName.equals("")) {
                                 firebase.sendParentRequest(sParentName, ((UserClient)(getActivity().getApplicationContext())).getUser());
-                                Toast.makeText(getActivity(), "Request Sent to " + sParentName, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "SendBack Sent to " + sParentName, Toast.LENGTH_SHORT).show();
                             }else{
                                 Toast.makeText(getActivity(), "Parent Name is Empty", Toast.LENGTH_SHORT).show();
                             }

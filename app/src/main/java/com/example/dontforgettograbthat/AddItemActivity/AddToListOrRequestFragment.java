@@ -65,7 +65,7 @@ public class AddToListOrRequestFragment extends android.support.v4.app.Fragment 
                 //tells mother activity (AddItemActivity) to send request to database
                 if (user!=null){
                     tvFamilyName.setText(user.getParent_name());
-                    Toast.makeText(getActivity(), "Request sent to the list of the follwing Family : " + user.getParent_name(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "SendBack sent to the list of the follwing Family : " + user.getParent_name(), Toast.LENGTH_SHORT).show();
                 }
                 mInterface.triggers(2);
             }

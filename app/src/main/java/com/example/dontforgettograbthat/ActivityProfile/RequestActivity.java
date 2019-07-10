@@ -9,11 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.dontforgettograbthat.Dialogs.AcceptOrRejectRequestDialog;
-import com.example.dontforgettograbthat.Interface.AcceptDeleteOrHoldInterface;
+import com.example.dontforgettograbthat.Interface.ChildrenRequestInterface;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
-import com.example.dontforgettograbthat.utils.RequestRvAdapter;
+import com.example.dontforgettograbthat.utils.RecyclerViewChildrenRequests;
 import com.example.dontforgettograbthat.utils.UserClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,14 +23,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class RequestActivity extends AppCompatActivity implements AcceptDeleteOrHoldInterface {
+public class RequestActivity extends AppCompatActivity implements ChildrenRequestInterface {
 
     private static final String TAG = "RequestItemsActivity";
     private Context mContext = RequestActivity.this;
 
     //  UTILS
     //RecyclerView Addapter
-    RequestRvAdapter adapter;
+    RecyclerViewChildrenRequests adapter;
     //FirebaseMethods
     FirebaseMethods firebase;
     //Vars
@@ -52,7 +52,7 @@ public class RequestActivity extends AppCompatActivity implements AcceptDeleteOr
     private void setUpUserList() {
         Log.d(TAG, "setUpUserList: ");
         currentUser = ((UserClient)(getApplicationContext())).getUser();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("request").child(currentUser.getParent_name());
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("request").child(currentUser.getUsername());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -63,7 +63,6 @@ public class RequestActivity extends AppCompatActivity implements AcceptDeleteOr
                     Log.d(TAG, "onDataChange: users = " + users.get(i).toString());
                 }
                 setUpRecyclerView();
-
             }
 
             @Override
@@ -75,7 +74,7 @@ public class RequestActivity extends AppCompatActivity implements AcceptDeleteOr
 
     private void setUpRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
-        adapter = new RequestRvAdapter(
+        adapter = new RecyclerViewChildrenRequests(
                 mContext,
                 users);
         Log.d(TAG, "onCreate: setUp ReciclerView");
@@ -84,34 +83,23 @@ public class RequestActivity extends AppCompatActivity implements AcceptDeleteOr
     }
 
     @Override
-    public void accept(int position) {
-        Log.d(TAG, "accept: called for user " + users.get(position).toString());
-        firebase.acceptRequest(currentUser.getParent_name(), users.get(position));
+    public void accept(User user) {
+        user.setParent_name(currentUser.getUsername());
+        firebase.acceptRequest(currentUser.getUsername(),user);
         recreate();
     }
 
     @Override
-    public void reject(int position) {
-        Log.d(TAG, "reject: called");
-        firebase.deleteRequest(currentUser.getParent_name(),users.get(position));
+    public void reject(User user) {
+        firebase.deleteRequest(currentUser.getUsername(),user.getUser_id());
         recreate();
     }
 
-    @Override
-    public void hold(int position) {
-        Log.d(TAG, "hold: called");
-        recreate();
-    }
 
     @Override
     public void dialog(int position) {
         Log.d(TAG, "dialog: triggered " + users.get(position).getParent_name());
-        Bundle bundle = new Bundle();
-        bundle.putString("id",users.get(position).getUser_id());
-        bundle.putString("username", users.get(position).getUsername());
-        bundle.putInt("position",position);
-        dialog = new AcceptOrRejectRequestDialog();
-        dialog.setArguments(bundle);
+        dialog = AcceptOrRejectRequestDialog.newInstance(users.get(position));
         dialog.show(getSupportFragmentManager(),"1");
     }
 }

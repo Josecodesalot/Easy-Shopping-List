@@ -36,13 +36,22 @@
             />
 
         <Button
-            android:id="@+id/btnRequests"
+            android:id="@+id/btnChildRequests"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:background="@drawable/background_rounded_gwhite"
             android:fontFamily="@font/asap_medium"
-            android:text="Groups" />
+            android:text="Child Requests" />
+
+        <Button
+            android:id="@+id/btnManageChildren"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/background_rounded_gwhite"
+            android:fontFamily="@font/asap_medium"
+            android:text="Manage Children" />
 
         <Button
             android:id="@+id/btnSignout"

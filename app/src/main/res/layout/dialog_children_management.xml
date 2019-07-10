@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnAccept"
+        android:id="@+id/btnSendBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -32,8 +32,7 @@
         android:background="@drawable/background_rounded_gwhite"
         android:padding="10dp"
         android:fontFamily="@font/asap_medium"
-
-        android:text="Accept Into Family"
+        android:text="Send Back To Requests"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,8 +46,7 @@
         android:background="@drawable/background_rounded_gwhite"
         android:padding="10dp"
         android:fontFamily="@font/asap_medium"
-
-        android:text="Delete Request"
+        android:text="Delete Child"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
