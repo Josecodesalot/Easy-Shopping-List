@@ -1,18 +1,20 @@
 package com.example.dontforgettograbthat.ActivityProfile;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.dontforgettograbthat.Dialogs.AddFamilyNameDialog;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
@@ -24,18 +26,24 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+public class ProfileInfoActivity extends AppCompatActivity {
 
-public class ProfileActivity extends AppCompatActivity {
+    private static final String TAG = "ProfileInfoActivity";
+    Context mContext = ProfileInfoActivity.this;
 
-    private static final String TAG = "ProfileActivity";
-    private Context mContext = ProfileActivity.this;
+    //Widgets
+    private TextView email;
+    private EditText username;
+    private Button  submit, parentNameButton;
+    private ImageView information;
 
-    //WIdgets
-    private TextView username, email;
-    private EditText parentName;
-    private Button signoutBtn, setParent, requestsBtn ;
+    //vars
+    private User user;
+    private String sUsername, sParentUsername;
+    private Boolean allowUsername, allowParentName;
 
     //firebase
     private FirebaseAuth mAuth;
@@ -44,120 +52,125 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
-    //vars
-    private User user;
-    private Boolean allowParentname;
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-        Log.d(TAG, "onCreate: Started");
-        allowParentname = false;
+        setContentView(R.layout.activity_profile_info);
+        Log.d(TAG, "onCreate: Started");;
+
+        allowUsername = false;
+
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
         firebase = new FirebaseMethods(mContext);
         firebaseDataExchangeListener();
         user = new User();
         user = ((UserClient)(getApplicationContext())).getUser();
-        referenceWidgets();
+        if (user!=null) {
+            Log.d(TAG, "onCreate: user " + user.toString());
+        }
+
+        setUpWidgets();
+        submitButtonLogic();
 
     }
 
-    public void referenceWidgets (){
-
-        username = findViewById(R.id.tvUserName);
-        email = findViewById(R.id.tvLogin);
-        parentName = findViewById(R.id.etUsername);
-        //signoutBtn has an onclick which creates a Signout
-        signoutBtn = findViewById(R.id.btnSignout);
-        //setParent is a button that sends a request to the family defined in etFamilyName if that family exists
-        //the request will give the family manager the choice to allow items into their Main ShoppingCart
-        setParent = findViewById(R.id.btnSetParent);
-
-        requestsBtn = findViewById(R.id.btnRequests);
-
-        username.setText(user.getUsername());
-        email.setText(user.getUsername());
-        if (user.getParent_name().equals("")){
-            parentName.setText("");
-            parentName.setHint("Type in your parents username");
-        }else {
-            parentName.setText(user.getParent_name());
-        }
-
-        signoutBtn.setOnClickListener(new View.OnClickListener() {
+    private void submitButtonLogic() {
+        Log.d(TAG, "submitButtonLogic: ");
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebase.logoutAndClearStack();
-            }
-        });
 
+                sUsername = username.getText().toString().toLowerCase();
 
-        setParent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String familyName = parentName.getText().toString().toLowerCase();
+                if (sUsername.equals("")) {
+                    Toast.makeText(mContext, "Please Type your desired Username", Toast.LENGTH_SHORT).show();
+                }else {
+                    Query qry = database.getReference().child("users").orderByChild("username").equalTo(sUsername);
 
-                DatabaseReference ref = database.getReference().child("users");
-
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            if (firebase.parentNameExists(user, familyName, dataSnapshot)) {
-                                allowParentname =true;
-                                requestAndToast();
+                    qry.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()){
+                                Toast.makeText(mContext, "Username Is Taken", Toast.LENGTH_SHORT).show();
+                            }else{
+                                beginTransaction();
                             }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        
-                    }
-                });
-                
-                if (allowParentname = allowParentname == null){
-                    Log.d(TAG, "onClick: allowFamilyNameRequests = false" );
-                    Toast.makeText(mContext, "False", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
-
-
             }
         });
+    }
 
-        requestsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, RequestActivity.class);
-                startActivity(intent);
-            }
-        });
+
+    private void beginTransaction() {
+        Log.d(TAG, "beginTransaction: ");
+
+        Log.d(TAG, "beginTransaction: allow username");
+        User user = new User();
+        user.setEmail(mAuth.getCurrentUser().getEmail());
+        user.setUser_id(mAuth.getCurrentUser().getUid());
+        user.setUsername(sUsername);
+
+        if (this.user!=null){
+            user.setParent_name(this.user.getParent_name());
+        }else{
+            user.setParent_name("");
+        }
+
+        //update user singleton
+
+        ((UserClient)(getApplicationContext())).setUser(user);
+
+        Toast.makeText(mContext, "User Set", Toast.LENGTH_SHORT).show();
+        firebase.addNewUser(user);
 
     }
 
-    private void requestAndToast() {
 
-        if (allowParentname){
-            firebase.sendParentRequest(parentName.getText().toString(), user.getUser_id(), user);
-            Toast.makeText(mContext, "Family Request Sent", Toast.LENGTH_SHORT).show();
-        }else{
-            Log.d(TAG, "onClick: allow familyNameRequest is false");
-            Toast.makeText(mContext, "The family name entered doesn't exist. Please Double Check With The Parent", Toast.LENGTH_SHORT).show();
+    private void setUpWidgets() {
+        email = findViewById(R.id.tvEmail);
+        email.setText(mAuth.getCurrentUser().getEmail());
+        username = findViewById(R.id.etUserName);
+        parentNameButton = findViewById(R.id.btnSetUpParent);
+        information = findViewById(R.id.imgInfo);
+        submit = findViewById(R.id.btnSubmit);
+         parentNameButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 AddFamilyNameDialog dialog = new AddFamilyNameDialog();
+                 dialog.show(getSupportFragmentManager(),"");
+             }
+         });
+        if (user!=null){
+
+            username.setText(user.getUsername());
+
         }
 
+        information.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext,"fix this",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     //Firebase Code
     private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
-
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
                 //check if the user is logged in
                 checkCurrentUser(user);
 
@@ -168,7 +181,7 @@ public class ProfileActivity extends AppCompatActivity {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // ...
+
             }
         };
     }

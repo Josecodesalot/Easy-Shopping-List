@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/asap_medium"
         android:hint="E-mail"
@@ -62,36 +62,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
-    <EditText
-        android:id="@+id/etUsername"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/asap_medium"
-        android:hint="username"
-
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
-
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etPassword"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:background="@drawable/background_rounded_gwhite"
         android:fontFamily="@font/asap_medium"
         android:text="@string/submit"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
 
 </android.support.constraint.ConstraintLayout>

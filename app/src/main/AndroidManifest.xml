@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityProfile.RequestActivity"></activity>
+        <activity android:name=".ActivityProfile.ProfileInfoActivity"></activity>
+        <activity android:name=".ActivityProfile.RequestActivity" />
         <activity android:name=".CartActivity.CartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,12 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login.RegisterActivity"></activity>
-        <activity android:name=".Login.LoginActivity"></activity>
-        <activity android:name=".AddItemActivity.AddItemActivity"></activity>
-        <activity android:name=".HistoryActivity.HistoryActivity"></activity>
-        <activity android:name=".ActivityRequestItems.RequestItemsActivity"></activity>
-        <activity android:name=".ActivityProfile.ProfileActivity"></activity>
+        <activity android:name=".Login.RegisterActivity" />
+        <activity android:name=".Login.LoginActivity" />
+        <activity android:name=".AddItemActivity.AddItemActivity" />
+        <activity android:name=".HistoryActivity.HistoryActivity" />
+        <activity android:name=".ActivityRequestItems.RequestItemsActivity" />
+        <activity android:name=".ActivityProfile.UserSettingsActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

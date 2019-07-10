@@ -33,15 +33,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     public RecyclerViewAdapter(Context context,
-                               ArrayList<Item> items, String famName) {
+                               ArrayList<Item> items) {
+        Log.d(TAG, "RecyclerViewAdapter: called");
        this.items=items;
         mContext = context;
-        familyName = famName;
-        Log.d(TAG, "RecyclerViewAdapter: family name = " + famName + " " + familyName);
+
+
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: called");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
         ViewHolder holder = new ViewHolder(view);
 

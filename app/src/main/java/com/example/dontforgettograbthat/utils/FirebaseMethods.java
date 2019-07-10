@@ -2,6 +2,7 @@ package com.example.dontforgettograbthat.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,6 +14,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -45,23 +49,20 @@ public class FirebaseMethods {
         }
     }
 
-    public boolean checkIfUsernameExists(String username, DataSnapshot datasnapshot) {
-        Log.d(TAG, "checkIfUsernameExists: checking if " + username + " already exists.");
+    public boolean parentNameExists( String parentName, DataSnapshot dataSnapshot) {
+        Log.d(TAG, "check if Parent Name Exists: checking if " + parentName + " already exists.");
+        return dataSnapshot.exists();
+    }
 
-        User user = new User();
-
-        for (DataSnapshot ds : datasnapshot.getChildren()) {
-            Log.d(TAG, "checkIfUsernameExists: datasnapshot: " + ds);
-
-            user.setUsername(ds.getValue(User.class).getUsername());
-            Log.d(TAG, "checkIfUsernameExists: username: " + user.getUsername());
-
-            if (user.getUsername().equals(username)) {
-                Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + user.getUsername());
-                return true;
-            }
+    public boolean usernameExists( DataSnapshot datasnapshot) {
+        Log.d(TAG, "usernameExists: ");
+        if (datasnapshot.exists()){
+            Log.d(TAG, "usernameExists: exists");
+            return true;
+        }else{
+            Log.d(TAG, "usernameExists: doesnt exist");
+            return false;
         }
-        return false;
     }
 
 
@@ -77,8 +78,6 @@ public class FirebaseMethods {
     }
 
     public void deleteRequestedItem(String itemKey, String familyName) {
-
-
         if (userID != null) {
             DatabaseReference dr = FirebaseDatabase.getInstance().getReference("requests").child(familyName).child(itemKey);
             dr.removeValue();
@@ -131,7 +130,6 @@ public class FirebaseMethods {
                             String familyName) {
 
         Item item = new Item(mItemName, mListName, mItemQuantity, mItemPrice,"");
-
         Log.d(TAG, "sendRequest: started");
 
         if (mAuth.getCurrentUser() != null) {
@@ -143,7 +141,6 @@ public class FirebaseMethods {
     }
 
     public void addItemToHistory(Item item) {
-
         if (mAuth.getCurrentUser() != null) {
 
             myRef.child("history")
@@ -151,7 +148,6 @@ public class FirebaseMethods {
                     .setValue(item);
         } else
             Toast.makeText(mContext, "Error, Login, SignUp, or Send this to your won account through the Email Feature", Toast.LENGTH_LONG).show();
-
     }
 
     public void restoreItem(Item item) {
@@ -164,9 +160,17 @@ public class FirebaseMethods {
         historyRef.removeValue();
     }
 
-    public void registerNewEmail(final String email, String password, final String username) {
+    //---------------------Authentication---------------//
+
+    public void addNewUser(String email, String username, String parentName) {
+        User user = new User(mAuth.getCurrentUser().getUid(), email, username, parentName);
+        myRef.child(mContext.getString(R.string.dbname_users))
+                .child(mAuth.getCurrentUser().getUid())
+                .setValue(user);
+    }
+
+    public void registerNewEmail(final String email, String password) {
         Log.d(TAG, "registerNewEmail: this happened");
-        //---------------------Authentication
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -174,32 +178,38 @@ public class FirebaseMethods {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
+
+                        if (task.getException() instanceof FirebaseAuthWeakPasswordException){
+                            Toast.makeText(mContext, "Error, password too weak", Toast.LENGTH_SHORT).show();
+                        }
+                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException){
+                            Toast.makeText(mContext, "Error, invalid e-mail ", Toast.LENGTH_SHORT).show();
+                        }
+                        //method calls if email is already registered
+                        if (task.getException() instanceof FirebaseAuthUserCollisionException){
+                            Toast.makeText(mContext, "Error, Email Already Exists", Toast.LENGTH_SHORT).show();
+                        }
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(mContext, R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
-
-                        } else if (task.isSuccessful()) {
+                        if (task.isSuccessful()) {
 
                             //add userInfo
-                            addNewUser(email, username, "");
+                            addNewUser(email, "","");
                             //send verificaton email
                             sendVerificationEmail();
-                            Toast.makeText(mContext, "Verification Email Sent", Toast.LENGTH_LONG).show();
                             userID = mAuth.getCurrentUser().getUid();
                             Log.d(TAG, "onComplete: Authstate changed: " + userID);
                         }
-
                     }
                 });
     }
 
 
     public void sendVerificationEmail() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d(TAG, "sendVerificationEmail: ");
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             user.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -207,7 +217,6 @@ public class FirebaseMethods {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 logoutAndClearStack();
-
                             } else {
                                 Toast.makeText(mContext, "couldn't send verification email.", Toast.LENGTH_SHORT).show();
                             }
@@ -224,68 +233,27 @@ public class FirebaseMethods {
         intent.putExtra(mContext.getString(R.string.extra_email_verification),
                 mContext.getString(R.string.verification_email));
         mContext.startActivity(intent);
-
     }
 
-    public void addNewUser(String email, String username, String familyname) {
-        User user = new User(userID, email, username, "");
-        myRef.child(mContext.getString(R.string.dbname_users))
-                .child(mAuth.getCurrentUser().getUid())
-                .setValue(user);
-
-    }
-
-
-    public void sendParentRequest(String familyName, String user_id, User user) {
-        DatabaseReference ref = mFirebaseDatabase.getReference().child("request").child(familyName).child(user_id);
+    public void sendParentRequest(String familyName, User user) {
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("request").child(familyName).child(user.getUser_id());
         ref.setValue(user);
     }
 
-    public boolean emailExists(String email, DataSnapshot dataSnapshot){
 
-        for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-            if (singleSnapshot!=null){
-                if (email.equals(singleSnapshot.getValue(User.class).getEmail())) {
-                    Log.d(TAG, "emailExists: FOUND A MATCH: " + email);
-                    return true;
-                }else
-                    return false;
-            }
-
-        }
-        Log.d(TAG, " email " + email + " Doesnt exist");
-        Toast.makeText(mContext, "email doesnt exist", Toast.LENGTH_SHORT).show();
-
-        return false;
-
+    public void addNewUser(User user){
+        Log.d(TAG, "addNewUser: called");
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("users").child(user.getUser_id());
+        ref.setValue(user);
     }
 
-    public boolean parentNameExists(User user, String parentName, DataSnapshot dataSnapshot) {
-        Log.d(TAG, "check if Family Name Exists: checking if " + parentName + " already exists.");
 
-        if (user.getParent_name().equals(parentName)) {
-            Toast.makeText(mContext, "That is your family name, To add an Item to your List user other button, If you want to add this item to your providers list, ask for their family name ", Toast.LENGTH_LONG).show();
-            return false;
-        } else {
-            Log.d(TAG, "parentNameExists: is not your own name");
-            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                Log.d(TAG, "check if parentNameExiwsts: datasnapshot: " + ds.toString());
-
-                if (parentName.equals(ds.getValue(User.class).getParent_name())) {
-                    Log.d(TAG, "check if parentNameExists: FOUND A MATCH: " + parentName);
-                    return true;
-                }
-            }
-            Log.d(TAG, "parentNameExists: familyName " + parentName + " Doesnt exist");
-            Toast.makeText(mContext, "Parent username doesnt exist", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-    }
 
     public void acceptRequest (String familyName , User user){
         DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(familyName);
         ref.setValue(user);
     }
+
     //TODO below 3 methods are still under construction
     public void sendUserToRequest (String familyName , User user){
         DatabaseReference ref = mFirebaseDatabase.getReference().child("requests").child(familyName);

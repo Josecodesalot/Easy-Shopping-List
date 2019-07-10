@@ -38,14 +38,11 @@ public class LoginActivity extends AppCompatActivity {
     private Button mSubmitBtn;
     private TextView mCreateAccount;
 
-
     //var
     private String email, password;
 
     //constants
     private Context mContext = LoginActivity.this;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,11 +114,8 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });
                 }
-
             }
         });
-
-
          /*
          If the user is logged in then navigate to HomeActivity and call 'finish()'
           */
@@ -131,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
     }
+
     private boolean isStringNull(String string){
         Log.d(TAG, "Checking if string is null");
         if (string.equals("")){
@@ -149,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
         mCreateAccount = findViewById(R.id.tvCreateAccount);
 
     }
+
     private void getIncomingIntent(){
         Intent intent = getIntent();
 
@@ -158,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                     , Toast.LENGTH_SHORT).show();
         }
     }
+
     private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
 
@@ -185,15 +182,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-        Intent intent = getIntent();
-        if (intent!=null){
-            Bundle bundle= intent.getExtras();
-            if (bundle!=null){
-                if (bundle.get("key").equals("emailsent")){
-                    Toast.makeText(mContext, "Verification Email Sent, Please Check Email", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
+        Bundle bundle = getIntent().getExtras();
     }
 
     @Override

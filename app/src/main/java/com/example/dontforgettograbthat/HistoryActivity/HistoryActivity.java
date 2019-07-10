@@ -109,7 +109,7 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
                 }
                 setUpTotal();
 
-                adapter = new RecyclerViewAdapter(mContext, items, familyName);
+                adapter = new RecyclerViewAdapter(mContext, items);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             }

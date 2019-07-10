@@ -122,7 +122,7 @@ public class RequestItemsActivity extends AppCompatActivity implements RecyclerV
                             setUpTotal();
                             adapter = new RecyclerViewAdapter(
                                     mContext,
-                                    items, user.getUser_id());
+                                    items);
                             Log.d(TAG, "onDataChange: setUp ReciclerView");
                             recyclerView.setAdapter(adapter);
                             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));

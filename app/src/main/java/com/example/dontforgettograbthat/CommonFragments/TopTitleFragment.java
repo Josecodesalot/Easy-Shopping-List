@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.ActivityProfile.ProfileActivity;
+import com.example.dontforgettograbthat.ActivityProfile.UserSettingsActivity;
 import com.example.dontforgettograbthat.AddItemActivity.AddItemActivity;
 import com.example.dontforgettograbthat.HistoryActivity.HistoryActivity;
 import com.example.dontforgettograbthat.CartActivity.CartActivity;
@@ -35,7 +35,7 @@ public class TopTitleFragment extends android.support.v4.app.Fragment {
         if (getActivity() instanceof CartActivity){
             title.setText("Shopping-List");
         }
-        if (getActivity() instanceof ProfileActivity){
+        if (getActivity() instanceof UserSettingsActivity){
             title.setText("Your Profile");
         }
         if (getActivity() instanceof RequestItemsActivity){
@@ -89,7 +89,7 @@ public class TopTitleFragment extends android.support.v4.app.Fragment {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                Intent intent = new Intent(getActivity(), UserSettingsActivity.class);
                 startActivity(intent);
             }
         });

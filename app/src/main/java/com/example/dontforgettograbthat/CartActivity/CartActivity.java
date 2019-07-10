@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.dontforgettograbthat.ActivityProfile.ProfileInfoActivity;
 import com.example.dontforgettograbthat.Dialogs.CartAddItemDialog;
 import com.example.dontforgettograbthat.Dialogs.CartItemDialog;
 import com.example.dontforgettograbthat.Interface.CartInterface;
@@ -76,6 +77,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         setContentView(R.layout.activity_cart);
         Log.d(TAG, "onCreate: started");
         user = new User();
+        items= new ArrayList<>();
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
         firebase = new FirebaseMethods(mContext);
@@ -106,9 +108,15 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                user.setUser_id(mAuth.getCurrentUser().getUid());
-                setUser();
+                if (dataSnapshot.exists()) {
+                    user = dataSnapshot.getValue(User.class);
+                    user.setUser_id(mAuth.getCurrentUser().getUid());
+                    setUser();
+                }else {
+                    Intent intent = new Intent(mContext, ProfileInfoActivity.class);
+                    intent.putExtra("key","setUpUsername");
+                    startActivity(intent);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -138,25 +146,31 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
     private void fromFirebaseToRecyclerView() {
         Log.d(TAG, "fromFirebaseToRecyclerView: creatiung database and getitnga reference");
-        Log.d(TAG, "fromFirebaseToRecyclerView: user id is = " + user.getUser_id());
-        Query query = FirebaseDatabase.getInstance().getReference().child("items").child(mAuth.getCurrentUser().getUid());
+        Log.d(TAG, "fromFirebaseToRecyclerView: user id is = " + mAuth.getCurrentUser().getUid());
+        DatabaseReference query = FirebaseDatabase.getInstance().getReference().child("items").child(mAuth.getCurrentUser().getUid());
         items = new ArrayList<>();
+
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: Called");
-                for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
-                    if (singleSnapshot!=null) {
-                        items.add(singleSnapshot.getValue(Item.class));
-                    }
-                    }
-                setUpTotal();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                        try {
+                            items.add(singleSnapshot.getValue(Item.class));
 
+                        } catch (Exception e) {
+                            Log.d(TAG, "onDataChange: exeption ");
+                        }
+                    }
+                }
+
+                setUpTotal();
 
                 adapter = new RecyclerViewAdapter(
                         mContext,
-                        items, familyName);
+                        items);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             }
