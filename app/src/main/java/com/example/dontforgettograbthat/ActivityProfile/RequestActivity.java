@@ -84,6 +84,7 @@ public class RequestActivity extends AppCompatActivity implements ChildrenReques
 
     @Override
     public void accept(User user) {
+        Log.d(TAG, "accept: " + user.toString());
         user.setParent_name(currentUser.getUsername());
         firebase.acceptRequest(currentUser.getUsername(),user);
         recreate();
@@ -91,6 +92,7 @@ public class RequestActivity extends AppCompatActivity implements ChildrenReques
 
     @Override
     public void reject(User user) {
+        Log.d(TAG, "reject: " + user.toString());
         firebase.deleteRequest(currentUser.getUsername(),user.getUser_id());
         recreate();
     }

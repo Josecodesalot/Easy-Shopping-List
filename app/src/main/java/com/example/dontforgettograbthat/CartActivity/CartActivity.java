@@ -3,7 +3,6 @@ package com.example.dontforgettograbthat.CartActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +23,7 @@ import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
-import com.example.dontforgettograbthat.utils.RecyclerViewAdapter;
+import com.example.dontforgettograbthat.utils.RecyclerViewItems;
 import com.example.dontforgettograbthat.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +31,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
@@ -62,7 +60,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     //vars
     private ArrayList<Item> items;
 
-    private RecyclerViewAdapter adapter;
+    private RecyclerViewItems adapter;
     public User user;
 
     //ItemVrars
@@ -168,7 +166,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
                 setUpTotal();
 
-                adapter = new RecyclerViewAdapter(
+                adapter = new RecyclerViewItems(
                         mContext,
                         items);
                 recyclerView.setAdapter(adapter);

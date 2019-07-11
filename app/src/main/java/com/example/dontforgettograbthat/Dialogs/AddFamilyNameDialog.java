@@ -55,7 +55,7 @@ public class AddFamilyNameDialog extends DialogFragment {
                             Log.d(TAG, "onDataChange: exists");
                             if (!sParentName.equals("")) {
                                 firebase.sendParentRequest(sParentName, ((UserClient)(getActivity().getApplicationContext())).getUser());
-                                Toast.makeText(getActivity(), "SendBack Sent to " + sParentName, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Request Sent to " + sParentName, Toast.LENGTH_SHORT).show();
                             }else{
                                 Toast.makeText(getActivity(), "Parent Name is Empty", Toast.LENGTH_SHORT).show();
                             }

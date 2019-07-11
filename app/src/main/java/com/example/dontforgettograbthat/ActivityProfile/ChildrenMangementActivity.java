@@ -16,8 +16,10 @@ import com.example.dontforgettograbthat.Interface.ChildrenRequestInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
+import com.example.dontforgettograbthat.utils.Const;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
-import com.example.dontforgettograbthat.utils.RecyclerViewChildrenRequests;
+import com.example.dontforgettograbthat.utils.RecyclerViewChildrenManagement;
+
 import com.example.dontforgettograbthat.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class ChildrenMangementActivity extends AppCompatActivity implements ChildrenManagementInterface {
+
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -38,11 +41,11 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
     private DatabaseReference myRef;
     private User userCurrent;
     //Vars
-    ArrayList<User> users = new ArrayList<>();
+    ArrayList<User> users ;
 
     //Widgets
     private RecyclerView recyclerView;
-    private RecyclerViewChildrenRequests adapter;
+    private RecyclerViewChildrenManagement adapter;
 
 
 
@@ -54,13 +57,14 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_manage_children);
 
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
         firebase = new FirebaseMethods(mContext);
         firebaseDataExchangeListener();
         userCurrent = new User();
-        userCurrent = ((UserClient)(getApplicationContext())).getUser();
+        users = new ArrayList<>();
         setUpUserList();
 
     }
@@ -68,13 +72,14 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
     private void setUpUserList() {
         Log.d(TAG, "setUpUserList: ");
         userCurrent = ((UserClient)(getApplicationContext())).getUser();
-        DatabaseReference ref = database.getReference().child("family").child(userCurrent.getUser_id());
+        DatabaseReference ref = database.getReference().child(Const.familyField).child(userCurrent.getUser_id());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: called");
                 for (DataSnapshot singlesnapshot: dataSnapshot.getChildren()){
+                    Log.d(TAG, "onDataChange: " + singlesnapshot.toString());
                     users.add(singlesnapshot.getValue(User.class));
                 }
 
@@ -90,7 +95,7 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
     }
     private void setUpRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
-        adapter = new RecyclerViewChildrenRequests(
+        adapter = new RecyclerViewChildrenManagement(
                 mContext,
                 users);
         Log.d(TAG, "onCreate: setUp ReciclerView");
@@ -180,12 +185,14 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
     @Override
     public void Delete(User user) {
         //FirebaseDeleteUserFromChildren
-        firebase.deleteFamilyMember(userCurrent.getUsername(),user);
+        firebase.deleteFamilyMember(userCurrent,user);
+        recreate();
     }
 
     @Override
     public void SendBack(User user) {
         //FirebaseDeleteChild and AddchildToRequests
-        firebase.sendUserToRequest(userCurrent.getUsername(), user);
+        firebase.sendUserToRequest(userCurrent, user);
+        recreate();
     }
 }

@@ -22,8 +22,8 @@ import com.example.dontforgettograbthat.R;
 
 import java.util.ArrayList;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
-    private static final String TAG = "RecyclerViewAdapter";
+public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.ViewHolder>{
+    private static final String TAG = "RecyclerViewItems";
 
     private ArrayList<Item> items;
     private Context mContext;
@@ -32,9 +32,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     RecyclerViewInterface mInterface;
 
 
-    public RecyclerViewAdapter(Context context,
-                               ArrayList<Item> items) {
-        Log.d(TAG, "RecyclerViewAdapter: called");
+    public RecyclerViewItems(Context context,
+                             ArrayList<Item> items) {
+        Log.d(TAG, "RecyclerViewItems: called");
        this.items=items;
         mContext = context;
 

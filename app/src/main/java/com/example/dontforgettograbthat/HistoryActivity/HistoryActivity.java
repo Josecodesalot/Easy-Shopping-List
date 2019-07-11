@@ -18,7 +18,7 @@ import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
-import com.example.dontforgettograbthat.utils.RecyclerViewAdapter;
+import com.example.dontforgettograbthat.utils.RecyclerViewItems;
 import com.example.dontforgettograbthat.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,7 +54,7 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
 
     //vars
     private ArrayList<Item> items;
-    private RecyclerViewAdapter adapter;
+    private RecyclerViewItems adapter;
     private String familyName;
     private User user;
 
@@ -109,7 +109,7 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
                 }
                 setUpTotal();
 
-                adapter = new RecyclerViewAdapter(mContext, items);
+                adapter = new RecyclerViewItems(mContext, items);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             }

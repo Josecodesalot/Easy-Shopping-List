@@ -17,7 +17,7 @@ import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
-import com.example.dontforgettograbthat.utils.RecyclerViewAdapter;
+import com.example.dontforgettograbthat.utils.RecyclerViewItems;
 import com.example.dontforgettograbthat.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -58,7 +58,7 @@ public class RequestItemsActivity extends AppCompatActivity implements RecyclerV
     //vars
 
 
-    private RecyclerViewAdapter adapter;
+    private RecyclerViewItems adapter;
     private User user;
 
     private ArrayList<Item>items;
@@ -120,7 +120,7 @@ public class RequestItemsActivity extends AppCompatActivity implements RecyclerV
 
 
                             setUpTotal();
-                            adapter = new RecyclerViewAdapter(
+                            adapter = new RecyclerViewItems(
                                     mContext,
                                     items);
                             Log.d(TAG, "onDataChange: setUp ReciclerView");

@@ -36,6 +36,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/asap_medium"
             android:text="example@gmail.com"
+            android:layout_marginTop="10dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/Title" />
@@ -44,11 +45,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/asap_medium"
-            android:lines="2"
-            android:paddingHorizontal="20dp"
-            android:text="Add your username, and parent's user name so that you can share items in your list  " />
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
+            android:text="Connect Your whole famnily! set up a username, and then click on the button below to connect with your parents shopping list!" />
 
         <EditText
             android:id="@+id/etUserName"
@@ -75,21 +76,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/btnSetUpParent"
             android:layout_marginTop="20dp"
-            android:text="add/change ParentName"
+            android:text="add/change/see Parent's Name"
+            android:layout_marginBottom="10dp"
             android:layout_gravity="center"
 
             />
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imgInfo"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:background="@drawable/ic_info" />
 
 </android.support.constraint.ConstraintLayout>

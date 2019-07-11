@@ -38,7 +38,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
     private TextView email;
     private EditText username;
     private Button  submit, parentNameButton;
-    private ImageView information;
+
 
     //vars
     private User user;
@@ -139,7 +139,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
         email.setText(mAuth.getCurrentUser().getEmail());
         username = findViewById(R.id.etUserName);
         parentNameButton = findViewById(R.id.btnSetUpParent);
-        information = findViewById(R.id.imgInfo);
+
         submit = findViewById(R.id.btnSubmit);
          parentNameButton.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -154,12 +154,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
 
         }
 
-        information.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext,"fix this",Toast.LENGTH_LONG).show();
-            }
-        });
+
     }
 
     //Firebase Code

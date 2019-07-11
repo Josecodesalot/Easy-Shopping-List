@@ -36,7 +36,7 @@ public class ChildrenManagementDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dailog_add_reject_user, container, false);
+        View view = inflater.inflate(R.layout.dialog_children_management, container, false);
         mInterface = (ChildrenMangementActivity) getContext();
         setRetainInstance(true);
         referenceViews(view);
