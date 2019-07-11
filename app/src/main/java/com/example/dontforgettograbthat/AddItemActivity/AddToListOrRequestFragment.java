@@ -43,14 +43,14 @@ public class AddToListOrRequestFragment extends android.support.v4.app.Fragment 
         btnAddToOwnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mInterface.addItemToList();
             }
         });
 
         btnAddToFamilyList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mInterface.addItemToFamilyList();
             }
         });
 

@@ -14,5 +14,13 @@ public class Const {
     public static final int ZHERS = 2;
     public static final int METRO = 3;
 
+    //
+
+    public static final String sWalmart = "Walmart";
+    public static final String sCostco = "Costco";
+    public static final String sZhers = "Zhers";
+    public static final String sMetro = "Metro";
+
+
 
 }

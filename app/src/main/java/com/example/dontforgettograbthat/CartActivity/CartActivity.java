@@ -40,10 +40,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     private static final String TAG = "CartActivity";
     private Context mContext = CartActivity.this;
 
-
-
     //Constants
-
     private String REFRESH_CODE="REFRESH_CODE";
 
     //Widgets
@@ -131,13 +128,16 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     }
 
     private void setUpTotal() {
-        Log.d(TAG, "setUpTotal: started");
+        Log.d(TAG, "setUpTotal: started " + items.toString() );
         double totalPrice = 0.0;
 
         if (items != null) {
             for (int i = 0; i < items.size(); i++) {
-                totalPrice += items.get(i).getPrice();
-                Log.d(TAG, "setUpTotal: iteration " + totalPrice);
+                Log.d(TAG, "setUpTotal: iteraton " + i);
+                if (items.get(i).getPrice()!=null) {
+                    totalPrice += items.get(i).getPrice();
+                    Log.d(TAG, "setUpTotal: iteration " + totalPrice);
+                }
             }
             Log.d(TAG, "setUpTotal: setText");
             String s = String.format("%.2f", totalPrice);

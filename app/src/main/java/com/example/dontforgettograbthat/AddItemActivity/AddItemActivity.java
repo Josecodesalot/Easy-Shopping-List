@@ -69,7 +69,8 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
         user = new User();
         user = ((UserClient)(getApplicationContext())).getUser();
         Log.d(TAG, "onCreate: user = " + user.toString());
-        item = new Item();
+        item = new Item("","default_list",1,0.0,"");
+
 
         setUrlArray();
         setUpViewPager();
@@ -133,6 +134,7 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
 
     @Override
     public void addItemToList() {
+        Log.d(TAG, "addItemToList: called");
         firebase.addItemToList(item);
         Intent intent = new Intent(mContext, CartActivity.class);
         intent.putExtra("REFRESH_CODE", "REFRESH_CODE");
@@ -141,6 +143,7 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
 
     @Override
     public void addItemToFamilyList() {
+        Log.d(TAG, "addItemToFamilyList: called");
         if (user.getParent_name().equals("")){
             Toast.makeText(mContext, "No Parent found, please click the user icon, then profile settings, then send your parent a request, in order to user this feature your parent has to accept this request", Toast.LENGTH_SHORT).show();
         }else{

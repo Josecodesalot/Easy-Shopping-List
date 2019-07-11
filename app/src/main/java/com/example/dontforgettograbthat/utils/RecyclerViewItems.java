@@ -34,8 +34,6 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
         Log.d(TAG, "RecyclerViewItems: called");
        this.items=items;
         mContext = context;
-
-
     }
 
     @Override
@@ -70,17 +68,20 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
         holder.tvPrice.setText(price);
 
         //hide the recyclerView Features
-        if (items.get(position).getPrice()==0.0){
-            holder.tvPrice.setVisibility(View.GONE);
+        if (items.get(position).getPrice()!=null) {
+            if (items.get(position).getPrice() == 0.0) {
+                holder.tvPrice.setVisibility(View.GONE);
+            }
+            String quanitity = "x" + items.get(position).getQuantity();
+            holder.tvItemQuantity.setText(quanitity);
         }
-        String quanitity = "x" + items.get(position).getQuantity();
-        holder.tvItemQuantity.setText(quanitity);
+
 
         if (items.get(position).getQuantity()==1){
             holder.tvItemQuantity.setVisibility(View.GONE);
         }
-
-        holder.tvItemListName.setBackground(getDrawable(items.get(position).getList_name()));
+        Log.d(TAG, "onBindViewHolder: " + items.get(0).toString());
+       holder.tvItemListName.setBackground(getDrawable(items.get(position).getList_name()));
 
         //this method will hide un used features in the recyclerview
 
@@ -95,26 +96,24 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
 
     }
 
-
-
     private Drawable getDrawable (String tvListName){
         Log.d(TAG, "getDrawable: get tvListName" +tvListName);
         Drawable color;
         switch (tvListName){
-            case "Walmart":
+            case Const.sWalmart:
                 color = mContext.getResources().getDrawable(R.drawable.background_leftround_walmart);
                         break;
-            case "Costco" :
+            case Const.sCostco :
                 color = mContext.getResources().getDrawable(R.drawable.background_leftround_costco);
                 break;
-            case "Zhers" :
+            case Const.sZhers :
                 color = mContext.getResources().getDrawable(R.drawable.background_leftround_zhers);
                 break;
 
-            case "Metro" :
+            case Const.sMetro :
                 color = mContext.getResources().getDrawable(R.drawable.background_leftround_metro);
                 break;
-            default :
+            default:
                 color = mContext.getResources().getDrawable(R.drawable.background_leftround_custom);
                 break;
         }

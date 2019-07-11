@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.dontforgettograbthat.Dialogs.WebViewDialogueFragment;
@@ -19,8 +20,7 @@ import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.Const;
 
 
-public class SearchAndChooseProviderFragment extends android.support.v4.app.Fragment implements View.OnClickListener
-{
+public class SearchAndChooseProviderFragment extends android.support.v4.app.Fragment implements View.OnClickListener, View.OnFocusChangeListener{
     //Constants
     private static final String TAG="SearchFragment";
 
@@ -29,11 +29,6 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
     private EditText etWalmart, etCostco, etZhers, etMetro, etCustomPrice;
     private TextView tvWalmart, tvCostco, tvZhers, tvMetro;
     private EditText etCustomName;
-    public WebView wv;
-
-    //vars
-    private String itemName;
-    public  Bundle args;
 
     //Interface
     private IAddItem mInterface;
@@ -60,8 +55,13 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
         //this method takes data from the price EditText and sends it to
         //AddItemActivity.java Only if the associated CheckBox isChecked
 
-        sendPriceData(view);
+        //sendPriceData();
 
+        etWalmart.setOnFocusChangeListener(this);
+        etCostco.setOnFocusChangeListener(this);
+        etZhers.setOnFocusChangeListener(this);
+        etMetro.setOnFocusChangeListener(this);
+        etCustomPrice.setOnFocusChangeListener(this);
         //This Methods creates OnClickListeners for the TextViews, and hooks up a dialogue box
         //with a Webview. It lands on a search query of the ItemName on the Relevant Grocery Proveders Website
 
@@ -72,22 +72,24 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
     }
 
     public void setUpBrowserCheck() {
+        Log.d(TAG, "setUpBrowserCheck: ");
        tvWalmart.setOnClickListener(this);
        tvCostco.setOnClickListener(this);
        tvMetro.setOnClickListener(this);
        tvZhers.setOnClickListener(this);
     }
 
-    private void sendPriceData(View view) {
-
-            etWalmart.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+    private void sendPriceData() {
+        Log.d(TAG, "sendPriceData: ");
+        etWalmart.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (chkWalmart.isChecked()){
                         if (!etWalmart.getText().toString().equals("")){
                         mInterface.setPrice(Double.parseDouble(etWalmart.getText().toString()));
                         }else {
-                        mInterface.setPrice(0);
+                            Log.d(TAG, "onFocusChange: walmart not checked");
+                        mInterface.setPrice(0.0);
                         }
                     }
                 }
@@ -99,7 +101,8 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
                     if (!etCostco.getText().toString().equals("")){
                         mInterface.setPrice(Double.parseDouble(etCostco.getText().toString()));
                     }else {
-                        mInterface.setPrice(0);
+                        Log.d(TAG, "onFocusChange: costco not checked");
+                        mInterface.setPrice(0.0);
                     }
                 }
             }
@@ -112,7 +115,8 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
                     if (!etZhers.getText().toString().equals("")){
                         mInterface.setPrice(Double.parseDouble(etZhers.getText().toString()));
                     }else {
-                        mInterface.setPrice(0);
+                        Log.d(TAG, "onFocusChange: zhers not checked");
+                        mInterface.setPrice(0.0);
                     }
                 }
             }
@@ -124,7 +128,8 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
                     if (!etMetro.getText().toString().equals("")){
                         mInterface.setPrice(Double.parseDouble(etMetro.getText().toString()));
                     }else {
-                        mInterface.setPrice(0);
+                        Log.d(TAG, "onFocusChange: metro not checked");
+                        mInterface.setPrice(0.0);
                     }
                 }
             }
@@ -137,16 +142,9 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
                     if (!etCustomPrice.getText().toString().equals("")){
                         mInterface.setPrice(Double.parseDouble(etCustomPrice.getText().toString()));
                     }else {
-                        mInterface.setPrice(0);
+                        Log.d(TAG, "onFocusChange: custom price not checked");
+                        mInterface.setPrice(0.0);
                     }
-                }
-            }
-        });
-        etCustomName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (chkCustom.isChecked()){
-                    mInterface.setlistName(etCustomName.getText().toString());
                 }
             }
         });
@@ -265,6 +263,32 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
                 break;
             case R.id.tvMetro:
                 mInterface.openBrowser(Const.METRO);
+                break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()){
+            case R.id.etWalmartPrice:
+                if (chkWalmart.isChecked()){
+                    mInterface.setPrice(9.9);
+                }
+                break;
+            case R.id.etCostcoPrice:
+                if (chkWalmart.isChecked()){
+                    mInterface.setPrice(9.9);
+                }
+                break;
+            case R.id.etZhersPrice:
+                if (chkWalmart.isChecked()){
+                    mInterface.setPrice(9.9);
+                }
+                break;
+            case R.id.etMetroPrice:
+                if (chkWalmart.isChecked()){
+                    mInterface.setPrice(9.9);
+                }
                 break;
         }
     }
