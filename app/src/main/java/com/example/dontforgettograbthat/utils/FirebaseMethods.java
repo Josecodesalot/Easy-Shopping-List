@@ -67,21 +67,16 @@ public class FirebaseMethods {
     }
 
     public void addItemToList(Item item) {
-        Log.d(TAG, "addItemToList: ");
+        Log.d(TAG, "addItemToList: " + item.toString());
 
-        if (mAuth.getCurrentUser() != null) {
-            Log.d(TAG, "addItemToList: get current UserCalled an was not null");
+        String id = myRef.push().getKey();
+        item.setItemKey(id);
 
-            String id = myRef.push().getKey();
-            myRef.child("items")
-                    .child(mAuth.getCurrentUser().getUid()).child(id)
-                    .setValue(item);
+        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.itemsField).child(userID).child(item.getItemKey());
+        ref.setValue(item);
+
         }
-        else {
-            Log.d(TAG, "addItemToList: ");
-            Toast.makeText(mContext, "Error, Login, SignUp, or Send this to your won account through the Email Feature", Toast.LENGTH_LONG).show();
-        }
-    }
+
 
     public void addItemToList(String mItemName, String mListName, long mItemQuantity, double mItemPrice) {
         Item item = new Item(mItemName,mListName,mItemQuantity,mItemPrice,"");

@@ -1,6 +1,5 @@
 package com.example.dontforgettograbthat.ActivityProfile;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -140,7 +138,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
         username = findViewById(R.id.etUserName);
         parentNameButton = findViewById(R.id.btnSetUpParent);
 
-        submit = findViewById(R.id.btnSubmit);
+        submit = findViewById(R.id.btnSendToFamilyList);
          parentNameButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {

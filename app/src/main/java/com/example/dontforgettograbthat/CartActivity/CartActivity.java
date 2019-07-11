@@ -22,6 +22,7 @@ import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
+import com.example.dontforgettograbthat.utils.Const;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
 import com.example.dontforgettograbthat.utils.RecyclerViewItems;
 import com.example.dontforgettograbthat.utils.UserClient;
@@ -131,25 +132,27 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
     private void setUpTotal() {
         Log.d(TAG, "setUpTotal: started");
-        double totalPrice = 0;
+        double totalPrice = 0.0;
 
-        for (int i = 0; i< items.size(); i++){
-            totalPrice += items.get(i).getPrice();
-            Log.d(TAG, "setUpTotal: iteration " + totalPrice);
+        if (items != null) {
+            for (int i = 0; i < items.size(); i++) {
+                totalPrice += items.get(i).getPrice();
+                Log.d(TAG, "setUpTotal: iteration " + totalPrice);
+            }
+            Log.d(TAG, "setUpTotal: setText");
+            String s = String.format("%.2f", totalPrice);
+            total.setText("Total " + s);
         }
-        Log.d(TAG, "setUpTotal: setText");
-        String s = String.format("%.2f",totalPrice);
-        total.setText("Total " + s);
     }
 
     private void fromFirebaseToRecyclerView() {
         Log.d(TAG, "fromFirebaseToRecyclerView: creatiung database and getitnga reference");
-        Log.d(TAG, "fromFirebaseToRecyclerView: user id is = " + mAuth.getCurrentUser().getUid());
-        DatabaseReference query = FirebaseDatabase.getInstance().getReference().child("items").child(mAuth.getCurrentUser().getUid());
+        Log.d(TAG, "fromFirebaseToRecyclerView: user = " + user.getUser_id());
+        DatabaseReference refrence = database.getReference().child(Const.itemsField).child(mAuth.getCurrentUser().getUid());
+        Log.d(TAG, "fromFirebaseToRecyclerView: ref " + refrence.toString());
+
         items = new ArrayList<>();
-
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        refrence.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: Called");
@@ -159,12 +162,13 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
                             items.add(singleSnapshot.getValue(Item.class));
 
                         } catch (Exception e) {
-                            Log.d(TAG, "onDataChange: exeption ");
+                            Log.d(TAG, "onDataChange: exeption " + e.getMessage());
                         }
                     }
                 }
-
-                setUpTotal();
+                if (items != null) {
+                    setUpTotal();
+                }
 
                 adapter = new RecyclerViewItems(
                         mContext,
@@ -172,6 +176,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -280,7 +285,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         Log.d(TAG, "onStart: started get extras");
         mAuth.addAuthStateListener(mAuthListener);
         checkCurrentUser(mAuth.getCurrentUser());
-        Bundle bundle = getIntent().getExtras();
+
     }
 
     @Override

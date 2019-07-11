@@ -16,9 +16,10 @@ import android.widget.TextView;
 import com.example.dontforgettograbthat.Dialogs.WebViewDialogueFragment;
 import com.example.dontforgettograbthat.Interface.IAddItem;
 import com.example.dontforgettograbthat.R;
+import com.example.dontforgettograbthat.utils.Const;
 
 
-public class SearchAndChooseProviderFragment extends android.support.v4.app.Fragment
+public class SearchAndChooseProviderFragment extends android.support.v4.app.Fragment implements View.OnClickListener
 {
     //Constants
     private static final String TAG="SearchFragment";
@@ -55,92 +56,26 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
         //   #3 Use the interface to send the name of the list associated
         //      to the checkbot to AddItemActivity.java
         setUpCheckBoxes();
+
         //this method takes data from the price EditText and sends it to
         //AddItemActivity.java Only if the associated CheckBox isChecked
+
         sendPriceData(view);
+
         //This Methods creates OnClickListeners for the TextViews, and hooks up a dialogue box
         //with a Webview. It lands on a search query of the ItemName on the Relevant Grocery Proveders Website
+
         setUpBrowserCheck();
-
-        ((AddItemActivity)getActivity()).setOnBundleSelected(new AddItemActivity.SelectedBundle() {
-            @Override
-            public void onBundleSelect(Bundle bundle) {
-                if (bundle!=null){
-                    itemName = bundle.getString("key");
-                    Log.d(TAG, "onBundleSelect: should have recieved key :" + itemName);
-
-                }
-            }
-        });
-
 
 
         return view;
     }
 
     public void setUpBrowserCheck() {
-        args = new Bundle();
-        args.putString("key", "");
-
-        tvWalmart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: tvWalmart");
-                FragmentManager fragmentManager = getFragmentManager();
-                WebViewDialogueFragment userPopUp = new WebViewDialogueFragment();
-                args.putString("key", itemName);
-                args.putString("url", "https://www.walmart.ca/search/");
-                userPopUp.setArguments(args);
-                assert fragmentManager != null;
-                userPopUp.show(fragmentManager, "1");
-            }
-        });
-
-        tvCostco.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: tvCostco");
-                FragmentManager fragmentManager = getFragmentManager();
-                WebViewDialogueFragment userPopUp = new WebViewDialogueFragment();
-                args.putString("key", itemName);
-                args.putString("url", "https://www.costco.ca/CatalogSearch?dept=All&keyword=");
-                userPopUp.setArguments(args);
-                assert fragmentManager != null;
-                userPopUp.show(fragmentManager, "1");
-
-            }
-        });
-
-        tvZhers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: tvCostco");
-                FragmentManager fragmentManager = getFragmentManager();
-                WebViewDialogueFragment userPopUp = new WebViewDialogueFragment();
-                args.putString("key", itemName);
-                args.putString("url", "https://www.zehrs.ca/search/?search-bar=");
-                userPopUp.setArguments(args);
-                assert fragmentManager != null;
-                userPopUp.show(fragmentManager, "1");
-
-            }
-        });
-
-        tvMetro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: tvCostco");
-                FragmentManager fragmentManager = getFragmentManager();
-                WebViewDialogueFragment userPopUp = new WebViewDialogueFragment();
-                args.putString("key", itemName);
-                args.putString("url", "https://www.metro.ca/en/search?filter=");
-                userPopUp.setArguments(args);
-                assert fragmentManager != null;
-                userPopUp.show(fragmentManager, "1");
-
-            }
-        });
-
+       tvWalmart.setOnClickListener(this);
+       tvCostco.setOnClickListener(this);
+       tvMetro.setOnClickListener(this);
+       tvZhers.setOnClickListener(this);
     }
 
     private void sendPriceData(View view) {
@@ -254,7 +189,6 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
 
                     chkWalmart.setChecked(false);
                     chkCostco.setChecked(false);
-
                     chkMetro.setChecked(false);
                     chkCustom.setChecked(false);
                 }
@@ -317,4 +251,21 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tvWalmart:
+                mInterface.openBrowser(Const.WALMART);
+                break;
+            case R.id.tvCostco:
+                mInterface.openBrowser(Const.COSTCO);
+                break;
+            case R.id.tvZhers:
+                mInterface.openBrowser(Const.ZHERS);
+                break;
+            case R.id.tvMetro:
+                mInterface.openBrowser(Const.METRO);
+                break;
+        }
+    }
 }

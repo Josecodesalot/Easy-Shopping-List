@@ -140,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "setUpWidgets: started");
         mEmail = findViewById(R.id.etEmail);
         mPassword = findViewById(R.id.etPassword);
-        mSubmitBtn = findViewById(R.id.btnSubmit);
+        mSubmitBtn = findViewById(R.id.btnSendToFamilyList);
         mCreateAccount = findViewById(R.id.tvCreateAccount);
 
     }

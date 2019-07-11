@@ -68,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "referenceWidgets: started");
         mEmail = findViewById(R.id.etEmail);
         mPassword = findViewById(R.id.etPassword);
-        submitBtn = findViewById(R.id.btnSubmit);
+        submitBtn = findViewById(R.id.btnSendToFamilyList);
     }
 
     private void submitButtonLogic(){

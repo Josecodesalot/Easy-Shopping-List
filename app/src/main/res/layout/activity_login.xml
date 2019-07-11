@@ -65,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
     <Button
-        android:id="@+id/btnSubmit"
+        android:id="@+id/btnSendToFamilyList"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etPassword"
@@ -84,7 +84,7 @@
         android:id="@+id/tvCreateAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnSubmit"
+        android:layout_below="@id/btnSendToFamilyList"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -95,6 +95,6 @@
         android:fontFamily="@font/asap_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSubmit" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSendToFamilyList" />
 
 </android.support.constraint.ConstraintLayout>

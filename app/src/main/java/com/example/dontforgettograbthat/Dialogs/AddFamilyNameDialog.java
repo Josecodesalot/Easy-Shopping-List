@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.dontforgettograbthat.Models.Item;
-import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
 import com.example.dontforgettograbthat.utils.UserClient;
@@ -40,7 +38,7 @@ public class AddFamilyNameDialog extends DialogFragment {
         firebase = new FirebaseMethods(getActivity());
 
         etParentname = view.findViewById(R.id.etParentName);
-        submit = view.findViewById(R.id.btnSubmit);
+        submit = view.findViewById(R.id.btnSendToFamilyList);
         allowFamilyName = false;
 
         submit.setOnClickListener(new View.OnClickListener() {

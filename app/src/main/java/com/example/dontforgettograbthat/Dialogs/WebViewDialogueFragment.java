@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.solver.Cache;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,10 @@ import android.webkit.WebView;
 import android.widget.Button;
 
 import com.example.dontforgettograbthat.R;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.CacheRequest;
 
 public class WebViewDialogueFragment extends DialogFragment {
     public WebView wv;
@@ -40,8 +45,9 @@ public class WebViewDialogueFragment extends DialogFragment {
         wv = view.findViewById(R.id.webView);
         WebSettings settings = wv.getSettings();
         settings.setJavaScriptEnabled(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
         wv.loadUrl(url+itemName);
-
 
         btnClose = view.findViewById(R.id.closeBtn);
 

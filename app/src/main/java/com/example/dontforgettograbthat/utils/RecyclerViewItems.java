@@ -27,10 +27,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
 
     private ArrayList<Item> items;
     private Context mContext;
-    private FragmentManager manager;
-    private String familyName;
     RecyclerViewInterface mInterface;
-
 
     public RecyclerViewItems(Context context,
                              ArrayList<Item> items) {
@@ -83,12 +80,9 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
             holder.tvItemQuantity.setVisibility(View.GONE);
         }
 
-        holder.tvItemListName.setBackground(getDrawable(items.get(position).getItem_name()));
+        holder.tvItemListName.setBackground(getDrawable(items.get(position).getList_name()));
 
         //this method will hide un used features in the recyclerview
-
-
-
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +98,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
 
 
     private Drawable getDrawable (String tvListName){
+        Log.d(TAG, "getDrawable: get tvListName" +tvListName);
         Drawable color;
         switch (tvListName){
             case "Walmart":

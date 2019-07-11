@@ -5,6 +5,7 @@ public interface IAddItem {
     void setQuantity(int quantity);
     void setlistName(String listName);
     void setPrice(double itemPrice);
-    void triggers (int trigger);
-    void setEmail (String email);
+    void openBrowser(int browser);
+    void addItemToList();
+    void addItemToFamilyList();
 }

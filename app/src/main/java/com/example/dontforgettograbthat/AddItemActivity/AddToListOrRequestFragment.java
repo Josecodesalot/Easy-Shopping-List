@@ -9,27 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dontforgettograbthat.Dialogs.UnAuthenticatedDialogFragment;
 import com.example.dontforgettograbthat.Interface.IAddItem;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
+import com.example.dontforgettograbthat.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class AddToListOrRequestFragment extends android.support.v4.app.Fragment  {
     private static final String TAG="AddToListOrReque";
     private IAddItem mInterface;
-    private TextView tvFamilyName;
-    private TextView addToList;
-    private Button request;
+    private Button btnAddToFamilyList, btnAddToOwnList;
     private User user;
+
     //firebase
     private FirebaseAuth mAuth;
 
@@ -42,51 +36,20 @@ public class AddToListOrRequestFragment extends android.support.v4.app.Fragment 
         mAuth= FirebaseAuth.getInstance();
         mInterface = (AddItemActivity) getContext();
 
-        addToList.setOnClickListener(new View.OnClickListener() {
+        user = ((UserClient) (getActivity().getApplicationContext())).getUser();
+        String s = "Send To " + user.getParent_name() + "'s list";
+        btnAddToFamilyList.setText(s);
+
+        btnAddToOwnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mAuth.getCurrentUser()!=null){
-                    //tells mother activity (AddItemActivity) to add to the database if appropriate
-                    mInterface.triggers(1);
-                }else{
-                    Log.d(TAG, "onClick: testing out dialog fragment unAuthenticated");
-                    //testing Dialogue Fragment and Firebase Navigation
-                    FragmentManager fragmentManager = getFragmentManager();
-                    UnAuthenticatedDialogFragment alert =  new UnAuthenticatedDialogFragment();
-                    assert fragmentManager != null;
-                    alert.show(fragmentManager, "1");
-                }
+
             }
         });
 
-        request.setOnClickListener(new View.OnClickListener() {
+        btnAddToFamilyList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //tells mother activity (AddItemActivity) to send request to database
-                if (user!=null){
-                    tvFamilyName.setText(user.getParent_name());
-                    Toast.makeText(getActivity(), "SendBack sent to the list of the follwing Family : " + user.getParent_name(), Toast.LENGTH_SHORT).show();
-                }
-                mInterface.triggers(2);
-            }
-        });
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                 user= new User(
-                        dataSnapshot.getValue(User.class).getUser_id(),
-                        dataSnapshot.getValue(User.class).getEmail(),
-                        dataSnapshot.getValue(User.class).getUsername(),
-                        dataSnapshot.getValue(User.class).getParent_name()
-                );
-
-                 setFamilyName();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -94,15 +57,8 @@ public class AddToListOrRequestFragment extends android.support.v4.app.Fragment 
         return view;
     }
 
-    private void setFamilyName() {
-        if (user!=null) {
-            tvFamilyName.setText(user.getParent_name());
-        }
-    }
-
     public void referenceWidgets(View view){
-        request= view.findViewById(R.id.btnSubmit);
-        addToList = view.findViewById(R.id.tvAddToYourList);
-        tvFamilyName =view.findViewById(R.id.tvFamilyName);
+        btnAddToFamilyList = view.findViewById(R.id.btnSendToFamilyList);
+        btnAddToOwnList = view.findViewById(R.id.btnAddToOwnList);
     }
 }

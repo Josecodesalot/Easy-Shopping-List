@@ -24,7 +24,8 @@
         </activity>
         <activity android:name=".Login.RegisterActivity" />
         <activity android:name=".Login.LoginActivity" />
-        <activity android:name=".AddItemActivity.AddItemActivity" />
+        <activity android:name=".AddItemActivity.AddItemActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".HistoryActivity.HistoryActivity" />
         <activity android:name=".ActivityRequestItems.RequestItemsActivity" />
         <activity android:name=".ActivityProfile.UserSettingsActivity" />

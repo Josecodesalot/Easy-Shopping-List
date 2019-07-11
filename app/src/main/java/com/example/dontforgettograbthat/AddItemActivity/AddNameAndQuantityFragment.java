@@ -22,7 +22,6 @@ public class AddNameAndQuantityFragment extends android.support.v4.app.Fragment 
     private static final String TAG="AddNameAndQuan";
     private EditText itemName, itemQuantity;
     private IAddItem mInterface;
-    private ArrayList<String> url;
 
     @Nullable
     @Override
@@ -30,11 +29,7 @@ public class AddNameAndQuantityFragment extends android.support.v4.app.Fragment 
         View view = inflater.inflate(R.layout.fragment_name_quantity, container,false);
         Log.d(TAG, "onCreateView: ");
         referenceViews(view);
-        url= new ArrayList<>();
-        url.add("https://www.walmart.ca/search/");
-        url.add("https://www.costco.ca/CatalogSearch?dept=All&keyword=");
-        url.add("https://www.zehrs.ca/search/?search-bar=");
-        url.add("https://www.metro.ca/en/search?filter=");
+
 
         mInterface = (AddItemActivity) getContext();
 
@@ -57,7 +52,6 @@ public class AddNameAndQuantityFragment extends android.support.v4.app.Fragment 
             }
         });
 
-
         itemQuantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
 
@@ -72,14 +66,7 @@ public class AddNameAndQuantityFragment extends android.support.v4.app.Fragment 
                     mInterface.setQuantity(0);
                     Log.d(TAG, "onFocusChange: itemQuantity sending data ");
 
-                        WebView web1 = new WebView(getActivity());
-                        web1.loadUrl(url.get(0)+itemName.getText().toString());
-                    WebView web2 = new WebView(getActivity());
-                    web2.loadUrl(url.get(1)+itemName.getText().toString());
-                    WebView web3 = new WebView(getActivity());
-                    web3.loadUrl(url.get(2)+itemName.getText().toString());
-                    WebView web4 = new WebView(getActivity());
-                    web4.loadUrl(url.get(3)+itemName.getText().toString());
+
 
 
                 }
