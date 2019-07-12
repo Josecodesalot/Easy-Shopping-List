@@ -2,7 +2,6 @@ package com.example.dontforgettograbthat.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -48,14 +46,23 @@ public class FirebaseMethods {
         }
     }
 
+    public void addItemToFamilyList(Item item, User currentUser){
+
+        String id = myRef.push().getKey();
+        item.setItemKey(id);
+        myRef.child(Const.familyListField).child(currentUser.getParent_name()).child(item.getItemKey()).setValue(item);
+        Log.d(TAG, "addItemToFamilyList: Item " + item.toString() + "into" + myRef);
+    }
+
     public void deleteHistory(String itemKey) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Const.historyField).child(userID).child(itemKey);
         ref.removeValue();
+
     }
 
     public void deleteRequestedItem(String itemKey, String familyName) {
         if (userID != null) {
-            DatabaseReference dr = FirebaseDatabase.getInstance().getReference(Const.familyField).child(familyName).child(itemKey);
+            DatabaseReference dr = FirebaseDatabase.getInstance().getReference(Const.familyListField).child(familyName).child(itemKey);
             dr.removeValue();
         } else {
             loginToast();
@@ -235,7 +242,7 @@ public class FirebaseMethods {
             Log.d(TAG, "acceptRequest: removal not successful");
         }
         //The following will Add User to FamilyList
-        DatabaseReference thisref = mFirebaseDatabase.getReference().child(Const.familyField).child(userID).child(user.getUser_id());
+        DatabaseReference thisref = mFirebaseDatabase.getReference().child(Const.familyListField).child(userID).child(user.getUser_id());
         Log.d(TAG, "acceptRequest: adding user at ref " + thisref.toString());
         thisref.setValue(user);
     }
@@ -243,7 +250,7 @@ public class FirebaseMethods {
     public void sendUserToRequest (User currentUser , User user){
         Log.d(TAG, "sendUserToRequest: called with user " + user.toString());
         //removes child user from family
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.familyField).child(currentUser.getUser_id()).child(user.getUser_id());
+        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.familyListField).child(currentUser.getUser_id()).child(user.getUser_id());
         ref.removeValue();
         //updates child users family name
         user.setParent_name("");
@@ -257,7 +264,7 @@ public class FirebaseMethods {
     }
     public void  deleteFamilyMember (User currentUser , User user){
         // deletes child user from current users family node
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.familyField).child(currentUser.getUser_id()).child(user.getUser_id());
+        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.familyListField).child(currentUser.getUser_id()).child(user.getUser_id());
         ref.removeValue();
         // updates child users parent setting
         user.setParent_name("");

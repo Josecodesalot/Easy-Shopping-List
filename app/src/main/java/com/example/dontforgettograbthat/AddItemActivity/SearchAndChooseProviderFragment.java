@@ -16,11 +16,13 @@ import android.widget.TextView;
 
 import com.example.dontforgettograbthat.Dialogs.WebViewDialogueFragment;
 import com.example.dontforgettograbthat.Interface.IAddItem;
+import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.Const;
+import com.example.dontforgettograbthat.utils.UserClient;
 
 
-public class SearchAndChooseProviderFragment extends android.support.v4.app.Fragment implements View.OnClickListener, View.OnFocusChangeListener{
+public class SearchAndChooseProviderFragment extends android.support.v4.app.Fragment implements View.OnClickListener, View.OnFocusChangeListener, CheckBox.OnCheckedChangeListener{
     //Constants
     private static final String TAG="SearchFragment";
 
@@ -32,6 +34,9 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
 
     //Interface
     private IAddItem mInterface;
+
+    //vars
+    Item item;
 
 
 
@@ -222,6 +227,7 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
         });
     }
 
+
     private void referenceViews(View view){
 
         try {
@@ -273,23 +279,68 @@ public class SearchAndChooseProviderFragment extends android.support.v4.app.Frag
             case R.id.etWalmartPrice:
                 if (chkWalmart.isChecked()){
                     mInterface.setPrice(9.9);
+                    item.setPrice(Double.parseDouble(etWalmart.getText().toString()));
+                    ((UserClient)(getActivity().getApplicationContext())).setItem(item);
                 }
                 break;
             case R.id.etCostcoPrice:
-                if (chkWalmart.isChecked()){
+                if (chkCostco.isChecked()){
                     mInterface.setPrice(9.9);
+                    item.setPrice(Double.parseDouble(etCostco.getText().toString()));
+                    ((UserClient)(getActivity().getApplicationContext())).setItem(item);
+
                 }
                 break;
             case R.id.etZhersPrice:
-                if (chkWalmart.isChecked()){
+                if (chkZhers.isChecked()){
                     mInterface.setPrice(9.9);
+                    item.setPrice(Double.parseDouble(etZhers.getText().toString()));
+                    ((UserClient)(getActivity().getApplicationContext())).setItem(item);
+
                 }
                 break;
             case R.id.etMetroPrice:
-                if (chkWalmart.isChecked()){
+                if (chkMetro.isChecked()){
                     mInterface.setPrice(9.9);
+                    item.setPrice(Double.parseDouble(etMetro.getText().toString()));
+                    ((UserClient)(getActivity().getApplicationContext())).setItem(item);
+
                 }
                 break;
+
+        }
+
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()){
+            case R.id.chkWalmart:
+                    item.setList_name(Const.sWalmart);
+                    item.setPrice(Double.parseDouble(etWalmart.getText().toString()));
+                    ((UserClient)(getActivity().getApplicationContext())).setItem(item);
+
+                break;
+            case R.id.chkCostco:
+                    item.setList_name(Const.sWalmart);
+                    item.setPrice(Double.parseDouble(etCostco.getText().toString()));
+                    ((UserClient)(getActivity().getApplicationContext())).setItem(item);
+
+                break;
+            case R.id.chkZhers:
+                    item.setList_name(Const.sWalmart);
+                    mInterface.setPrice(9.9);
+                    item.setPrice(Double.parseDouble(etZhers.getText().toString()));
+                    ((UserClient)(getActivity().getApplicationContext())).setItem(item);
+
+                break;
+            case R.id.chkMetro:
+                    item.setList_name(Const.sWalmart);
+                    item.setPrice(Double.parseDouble(etMetro.getText().toString()));
+                    ((UserClient)(getActivity().getApplicationContext())).setItem(item);
+
+                break;
+
         }
     }
 }

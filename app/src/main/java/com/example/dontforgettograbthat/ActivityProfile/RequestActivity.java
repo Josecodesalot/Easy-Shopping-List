@@ -45,6 +45,7 @@ public class RequestActivity extends AppCompatActivity implements ChildrenReques
         Log.d(TAG, "onCreate: Started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
+        ((UserClient)(getApplicationContext())).initializeItem();
         firebase = new FirebaseMethods(mContext);
         setUpUserList();
     }

@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.example.dontforgettograbthat.Interface.IAddItem;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
+import com.example.dontforgettograbthat.utils.UserClient;
 
 import java.util.ArrayList;
 
@@ -22,14 +23,14 @@ public class AddNameAndQuantityFragment extends android.support.v4.app.Fragment 
     private static final String TAG="AddNameAndQuan";
     private EditText itemName, itemQuantity;
     private IAddItem mInterface;
-
+    private Item item;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_name_quantity, container,false);
         Log.d(TAG, "onCreateView: ");
         referenceViews(view);
-
+        item =((UserClient)(getActivity().getApplicationContext())).getItem();
 
         mInterface = (AddItemActivity) getContext();
 
@@ -38,6 +39,8 @@ public class AddNameAndQuantityFragment extends android.support.v4.app.Fragment 
             public void onFocusChange(View v, boolean hasFocus) {
                 Log.d(TAG, "onFocusChange: Item Name data sent" );
                 mInterface.setItemName(itemName.getText().toString());
+                item.setItem_name(itemName.getText().toString());
+                ((UserClient)(getActivity().getApplicationContext())).setItem(item);
             }
         });
 
@@ -62,6 +65,9 @@ public class AddNameAndQuantityFragment extends android.support.v4.app.Fragment 
                 if (!itemQuantity.getText().toString().equals("")){
                     mInterface.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
                     Log.d(TAG, "onFocusChange: itemQuantity sending data");
+                    item.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
+                    ((UserClient)(getActivity().getApplicationContext())).setItem(item);
+
                 }else {
                     mInterface.setQuantity(0);
                     Log.d(TAG, "onFocusChange: itemQuantity sending data ");

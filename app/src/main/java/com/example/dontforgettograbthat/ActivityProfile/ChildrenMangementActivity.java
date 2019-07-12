@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.example.dontforgettograbthat.Dialogs.ChildrenManagementDialog;
 import com.example.dontforgettograbthat.Interface.ChildrenManagementInterface;
-import com.example.dontforgettograbthat.Interface.ChildrenRequestInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
@@ -72,7 +71,7 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
     private void setUpUserList() {
         Log.d(TAG, "setUpUserList: ");
         userCurrent = ((UserClient)(getApplicationContext())).getUser();
-        DatabaseReference ref = database.getReference().child(Const.familyField).child(userCurrent.getUser_id());
+        DatabaseReference ref = database.getReference().child(Const.familyListField).child(userCurrent.getUser_id());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -184,14 +183,14 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
 
     @Override
     public void Delete(User user) {
-        //FirebaseDeleteUserFromChildren
+        // FirebaseDeleteUserFromChildren
         firebase.deleteFamilyMember(userCurrent,user);
         recreate();
     }
 
     @Override
     public void SendBack(User user) {
-        //FirebaseDeleteChild and AddchildToRequests
+        // Firebase Delete Child and Add child To Requests
         firebase.sendUserToRequest(userCurrent, user);
         recreate();
     }

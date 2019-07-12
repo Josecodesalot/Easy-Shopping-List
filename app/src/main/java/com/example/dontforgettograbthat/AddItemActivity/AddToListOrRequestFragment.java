@@ -13,16 +13,21 @@ import android.widget.Toast;
 
 import com.example.dontforgettograbthat.Dialogs.UnAuthenticatedDialogFragment;
 import com.example.dontforgettograbthat.Interface.IAddItem;
+import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
+import com.example.dontforgettograbthat.utils.FirebaseMethods;
 import com.example.dontforgettograbthat.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AddToListOrRequestFragment extends android.support.v4.app.Fragment  {
     private static final String TAG="AddToListOrReque";
     private IAddItem mInterface;
     private Button btnAddToFamilyList, btnAddToOwnList;
-    private User user;
+    private User currentUser;
+    private Item item;
+    FirebaseMethods firebaseMethods = new FirebaseMethods(getActivity());
 
     //firebase
     private FirebaseAuth mAuth;
@@ -36,14 +41,18 @@ public class AddToListOrRequestFragment extends android.support.v4.app.Fragment 
         mAuth= FirebaseAuth.getInstance();
         mInterface = (AddItemActivity) getContext();
 
-        user = ((UserClient) (getActivity().getApplicationContext())).getUser();
-        String s = "Send To " + user.getParent_name() + "'s list";
+        currentUser = ((UserClient) (getActivity().getApplicationContext())).getUser();
+        item= ((UserClient) (getActivity().getApplicationContext())).getItem();
+
+        String s = "Send To " + currentUser.getParent_name() + "'s list";
         btnAddToFamilyList.setText(s);
 
         btnAddToOwnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mInterface.addItemToList();
+
+                firebaseMethods.addItemToList(item);
             }
         });
 
@@ -51,6 +60,7 @@ public class AddToListOrRequestFragment extends android.support.v4.app.Fragment 
             @Override
             public void onClick(View v) {
                 mInterface.addItemToFamilyList();
+                firebaseMethods.addItemToFamilyList(item, currentUser);
             }
         });
 
