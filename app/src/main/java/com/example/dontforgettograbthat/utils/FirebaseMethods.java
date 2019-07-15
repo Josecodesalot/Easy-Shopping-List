@@ -76,8 +76,10 @@ public class FirebaseMethods {
     public void addItemToList(Item item) {
         Log.d(TAG, "addItemToList: " + item.toString());
 
-        if (item.getItemKey()==null){
-            item.setItemKey(myRef.push().getKey());
+        if (item.getItemKey().isEmpty()){
+            Log.d(TAG, "addItemToList: ");
+            String s = mFirebaseDatabase.getReference().push().getKey();
+            item.setItemKey(s);
         }
 
         DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.itemsField).child(userID).child(item.getItemKey());

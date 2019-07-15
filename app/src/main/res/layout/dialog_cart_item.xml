@@ -1,109 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="wrap_content"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="380dp"
     android:background="@color/white"
-    android:padding="10dp"
-    android:orientation="vertical"
-    >
+    android:padding="15dp">
 
+
+        <EditText
+            android:id="@+id/etItemPrice"
+            android:layout_width="190dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="$$$"
+            android:inputType="numberDecimal"
+            android:maxLength="5"
+            android:text=""
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etItemName" />
 
         <EditText
             android:id="@+id/etListName"
-            android:layout_width="match_parent"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/background_leftround_walmart"
-            android:ems="10"
-            android:maxLength="10"
             android:fontFamily="@font/asap_medium"
             android:inputType="textPersonName"
+            android:maxLength="10"
             android:text=""
-
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="@dimen/Title" />
+            android:textSize="@dimen/Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/etItemName"
-            android:layout_width="match_parent"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:hint="Item Name"
             android:inputType="text"
             android:maxLength="18"
-            android:textAlignment="center"
-            android:hint="Item Name"
             android:text=""
-            android:textColor="@color/black" />
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etListName" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <EditText
+            android:id="@+id/etQuantity"
+            android:layout_width="190dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Item Quantity"
+            android:inputType="number"
+            android:maxLength="6"
+            android:text="1"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etItemPrice" />
 
-                <TextView
-                    android:id="@+id/tvQuantity"
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/field_quantity"
-                    android:textAlignment="center" />
+        <TextView
+            android:id="@+id/tvQuantity"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/field_quantity"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toStartOf="@+id/etItemPrice"
+            app:layout_constraintTop_toBottomOf="@+id/etItemName" />
 
-                <EditText
-                    android:id="@+id/etQuantity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="6"
-                    android:hint="Item Quantity"
-                    android:inputType="number"
-                    android:text="1"
-                    android:textAlignment="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvtheprice"
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/field_price" />
-
-                <EditText
-                    android:id="@+id/etItemPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="$$$"
-                    android:maxLength="5"
-                    android:inputType="numberDecimal"
-                    android:text=""
-                    android:textAlignment="center" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tvtheprice"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/field_price"
+            app:layout_constraintEnd_toStartOf="@+id/etQuantity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvQuantity" />
 
         <Button
             android:id="@+id/btnSetChanges"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
 
-            android:text="set changes" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="set changes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etQuantity" />
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bought"
             android:id="@+id/btnBought"
-            />
-        <Button
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="delete from list"
-            android:id="@+id/btnDeleteFromList"
-            />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Bought"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSetChanges" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnDeleteFromList"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="delete from list"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnBought" />
+
+</android.support.constraint.ConstraintLayout>

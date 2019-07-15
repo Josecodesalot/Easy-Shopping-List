@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -47,36 +49,44 @@
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     <TextView
-        android:id="@+id/tvMyList"
+        android:id="@+id/tvMyList"    android:animateLayoutChanges="true"
+
+
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="130dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="104dp"
         android:layout_marginEnd="8dp"
-        android:gravity="center"
+        android:background="@drawable/background_rounded_gwhite"
         android:fontFamily="@font/asap_medium"
+        android:gravity="center"
         android:padding="10dp"
         android:text="My List"
         android:textAlignment="center"
         android:textSize="@dimen/Title"
         app:layout_constraintEnd_toStartOf="@id/aSwitch"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/aSwitch" />
 
     <TextView
         android:id="@+id/tvFamilyList"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:animateLayoutChanges="true"
+
+        android:layout_height="130dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="104dp"
         android:layout_marginEnd="8dp"
-        android:gravity="center"
+        android:background="@drawable/background_rounded_gwhite"
         android:fontFamily="@font/asap_medium"
+        android:gravity="center"
         android:padding="10dp"
         android:text="Family List"
         android:textAlignment="center"
         android:textSize="@dimen/Title"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/aSwitch"
         app:layout_constraintTop_toBottomOf="@id/aSwitch" />
 

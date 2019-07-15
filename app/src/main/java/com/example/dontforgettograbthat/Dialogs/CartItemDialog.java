@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -61,7 +62,7 @@ public class CartItemDialog extends DialogFragment implements View.OnClickListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_cart_item, container, false);
-
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         referenceWidgets(view);
         mInterface = (CartActivity) getContext();
         mAddInterface = (CartActivity) getContext();

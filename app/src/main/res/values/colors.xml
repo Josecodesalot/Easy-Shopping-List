@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FC4445</color>
-    <color name="colorprimarydark">#000000</color>
+    <color name="colorPrimary">#118969</color>
+    <color name="colorprimarydark">#1F2421</color>
     <color name="colorAccent">#bfbfbf</color>
-    <color name="grey">#bfbfbf</color>
-    <color name="white">#CAFAFE</color>
-    <color name="black">#000000</color>
-    <color name="link_blue">#005ce6</color>
-    <color name="gwhite">#FDFEFD</color>
-    <color name="white2">#FFFFF7E8</color>
+
+    <color name="white">#FAFAFF</color>
+    <color name="gwhite">#F2F4F3</color>
+    <color name="white2">#F2F4F3</color>
     <color name="light_grey">#ecf0f1</color>
     <color name="medium_grey">#bdc3c7</color>
+    <color name="grey">#bfbfbf</color>
+
+
+    <color name="black">#1F2421</color>
+    <color name="link_blue">#005ce6</color>
+
 
     <!--     list colors <-->
+
+    <color name="coolred">#941C2F</color>
+    <color name="coolgreen">#1A936F</color>
+    <color name="blueprussian">#0B3954</color>
 
     <color name="walmart">#536DFE</color>
     <color name="costco">#D32F2F</color>
     <color name="zhers">#C2185B</color>
     <color name="metro">#388E3C</color>
-    <color name="custom1">#7C4DFF</color>
+    <color name="custom1">#FF5A5F</color>
 
     <color name="custom2">#7C4DFF</color>
     <color name="custom3">#18FFFF</color>

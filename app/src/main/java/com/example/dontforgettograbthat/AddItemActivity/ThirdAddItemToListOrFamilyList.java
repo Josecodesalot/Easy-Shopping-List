@@ -47,8 +47,12 @@ public class ThirdAddItemToListOrFamilyList extends android.support.v4.app.Fragm
 
         currentUser = ((UserClient) (getActivity().getApplicationContext())).getUser();
 
-        aSwitch.setChecked(false);
-        aSwitch.requestFocus();
+        aSwitch.setChecked(true);
+        tvFamilyList.setTextColor(Color.WHITE);
+        tvFamilyList.setBackgroundResource(R.drawable.background_rounded_primary);
+
+        tvYourList.setTextColor(Color.BLACK);
+        tvYourList.setBackgroundColor(Color.WHITE);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,14 +71,15 @@ public class ThirdAddItemToListOrFamilyList extends android.support.v4.app.Fragm
                 if (isChecked){
                     //family
                     tvFamilyList.setTextColor(Color.WHITE);
-                    tvFamilyList.setBackgroundColor(Color.RED);
+                    tvFamilyList.setBackgroundResource(R.drawable.background_rounded_primary);
+
                     tvYourList.setTextColor(Color.BLACK);
                     tvYourList.setBackgroundColor(Color.WHITE);
 
                 }else{
                     //unchecked, yout lsit
                      tvYourList.setTextColor(Color.WHITE);
-                     tvYourList.setBackgroundColor(Color.RED);
+                    tvYourList.setBackgroundResource(R.drawable.background_rounded_primary);
 
                     tvFamilyList.setTextColor(Color.BLACK);
                     tvFamilyList.setBackgroundColor(Color.WHITE);
