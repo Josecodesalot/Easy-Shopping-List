@@ -54,6 +54,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/asap_medium"
                 android:inputType="text"
+                android:maxLength="18"
                 android:singleLine="true"
                 android:textAlignment="center"
                 android:textColor="@color/black"
@@ -82,6 +83,7 @@
                 android:fontFamily="@font/asap_medium"
                 android:inputType="number"
                 android:singleLine="true"
+                android:maxLength="8"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/Title" />

@@ -1,10 +1,8 @@
 package com.example.dontforgettograbthat.utils;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,7 +59,6 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-
         holder.tvItemListName.setText(items.get(position).getList_name());
         holder.tvItemName.setText(items.get(position).getItem_name());
         String price = "$" + items.get(position).getPrice();
@@ -81,7 +78,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
             holder.tvItemQuantity.setVisibility(View.GONE);
         }
         Log.d(TAG, "onBindViewHolder: " + items.get(0).toString());
-       holder.tvItemListName.setBackground(getDrawable(items.get(position).getList_name()));
+        holder.tvItemListName.setBackground(GetListDrawable.getDrawable(items.get(position).getList_name(),mContext));
 
         //this method will hide un used features in the recyclerview
 
@@ -96,29 +93,6 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
 
     }
 
-    private Drawable getDrawable (String tvListName){
-        Log.d(TAG, "getDrawable: get tvListName" +tvListName);
-        Drawable color;
-        switch (tvListName){
-            case Const.sWalmart:
-                color = mContext.getResources().getDrawable(R.drawable.background_leftround_walmart);
-                        break;
-            case Const.sCostco :
-                color = mContext.getResources().getDrawable(R.drawable.background_leftround_costco);
-                break;
-            case Const.sZhers :
-                color = mContext.getResources().getDrawable(R.drawable.background_leftround_zhers);
-                break;
-
-            case Const.sMetro :
-                color = mContext.getResources().getDrawable(R.drawable.background_leftround_metro);
-                break;
-            default:
-                color = mContext.getResources().getDrawable(R.drawable.background_leftround_custom);
-                break;
-        }
-        return color;
-    }
 
     @Override
     public int getItemCount() {
@@ -138,7 +112,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
             super(itemView);
             tvItemName = itemView.findViewById(R.id.tvItemName);
             tvItemListName = itemView.findViewById(R.id.tvListName);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvPrice = itemView.findViewById(R.id.tvtheprice);
             parentLayout = itemView.findViewById(R.id.list_root);
             tvItemQuantity =  itemView.findViewById(R.id.tvItemCount);
         }

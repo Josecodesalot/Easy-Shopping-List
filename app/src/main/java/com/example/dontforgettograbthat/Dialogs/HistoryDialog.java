@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +12,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.dontforgettograbthat.HistoryActivity.HistoryActivity;
-import com.example.dontforgettograbthat.Interface.DialogInterface;
 import com.example.dontforgettograbthat.Interface.HistoryInterface;
-import com.example.dontforgettograbthat.Interface.RecyclerViewInterface;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
-
-import java.util.ArrayList;
 
 public class HistoryDialog extends DialogFragment {
 
@@ -90,7 +84,7 @@ public class HistoryDialog extends DialogFragment {
     public void referenceWidgets(View view){
         tvItemName = view.findViewById(R.id.tvItemName);
         tvListname = view.findViewById(R.id.tvListName);
-        tvPrice =  view.findViewById(R.id.tvPrice);
+        tvPrice =  view.findViewById(R.id.tvtheprice);
 
         btnDelete = view.findViewById(R.id.btnDeleteFromList);
         btnRestore = view.findViewById(R.id.btnAccept);

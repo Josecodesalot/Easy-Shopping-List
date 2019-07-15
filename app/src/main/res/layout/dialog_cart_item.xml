@@ -1,55 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:background="@color/colorprimarydark"
-    android:padding="10dp">
+    android:background="@color/white"
+    android:padding="10dp"
+    android:orientation="vertical"
+    >
 
-        <TextView
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvItemName"
-            android:textColor="@color/gwhite"
-            android:textSize="20dp"
-            android:textAlignment="center"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
-            android:text="ItemName"/>
 
-        <TextView
-            android:id="@+id/tvListName"
-            android:layout_width="180dp"
+        <EditText
+            android:id="@+id/etListName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-                android:textColor="@color/gwhite"
-            android:layout_below="@+id/tvItemName"
-            android:text="Walmart"
-            android:textSize="18dp" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_leftround_walmart"
+            android:ems="10"
+            android:maxLength="10"
+            android:fontFamily="@font/asap_medium"
+            android:inputType="textPersonName"
+            android:text=""
 
-        <TextView
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/gwhite"
-            android:layout_below="@+id/tvListName"
-            android:id="@+id/tvPrice"
             android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/Title" />
+
+        <EditText
+            android:id="@+id/etItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLength="18"
+            android:textAlignment="center"
+            android:hint="Item Name"
+            android:text=""
+            android:textColor="@color/black" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/field_quantity"
+                    android:textAlignment="center" />
+
+                <EditText
+                    android:id="@+id/etQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="6"
+                    android:hint="Item Quantity"
+                    android:inputType="number"
+                    android:text="1"
+                    android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
-            android:text="$3.99"/>
+            android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/tvtheprice"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/field_price" />
+
+                <EditText
+                    android:id="@+id/etItemPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="$$$"
+                    android:maxLength="5"
+                    android:inputType="numberDecimal"
+                    android:text=""
+                    android:textAlignment="center" />
+        </LinearLayout>
 
         <Button
-            android:layout_width="180dp"
+            android:id="@+id/btnSetChanges"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvPrice"
+
+            android:text="set changes" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bought"
             android:id="@+id/btnBought"
-            android:text="Bought!"/>
+            />
         <Button
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnBought"
+            android:text="delete from list"
             android:id="@+id/btnDeleteFromList"
-            android:text="delete from list"/>
+            />
 
-</RelativeLayout>
+</LinearLayout>

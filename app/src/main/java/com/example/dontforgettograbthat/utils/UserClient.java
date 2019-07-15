@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class UserClient extends Application {
     private User user = null;
-    private Item item = null;
+    private Item item ;
 
     public void onCreate() {
         super.onCreate();

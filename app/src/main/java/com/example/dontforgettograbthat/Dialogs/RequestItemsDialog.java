@@ -98,7 +98,7 @@ public class RequestItemsDialog extends DialogFragment {
     public void referenceWidgets(View view){
         tvItemName = view.findViewById(R.id.tvItemName);
         tvListname = view.findViewById(R.id.tvListName);
-        tvPrice =  view.findViewById(R.id.tvPrice);
+        tvPrice =  view.findViewById(R.id.tvtheprice);
 
         btnDelete = view.findViewById(R.id.btnDeleteFromList);
         btnAddToList = view.findViewById(R.id.btnAccept);

@@ -1,6 +1,7 @@
 package com.example.dontforgettograbthat.CartActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import com.example.dontforgettograbthat.ActivityProfile.ProfileInfoActivity;
 import com.example.dontforgettograbthat.Dialogs.CartAddItemDialog;
 import com.example.dontforgettograbthat.Dialogs.CartItemDialog;
 import com.example.dontforgettograbthat.Interface.CartInterface;
+import com.example.dontforgettograbthat.Interface.IAddItem;
 import com.example.dontforgettograbthat.Interface.RecyclerViewInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.Item;
@@ -24,8 +27,10 @@ import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.Const;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
+import com.example.dontforgettograbthat.utils.NumberTextWatcher;
 import com.example.dontforgettograbthat.utils.RecyclerViewItems;
 import com.example.dontforgettograbthat.utils.UserClient;
+import com.example.dontforgettograbthat.utils.nonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
-public class CartActivity extends AppCompatActivity implements RecyclerViewInterface, CartInterface {
+public class CartActivity extends AppCompatActivity implements RecyclerViewInterface, CartInterface, IAddItem {
 
     private static final String TAG = "CartActivity";
     private Context mContext = CartActivity.this;
@@ -47,6 +52,10 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     public RecyclerView recyclerView;
     public ImageView addItemIcon;
     public TextView total;
+
+    //Vars
+    public Item item;
+
 
     //firebase
     private FirebaseAuth mAuth;
@@ -73,6 +82,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         setContentView(R.layout.activity_cart);
         Log.d(TAG, "onCreate: started");
         user = new User();
+        item = new Item();
         items= new ArrayList<>();
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
@@ -190,6 +200,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         total = findViewById(R.id.tvTotal);
         addItemIcon = findViewById(R.id.addImg);
 
+
         addItemIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -209,8 +220,9 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     @Override
     public void OpenDialog(int position) {
         Log.d(TAG, "OpenDialog: " + items.get(position).toString());
-        CartItemDialog dialog = CartItemDialog.newInstance(items.get(position));
+        CartItemDialog dialog = CartItemDialog.newInstance(items.get(position), position);
         dialog.show(getSupportFragmentManager(),"tag");
+
     }
     @Override
     public void addToHistory(Item item) {
@@ -232,6 +244,51 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         firebase.addItemToListForTheFirstTime(item);
         recreate();
     }
+
+    @Override
+    public void addSpecificItem(int position) {
+        recreate();
+    }
+
+    @Override
+    public void setItemName(String itemName) {
+        Log.d(TAG, "setItemName: +" +itemName);
+        item.setItem_name(itemName);
+    }
+
+    @Override
+    public void setQuantity(int quantity) {
+        Log.d(TAG, "setQuantity: quant " + quantity);
+        item.setQuantity(quantity);
+    }
+
+    @Override
+    public void setlistName(String listName) {
+        Log.d(TAG, "setlistName: " + listName);
+        item.setList_name(listName);
+    }
+
+    @Override
+    public void setPrice(double itemPrice) {
+        Log.d(TAG, "setPrice: " + itemPrice);
+        item.setPrice(itemPrice);
+    }
+
+    @Override
+    public void openBrowser(int browser) {
+
+    }
+
+    @Override
+    public void addItemToList() {
+
+    }
+
+    @Override
+    public void addItemToFamilyList() {
+
+    }
+
 
     //----------------------------Firebase Code-----------------------------------
 
@@ -282,6 +339,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     @Override
     public void onStart() {
         super.onStart();
+
         Log.d(TAG, "onStart: started get extras");
         mAuth.addAuthStateListener(mAuthListener);
         checkCurrentUser(mAuth.getCurrentUser());
@@ -307,6 +365,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
             startActivity(intent);
         }
     }
+
 
 
 }

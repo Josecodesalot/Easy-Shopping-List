@@ -19,28 +19,28 @@ import com.example.dontforgettograbthat.utils.UserClient;
 
 import java.util.ArrayList;
 
-public class AddNameAndQuantityFragment extends android.support.v4.app.Fragment {
+public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
     private static final String TAG="AddNameAndQuan";
     private EditText itemName, itemQuantity;
     private IAddItem mInterface;
-    private Item item;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_name_quantity, container,false);
         Log.d(TAG, "onCreateView: ");
         referenceViews(view);
-        item =((UserClient)(getActivity().getApplicationContext())).getItem();
 
         mInterface = (AddItemActivity) getContext();
 
+        itemName.requestFocus();
         itemName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                Log.d(TAG, "onFocusChange: Item Name data sent" );
-                mInterface.setItemName(itemName.getText().toString());
-                item.setItem_name(itemName.getText().toString());
-                ((UserClient)(getActivity().getApplicationContext())).setItem(item);
+                if (!hasFocus) {
+                    Log.d(TAG, "onFocusChange: Item Name data sent");
+                    mInterface.setItemName(itemName.getText().toString());
+               }
             }
         });
 
@@ -59,27 +59,21 @@ public class AddNameAndQuantityFragment extends android.support.v4.app.Fragment 
             @Override
 
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (!hasFocus){
+                    if (!itemQuantity.getText().toString().equals("")){
+                        mInterface.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
+                        Log.d(TAG, "onFocusChange: itemQuantity sending data");
 
-                }
-                if (!itemQuantity.getText().toString().equals("")){
-                    mInterface.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
-                    Log.d(TAG, "onFocusChange: itemQuantity sending data");
-                    item.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
-                    ((UserClient)(getActivity().getApplicationContext())).setItem(item);
-
-                }else {
-                    mInterface.setQuantity(0);
-                    Log.d(TAG, "onFocusChange: itemQuantity sending data ");
-
-
-
-
+                    }else {
+                        mInterface.setQuantity(0);
+                        Log.d(TAG, "onFocusChange: itemQuantity sending data ");
+                    }
                 }
             }
         });
         return view;
     }
+
 
     private void referenceViews(View view) {
     itemName= view.findViewById(R.id.etItemName);

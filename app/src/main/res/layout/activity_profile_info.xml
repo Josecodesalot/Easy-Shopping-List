@@ -59,6 +59,7 @@
             android:fontFamily="@font/asap_medium"
             android:hint="type your desired user name"
             android:textAlignment="center"
+            android:maxLength="14"
             android:textColor="@color/black"
 
             />
@@ -79,7 +80,6 @@
             android:text="add/change/see Parent's Name"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center"
-
             />
 
     </LinearLayout>

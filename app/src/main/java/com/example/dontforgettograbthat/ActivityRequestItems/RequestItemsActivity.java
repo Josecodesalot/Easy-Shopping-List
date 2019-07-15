@@ -34,12 +34,9 @@ public class RequestItemsActivity extends AppCompatActivity implements RecyclerV
 
     private static final String TAG = "AddItemActivity";
     private Context mContext = RequestItemsActivity.this;
-    private final int ACTIVITY_NUM = 1;
-
     public DatabaseReference reference;
 
     //Constants
-
     private String REFRESH_CODE="REFRESH_CODE";
 
     //Widgets
@@ -56,8 +53,6 @@ public class RequestItemsActivity extends AppCompatActivity implements RecyclerV
     private DatabaseReference myRef;
 
     //vars
-
-
     private RecyclerViewItems adapter;
     private User user;
 

@@ -8,8 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.DownloadListener;
-import android.webkit.WebView;
 import android.widget.Toast;
 import com.example.dontforgettograbthat.CartActivity.CartActivity;
 import com.example.dontforgettograbthat.Dialogs.WebViewDialogueFragment;
@@ -22,14 +20,13 @@ import com.example.dontforgettograbthat.utils.Const;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
 import com.example.dontforgettograbthat.utils.SectionsPagerAdapter;
 import com.example.dontforgettograbthat.utils.UserClient;
-import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import java.text.DecimalFormat;
+
 import java.util.ArrayList;
 
 public class AddItemActivity extends AppCompatActivity implements IAddItem {
@@ -152,6 +149,7 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
     }
 
     private void setUrlArray(){
+
         url= new ArrayList<>();
 
         url.add("https://www.walmart.ca/search/");
@@ -169,11 +167,13 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
                 Sets Up the View Pager In the activity;
      */
     private void setUpViewPager() {
+
         Log.d(TAG, "setUpViewPager: attempting to setup ViewPager");
+
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AddNameAndQuantityFragment());
-        adapter.addFragment(new SearchAndChooseProviderFragment());
-        adapter.addFragment(new AddToListOrRequestFragment());
+        adapter.addFragment(new FIrstItemNameFragment());
+        adapter.addFragment(new SecondBrowserPriceAndListName());
+        adapter.addFragment(new ThirdAddItemToListOrFamilyList());
         ViewPager viewPager = findViewById(R.id.container);
         viewPager.setAdapter(adapter);
 
@@ -232,8 +232,8 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
         Log.d(TAG, "onStart: started");
         mAuth.addAuthStateListener(mAuthListener);
         checkCurrentUser(mAuth.getCurrentUser());
-
     }
+
     @Override
     public void onStop() {
         super.onStop();

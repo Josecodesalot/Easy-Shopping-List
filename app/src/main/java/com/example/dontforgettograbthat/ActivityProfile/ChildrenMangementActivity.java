@@ -46,12 +46,8 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
     private RecyclerView recyclerView;
     private RecyclerViewChildrenManagement adapter;
 
-
-
     private static final String TAG = "ChildrenMangement";
     private Context mContext = ChildrenMangementActivity.this;
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

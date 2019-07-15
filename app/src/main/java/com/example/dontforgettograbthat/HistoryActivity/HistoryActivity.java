@@ -121,14 +121,9 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
         });
     }
     private void referenceWidgets() {
-
         recyclerView = findViewById(R.id.list);
-
         total = findViewById(R.id.tvTotal);
-
     }
-
-
 
     //----------------------------Firebase Code-----------------------------------
 

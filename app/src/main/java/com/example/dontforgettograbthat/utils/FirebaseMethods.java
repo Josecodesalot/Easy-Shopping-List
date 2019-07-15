@@ -76,10 +76,12 @@ public class FirebaseMethods {
     public void addItemToList(Item item) {
         Log.d(TAG, "addItemToList: " + item.toString());
 
-        String id = myRef.push().getKey();
-        item.setItemKey(id);
+        if (item.getItemKey()==null){
+            item.setItemKey(myRef.push().getKey());
+        }
 
         DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.itemsField).child(userID).child(item.getItemKey());
+        Log.d(TAG, "addItemToList: ref = " + ref.toString());
         ref.setValue(item);
 
         }
