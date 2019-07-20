@@ -8,11 +8,11 @@
     <color name="gwhite">#ffff</color>
     <color name="white2">#fff</color>
     <color name="light_grey">#ecf0f1</color>
-    <color name="medium_grey">#bdc3c7</color>
+    <color name="medium_grey">#D3D4D9</color>
     <color name="grey">#bfbfbf</color>
 
 
-    <color name="black">#1F2421</color>
+    <color name="black">#0D0106</color>
     <color name="link_blue">#005ce6</color>
 
 
@@ -26,7 +26,7 @@
     <color name="costco">#D32F2F</color>
     <color name="zhers">#C2185B</color>
     <color name="metro">#388E3C</color>
-    <color name="custom1">#941C2F</color>
+    <color name="custom1">#D32E2E</color>
 
     <color name="custom2">#7C4DFF</color>
     <color name="custom3">#18FFFF</color>

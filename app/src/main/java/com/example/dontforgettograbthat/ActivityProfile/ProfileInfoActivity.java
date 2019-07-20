@@ -150,6 +150,8 @@ public class ProfileInfoActivity extends AppCompatActivity {
         if (user!=null){
 
             username.setText(user.getUsername());
+            username.setKeyListener(null);
+            submit.setVisibility(View.GONE);
 
         }
     }

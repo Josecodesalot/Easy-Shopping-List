@@ -54,7 +54,7 @@ public class FirebaseMethods {
     }
 
     public void deleteItemCart(Item item){
-        myRef.child(Const.ITEMS_FIELD).child(userID).child(item.getItemKey()).removeValue();
+        myRef.child(Const.CART_ITEM).child(userID).child(item.getItemKey()).removeValue();
     }
 
     public void deleteFamilyListItem(Item item){
@@ -77,25 +77,25 @@ public class FirebaseMethods {
             item.setItemKey(s);
         }
 
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.ITEMS_FIELD).child(userID).child(item.getItemKey());
+        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.CART_ITEM).child(userID).child(item.getItemKey());
         Log.d(TAG, "addItemToList: ref = " + ref.toString());
         ref.setValue(item);
     }
 
-    public void addItemToHistory(Item item) {
-        if (mAuth.getCurrentUser() != null) {
+    public void sendItemToHistory(Item item) {
+        //This method moves item from Cart Activity, into History Activity (List)
 
+            //Add Item TO history
             myRef.child(Const.HISTORY_FIELD)
                     .child(userID).child(item.getItemKey())
                     .setValue(item);
-
-        } else
-            Toast.makeText(mContext, "Error, Login, SignUp, or Send this to your won account through the Email Feature", Toast.LENGTH_LONG).show();
+            //Move away from Cart
+            myRef.child(Const.CART_ITEM).child(userID).child(item.getItemKey()).removeValue();
     }
 
     public void restoreFromHistoryToCart(Item item) {
         //Add to Cart,
-        DatabaseReference ref = myRef.child(Const.ITEMS_FIELD).child(userID).child(item.getItemKey());
+        DatabaseReference ref = myRef.child(Const.CART_ITEM).child(userID).child(item.getItemKey());
         ref.setValue(item);
 
         //Remove From History

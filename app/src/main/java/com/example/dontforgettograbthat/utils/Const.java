@@ -7,7 +7,7 @@ public class Const {
     public static final String FAMILY_ITEM = "family_item"  ;
     public static final String FAMILY_USER = "family_user" ;
     public static final String HISTORY_FIELD = "history"  ;
-    public static final String ITEMS_FIELD = "items"  ;
+    public static final String CART_ITEM = "items"  ;
     public static final String FAMILY_USER_REQUEST = "child_request"  ;
     public static final String USERS_FIELD = "users"  ;
     public static final String USERNAME_FIELD = "username";

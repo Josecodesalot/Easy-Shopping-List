@@ -28,8 +28,6 @@ public class FamilyListDialog extends DialogFragment implements View.OnClickList
     private EditText etItemName, etListName, etPrice, etQuanity;
     private Item item;
     private int position;
-    private Context mContext;
-    private Button btnSetChanges;
 
     public static FamilyListDialog newInstance(Item item, int position) {
         FamilyListDialog frag = new FamilyListDialog();
@@ -54,12 +52,11 @@ public class FamilyListDialog extends DialogFragment implements View.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_family_item, container, false);
 
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        referenceWidgets(view);
-        mInterface = (FamilyListActivity) getContext();
-
-
         if (item != null) {
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            referenceWidgets(view);
+            mInterface = (FamilyListActivity) getContext();
+
             item = NotNull.item(item);
             Log.d(TAG, "onCreateView: non Null item = " + item.toString());
 
@@ -69,6 +66,12 @@ public class FamilyListDialog extends DialogFragment implements View.OnClickList
             etPrice.setText(stPrice);
             String stQuantity = "" + item.getQuantity();
             etQuanity.setText(stQuantity);
+
+            etListName.setKeyListener(null);
+            etItemName.setKeyListener(null);
+            etPrice.setKeyListener(null);
+            etQuanity.setKeyListener(null);
+
         }
         return view;
     }
@@ -77,7 +80,6 @@ public class FamilyListDialog extends DialogFragment implements View.OnClickList
 
         btnDeleteFromCartList = view.findViewById(R.id.btnDeleteFromList);
         btnAcceptIntoCart = view.findViewById(R.id.btnAcceptIntoCart);
-        btnSetChanges = view.findViewById(R.id.btnSetChanges);
 
         etPrice = view.findViewById(R.id.etItemPrice);
         etItemName = view.findViewById(R.id.etItemName);
@@ -86,7 +88,6 @@ public class FamilyListDialog extends DialogFragment implements View.OnClickList
 
         btnAcceptIntoCart.setOnClickListener(this);
         btnDeleteFromCartList.setOnClickListener(this);
-        btnSetChanges.setOnClickListener(this);
 
 
     }
@@ -100,29 +101,11 @@ public class FamilyListDialog extends DialogFragment implements View.OnClickList
                 dismiss();
                 break;
 
-            case R.id.btnRestoreToCart:
+            case R.id.btnAcceptIntoCart:
                 mInterface.addToCartList(item, position);
                 dismiss();
                 break;
 
-            case R.id.btnSetChanges:
-                mInterface.setChanges(getCurrentItem(), position);
-                dismiss();
         }
-
-    }
-
-    private Item getCurrentItem() {
-        Item item = new Item();
-        if (this.item!=null) {
-            item.setItemKey(this.item.getItemKey());
-        }
-        item.setItem_name(etItemName.getText().toString());
-        item.setList_name(etListName.getText().toString());
-        item.setQuantity(Integer.parseInt(etQuanity.getText().toString()));
-        item.setPrice(Double.parseDouble(etPrice.getText().toString()));
-
-        return item;
-
     }
 }

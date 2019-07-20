@@ -150,7 +150,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     private void fromFirebaseToRecyclerView() {
         Log.d(TAG, "fromFirebaseToRecyclerView: creatiung database and getitnga reference");
         Log.d(TAG, "fromFirebaseToRecyclerView: user = " + user.getUser_id());
-        DatabaseReference refrence = database.getReference().child(Const.ITEMS_FIELD).child(mAuth.getCurrentUser().getUid());
+        DatabaseReference refrence = database.getReference().child(Const.CART_ITEM).child(mAuth.getCurrentUser().getUid());
         Log.d(TAG, "fromFirebaseToRecyclerView: ref " + refrence.toString());
 
         items = new ArrayList<>();
@@ -219,7 +219,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     @Override
     public void addToHistory(Item item, int position) {
         Log.d(TAG, "addToHistory: " + item.toString());
-        firebase.addItemToHistory(item);
+        firebase.sendItemToHistory(item);
         items.remove(position);
         adapter.notifyItemRemoved(position);
 

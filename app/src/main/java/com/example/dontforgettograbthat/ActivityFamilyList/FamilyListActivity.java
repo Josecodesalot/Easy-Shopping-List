@@ -209,6 +209,7 @@ public class FamilyListActivity extends AppCompatActivity implements RecyclerVie
 
     @Override
     public void addToCartList(Item item, int posiion) {
+        Log.d(TAG, "addToCartList: calle");
         //This delets the item from this family list, and adds it to the users personal List
         firebase.addItemToList(item);
         firebase.deleteFamilyListItem(item);
@@ -218,17 +219,12 @@ public class FamilyListActivity extends AppCompatActivity implements RecyclerVie
 
     @Override
     public void delete(int position) {
+        Log.d(TAG, "delete: called");
         firebase.deleteFamilyListItem(items.get(position));
         items.remove(position);
         adapter.notifyItemRemoved(position);
     }
-
-    @Override
-    public void setChanges(Item item, int position) {
-        firebase.addItemToList(item);
-        items.set(position,item);
-        adapter.notifyItemChanged(position,item);
-    }
+    
 }
 
 

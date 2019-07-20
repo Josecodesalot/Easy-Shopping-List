@@ -20,7 +20,8 @@
             android:text=""
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etItemName" />
+            app:layout_constraintTop_toBottomOf="@+id/etItemName"
+            />
 
         <EditText
             android:id="@+id/etListName"
@@ -114,10 +115,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:text="delete from list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnRestoreToCart" />
+            app:layout_constraintTop_toBottomOf="@+id/btnAcceptIntoCart" />
 
 </android.support.constraint.ConstraintLayout>
