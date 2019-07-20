@@ -1,4 +1,4 @@
-package com.example.dontforgettograbthat.ActivityRequestItems;
+package com.example.dontforgettograbthat.ActivityHistory;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.dontforgettograbthat.Dialogs.HistoryDialog;
+import com.example.dontforgettograbthat.Interface.HistoryInterface;
 import com.example.dontforgettograbthat.Interface.RecyclerViewInterface;
-import com.example.dontforgettograbthat.Interface.RequestItemsActivityInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
@@ -30,14 +31,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class RequestItemsActivity extends AppCompatActivity implements RecyclerViewInterface, RequestItemsActivityInterface {
+
+public class HistoryActivity extends AppCompatActivity implements RecyclerViewInterface, HistoryInterface {
 
     private static final String TAG = "AddItemActivity";
-    private Context mContext = RequestItemsActivity.this;
-    public DatabaseReference reference;
+    private Context mContext = HistoryActivity.this;
 
     //Constants
-    private String REFRESH_CODE="REFRESH_CODE";
 
     //Widgets
     public RecyclerView recyclerView;
@@ -53,96 +53,77 @@ public class RequestItemsActivity extends AppCompatActivity implements RecyclerV
     private DatabaseReference myRef;
 
     //vars
+    private ArrayList<Item> items;
     private RecyclerViewItems adapter;
+    private String familyName;
     private User user;
-
-    private ArrayList<Item>items;
-
-    public String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         Log.d(TAG, "onCreate: started");
-        user=((UserClient)(getApplicationContext())).getUser();
+
+        firebase = new FirebaseMethods(mContext);
+        items = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
+        user = new User();
+        user = ((UserClient)(getApplicationContext())).getUser();
+        familyName = user.getParent_name();
+        Log.d(TAG, "onCreate: family name setting = " + familyName);
 
         firebaseDataExchangeListener();
         setupFirebaseAuth();
         referenceWidgets();
-        //This method gets the
         firebaseRetrieve();
+        setUpTotal();
 
     }
 
     private void setUpTotal() {
         Log.d(TAG, "setUpTotal: started");
-        double totes = 0;
+        double totalPrice = 0;
 
-        for (int i = 0; i< items.size(); i++){
-            totes += items.get(i).getPrice();
-            Log.d(TAG, "setUpTotal: iteration " + totes);
+        if (items != null) {
+            for (int i = 0; i < items.size(); i++) {
+                totalPrice += items.get(i).getPrice();
+                Log.d(TAG, "setUpTotal: iteration " + totalPrice);
+            }
+            Log.d(TAG, "setUpTotal: setText");
+            String s = String.format("%.2f", totalPrice);
+            total.setText("Total " + s);
         }
-        Log.d(TAG, "setUpTotal: setText");
-        String s = String.format("%.2f",totes);
-        total.setText("Total " + s);
     }
-
     private void firebaseRetrieve() {
+        Log.d(TAG, "firebaseRetrieve: creatiung database and getitnga reference");
+        myRef = database.getReference();
+        Query query = myRef.child("history").child(user.getUser_id());
 
-        Log.d(TAG, "getFamilyNameReference: Rerencing " + user.toString() + "\n" + user.getParent_name());
-
-
-        if (user_id!=null) {
-
-            Log.d(TAG, "firebaseRetrieve: creatiung database and getting a reference");
-            myRef = database.getReference();
-            Query query = myRef.child("requests").child(user.getUsername());
-
-
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot != null) {
-                        for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                            if (singleSnapshot != null) {
-                                items.add(singleSnapshot.getValue(Item.class));
-                            }
-                            for (int i = 0; i < items.size(); i++) {
-                                Log.d(TAG, "onDataChange: " + items.get(i).toString());
-                            }
-
-
-                            setUpTotal();
-                            adapter = new RecyclerViewItems(
-                                    mContext,
-                                    items);
-                            Log.d(TAG, "onDataChange: setUp ReciclerView");
-                            recyclerView.setAdapter(adapter);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-                        }
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
+                    if (singleSnapshot!=null) {
+                        items.add(singleSnapshot.getValue(Item.class));
                     }
                 }
+                setUpTotal();
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.d(TAG, "onCancelled: query cancelled.");
-                }
-            });
-        } else{
-            Log.d(TAG, "firebaseRetrieve: error retreving familyName");
-        }
+                adapter = new RecyclerViewItems(mContext, items);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: query cancelled.");
+            }
+        });
     }
     private void referenceWidgets() {
-
         recyclerView = findViewById(R.id.list);
-
         total = findViewById(R.id.tvTotal);
-
     }
-
-
 
     //----------------------------Firebase Code-----------------------------------
 
@@ -155,7 +136,6 @@ public class RequestItemsActivity extends AppCompatActivity implements RecyclerV
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
                 //check if the user is logged in
                 checkCurrentUser(user);
 
@@ -210,7 +190,7 @@ public class RequestItemsActivity extends AppCompatActivity implements RecyclerV
         super.onResume();
         Log.d(TAG, "onResume: started");
         //TODO create a code so that this only recreates itself when recieving a custom code.
-        // recreate();
+       // recreate();
 
     }
 
@@ -223,19 +203,32 @@ public class RequestItemsActivity extends AppCompatActivity implements RecyclerV
         }
     }
 
+
     @Override
     public void OpenDialog(int position) {
+        HistoryDialog dialog = HistoryDialog.newInstance(items.get(position));
+        dialog.show(getSupportFragmentManager(),"2");
 
     }
 
     @Override
-    public void addToCartList(Item item) {
-
+    public void restoreToCart(Item item, int position) {
+        firebase.restoreFromHistoryToCart(item);
+        items.remove(position);
+        adapter.notifyItemRemoved(position);
     }
 
     @Override
-    public void deleteFromRequestedItems(String ItemKey) {
+    public void deleteFromHistory(Item item, int position) {
+        firebase.deleteHistory(item.getItemKey());
+        adapter.notifyItemRemoved(position);
+    }
 
+    @Override
+    public void setChanges(Item item, int position) {
+        firebase.addItemToList(item);
+        items.set(position,item);
+        adapter.notifyItemChanged(position,item);
     }
 }
 

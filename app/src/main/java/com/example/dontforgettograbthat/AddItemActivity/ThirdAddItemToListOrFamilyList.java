@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +13,16 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.Interface.IAddItem;
+import com.example.dontforgettograbthat.Interface.AddItemInterface;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
-import com.example.dontforgettograbthat.utils.Const;
 import com.example.dontforgettograbthat.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ThirdAddItemToListOrFamilyList extends android.support.v4.app.Fragment  {
     private static final String TAG="AddToListOrReque";
-    private IAddItem mInterface;
+    private AddItemInterface mInterface;
 
     private Button submit;
     private TextView tvFamilyList, tvYourList;

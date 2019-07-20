@@ -1,4 +1,4 @@
-package com.example.dontforgettograbthat.HistoryActivity;
+package com.example.dontforgettograbthat.ActivityFamilyList;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,13 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.Dialogs.HistoryDialog;
-import com.example.dontforgettograbthat.Interface.HistoryInterface;
+import com.example.dontforgettograbthat.Dialogs.FamilyListDialog;
 import com.example.dontforgettograbthat.Interface.RecyclerViewInterface;
+import com.example.dontforgettograbthat.Interface.FamilyListInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
+import com.example.dontforgettograbthat.utils.Const;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
 import com.example.dontforgettograbthat.utils.RecyclerViewItems;
 import com.example.dontforgettograbthat.utils.UserClient;
@@ -31,18 +32,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+public class FamilyListActivity extends AppCompatActivity implements RecyclerViewInterface, FamilyListInterface {
 
-public class HistoryActivity extends AppCompatActivity implements RecyclerViewInterface, HistoryInterface {
-
-    private static final String TAG = "AddItemActivity";
-    private Context mContext = HistoryActivity.this;
+    private static final String TAG = "FamilyListActivity";
+    private Context mContext = FamilyListActivity.this;
+    public DatabaseReference reference;
 
     //Constants
+    private String REFRESH_CODE="REFRESH_CODE";
 
     //Widgets
     public RecyclerView recyclerView;
-
-    public TextView total;
 
     //firebase
     private FirebaseAuth mAuth;
@@ -53,76 +53,75 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
     private DatabaseReference myRef;
 
     //vars
-    private ArrayList<Item> items;
     private RecyclerViewItems adapter;
-    private String familyName;
     private User user;
+
+    private ArrayList<Item>items;
+
+    public String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.activity_family_list);
         Log.d(TAG, "onCreate: started");
-
-        firebase = new FirebaseMethods(mContext);
-        items = new ArrayList<>();
+        user=((UserClient)(getApplicationContext())).getUser();
         database = FirebaseDatabase.getInstance();
-        user = new User();
-        user = ((UserClient)(getApplicationContext())).getUser();
-        familyName = user.getParent_name();
-        Log.d(TAG, "onCreate: family name setting = " + familyName);
+        firebase = new FirebaseMethods(mContext);
+        items=new ArrayList<>();
 
         firebaseDataExchangeListener();
         setupFirebaseAuth();
         referenceWidgets();
         firebaseRetrieve();
-        setUpTotal();
 
     }
 
-    private void setUpTotal() {
-        Log.d(TAG, "setUpTotal: started");
-        double totalPrice = 0;
 
-        if (items != null) {
-            for (int i = 0; i < items.size(); i++) {
-                totalPrice += items.get(i).getPrice();
-                Log.d(TAG, "setUpTotal: iteration " + totalPrice);
-            }
-            Log.d(TAG, "setUpTotal: setText");
-            String s = String.format("%.2f", totalPrice);
-            total.setText("Total " + s);
+    private void firebaseRetrieve() {
+
+        Log.d(TAG, "getFamilyNameReference: Rerencing " + user.toString() + "\n" + user.getParent_name());
+
+
+        if (user.getUser_id()!=null) {
+
+            Log.d(TAG, "firebaseRetrieve: creatiung database and getting a reference");
+            DatabaseReference ref = database.getReference().child(Const.FAMILY_ITEM).child(user.getUsername());
+
+
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                            if (singleSnapshot != null) {
+                                Log.d(TAG, "onDataChange: datais not null sinlgesnapshot isnot null");
+                                items.add(singleSnapshot.getValue(Item.class));
+                            }
+                            for (int i = 0; i < items.size(); i++) {
+                                Log.d(TAG, "onDataChange: " + items.get(i).toString());
+                            }
+                        }
+                    }
+                    adapter = new RecyclerViewItems(
+                            mContext,
+                            items);
+                    Log.d(TAG, "onDataChange: setUp ReciclerView");
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d(TAG, "onCancelled: query cancelled.");
+                }
+            });
         }
     }
-    private void firebaseRetrieve() {
-        Log.d(TAG, "firebaseRetrieve: creatiung database and getitnga reference");
-        myRef = database.getReference();
-        Query query = myRef.child("history").child(user.getUser_id());
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
-                    if (singleSnapshot!=null) {
-                        items.add(singleSnapshot.getValue(Item.class));
-                    }
-                }
-                setUpTotal();
-
-                adapter = new RecyclerViewItems(mContext, items);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG, "onCancelled: query cancelled.");
-            }
-        });
-    }
     private void referenceWidgets() {
+
         recyclerView = findViewById(R.id.list);
-        total = findViewById(R.id.tvTotal);
+
     }
 
     //----------------------------Firebase Code-----------------------------------
@@ -136,6 +135,7 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 //check if the user is logged in
                 checkCurrentUser(user);
 
@@ -189,9 +189,6 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: started");
-        //TODO create a code so that this only recreates itself when recieving a custom code.
-       // recreate();
-
     }
 
     private void checkCurrentUser(FirebaseUser user){
@@ -203,26 +200,34 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
         }
     }
 
-
     @Override
     public void OpenDialog(int position) {
-        HistoryDialog dialog = HistoryDialog.newInstance(items.get(position));
-        dialog.show(getSupportFragmentManager(),"2");
-
+        FamilyListDialog dialog = FamilyListDialog.newInstance(items.get(position),position);
+        dialog.show(getSupportFragmentManager(),"1");
     }
 
 
     @Override
-    public void restoreToCart(Item item) {
-        firebase.restoreItem(item);
-        recreate();
+    public void addToCartList(Item item, int posiion) {
+        //This delets the item from this family list, and adds it to the users personal List
+        firebase.addItemToList(item);
+        firebase.deleteFamilyListItem(item);
+        items.remove(posiion);
+        adapter.notifyItemRemoved(posiion);
     }
 
     @Override
-    public void deleteFromHistory(String itemKey) {
-        Log.d(TAG, "deleteFromHistory: + " + itemKey );
-        firebase.deleteHistory(itemKey);
-        recreate();
+    public void delete(int position) {
+        firebase.deleteFamilyListItem(items.get(position));
+        items.remove(position);
+        adapter.notifyItemRemoved(position);
+    }
+
+    @Override
+    public void setChanges(Item item, int position) {
+        firebase.addItemToList(item);
+        items.set(position,item);
+        adapter.notifyItemChanged(position,item);
     }
 }
 

@@ -9,9 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-import com.example.dontforgettograbthat.CartActivity.CartActivity;
+import com.example.dontforgettograbthat.ActivityCart.CartActivity;
 import com.example.dontforgettograbthat.Dialogs.WebViewDialogueFragment;
-import com.example.dontforgettograbthat.Interface.IAddItem;
+import com.example.dontforgettograbthat.Interface.AddItemInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
@@ -29,14 +29,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class AddItemActivity extends AppCompatActivity implements IAddItem {
+public class AddItemActivity extends AppCompatActivity implements AddItemInterface {
 
     private static final String TAG = "AddItemActivity";
     private Context mContext = AddItemActivity.this;
 
     //Widgets
-    WebViewDialogueFragment webDialog;
-
+    private WebViewDialogueFragment webDialog;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private SectionsPagerAdapter adapter;
     //vars
     private ArrayList<String> url;
     private Bundle webBundle;
@@ -129,27 +131,9 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
         webDialog.show(getSupportFragmentManager(), "1");
     }
 
-    @Override
-    public void addItemToList() {
-        Log.d(TAG, "addItemToList: called");
-        firebase.addItemToList(item);
-        Intent intent = new Intent(mContext, CartActivity.class);
-        intent.putExtra("REFRESH_CODE", "REFRESH_CODE");
-        startActivity(intent);
-    }
 
-    @Override
-    public void addItemToFamilyList() {
-        Log.d(TAG, "addItemToFamilyList: called");
-        if (user.getParent_name().equals("")){
-            Toast.makeText(mContext, "No Parent found, please click the user icon, then profile settings, then send your parent a request, in order to user this feature your parent has to accept this request", Toast.LENGTH_SHORT).show();
-        }else{
-
-        }
-    }
 
     private void setUrlArray(){
-
         url= new ArrayList<>();
 
         url.add("https://www.walmart.ca/search/");
@@ -170,20 +154,53 @@ public class AddItemActivity extends AppCompatActivity implements IAddItem {
 
         Log.d(TAG, "setUpViewPager: attempting to setup ViewPager");
 
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FIrstItemNameFragment());
         adapter.addFragment(new SecondBrowserPriceAndListName());
         adapter.addFragment(new ThirdAddItemToListOrFamilyList());
-        ViewPager viewPager = findViewById(R.id.container);
+        viewPager = findViewById(R.id.container);
         viewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_add);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_search);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_price);
     }
+
+    @Override
+    public void addItemToList() {
+        Log.d(TAG, "addItemToList: called");
+        firebase.addItemToList(item);
+        reset();
+    }
+
+    @Override
+    public void addItemToFamilyList() {
+        Log.d(TAG, "addItemToFamilyList: called");
+        if (user.getParent_name().equals("")){
+            Toast.makeText(mContext, "No Parent found, please click the user icon, then profile settings, then send your parent a request, in order to user this feature your parent has to accept this request", Toast.LENGTH_SHORT).show();
+        }else{
+            firebase.setFamilyitem(item,user);
+           reset();
+        }
+    }
+
+    public void reset(){
+        Bundle bundle = new Bundle();
+        bundle.putString(Const.REFRESH,Const.REFRESH);
+        adapter.getItem(0).setArguments(bundle);
+        adapter.getItem(1).setArguments(bundle);
+        adapter.getItem(0).onResume();
+        adapter.getItem(1).onResume();
+        viewPager.setCurrentItem(0);
+        Toast.makeText(mContext, "Item Added", Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
 
     //----------------------------Firebase Code-----------------------------------
 

@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.dontforgettograbthat.CartActivity.CartActivity;
+import com.example.dontforgettograbthat.ActivityCart.CartActivity;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
 import com.google.android.gms.tasks.OnCompleteListener;

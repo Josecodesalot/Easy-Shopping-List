@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#118969</color>
-    <color name="colorprimarydark">#1F2421</color>
+    <color name="colorPrimary">#D32F2F</color>
+    <color name="colorprimarydark">#1C3144</color>
     <color name="colorAccent">#bfbfbf</color>
 
-    <color name="white">#FAFAFF</color>
-    <color name="gwhite">#F2F4F3</color>
-    <color name="white2">#F2F4F3</color>
+    <color name="white">#ffff</color>
+    <color name="gwhite">#ffff</color>
+    <color name="white2">#fff</color>
     <color name="light_grey">#ecf0f1</color>
     <color name="medium_grey">#bdc3c7</color>
     <color name="grey">#bfbfbf</color>
@@ -18,7 +18,7 @@
 
     <!--     list colors <-->
 
-    <color name="coolred">#941C2F</color>
+    <color name="coolred">#933242</color>
     <color name="coolgreen">#1A936F</color>
     <color name="blueprussian">#0B3954</color>
 
@@ -26,7 +26,7 @@
     <color name="costco">#D32F2F</color>
     <color name="zhers">#C2185B</color>
     <color name="metro">#388E3C</color>
-    <color name="custom1">#FF5A5F</color>
+    <color name="custom1">#941C2F</color>
 
     <color name="custom2">#7C4DFF</color>
     <color name="custom3">#18FFFF</color>

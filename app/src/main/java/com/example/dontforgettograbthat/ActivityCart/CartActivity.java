@@ -1,7 +1,6 @@
-package com.example.dontforgettograbthat.CartActivity;
+package com.example.dontforgettograbthat.ActivityCart;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -11,15 +10,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dontforgettograbthat.ActivityProfile.ProfileInfoActivity;
 import com.example.dontforgettograbthat.Dialogs.CartAddItemDialog;
-import com.example.dontforgettograbthat.Dialogs.CartItemDialog;
+import com.example.dontforgettograbthat.Dialogs.CartListDialog;
 import com.example.dontforgettograbthat.Interface.CartInterface;
-import com.example.dontforgettograbthat.Interface.IAddItem;
 import com.example.dontforgettograbthat.Interface.RecyclerViewInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.Item;
@@ -27,10 +24,8 @@ import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.Const;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
-import com.example.dontforgettograbthat.utils.NumberTextWatcher;
 import com.example.dontforgettograbthat.utils.RecyclerViewItems;
 import com.example.dontforgettograbthat.utils.UserClient;
-import com.example.dontforgettograbthat.utils.nonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,15 +35,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
-import static android.support.v4.app.DialogFragment.STYLE_NO_TITLE;
-
-public class CartActivity extends AppCompatActivity implements RecyclerViewInterface, CartInterface, IAddItem {
+public class CartActivity extends AppCompatActivity implements RecyclerViewInterface, CartInterface {
 
     private static final String TAG = "CartActivity";
     private Context mContext = CartActivity.this;
-
-    //Constants
-    private String REFRESH_CODE="REFRESH_CODE";
 
     //Widgets
     public RecyclerView recyclerView;
@@ -57,7 +47,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
     //Vars
     public Item item;
-
 
     //firebase
     private FirebaseAuth mAuth;
@@ -161,7 +150,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     private void fromFirebaseToRecyclerView() {
         Log.d(TAG, "fromFirebaseToRecyclerView: creatiung database and getitnga reference");
         Log.d(TAG, "fromFirebaseToRecyclerView: user = " + user.getUser_id());
-        DatabaseReference refrence = database.getReference().child(Const.itemsField).child(mAuth.getCurrentUser().getUid());
+        DatabaseReference refrence = database.getReference().child(Const.ITEMS_FIELD).child(mAuth.getCurrentUser().getUid());
         Log.d(TAG, "fromFirebaseToRecyclerView: ref " + refrence.toString());
 
         items = new ArrayList<>();
@@ -223,74 +212,52 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     @Override
     public void OpenDialog(int position) {
         Log.d(TAG, "OpenDialog: " + items.get(position).toString());
-        CartItemDialog dialog = CartItemDialog.newInstance(items.get(position), position);
+        CartListDialog dialog = CartListDialog.newInstance(items.get(position), position);
         dialog.show(getSupportFragmentManager(),"tag");
 
     }
     @Override
-    public void addToHistory(Item item) {
+    public void addToHistory(Item item, int position) {
         Log.d(TAG, "addToHistory: " + item.toString());
         firebase.addItemToHistory(item);
-        recreate();
+        items.remove(position);
+        adapter.notifyItemRemoved(position);
+
     }
     @Override
-    public void delete(String itemKey) {
+    public void delete(String itemKey, int position) {
         Log.d(TAG, "delete: " + itemKey);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("items").child(user.getUser_id()).child(itemKey);
-        Log.d(TAG, "deleteItemFromCart: on references " + ref.toString());
-        ref.removeValue();
-        recreate();
+
+        firebase.deleteItemCart(items.get(position));
+        items.remove(position);
+        adapter.notifyItemRemoved(position);
+
     }
     @Override
-    public void addItem(Item item) {
+    public void addItem(Item item, int position) {
         Log.d(TAG, "addItem: called with item = " + item.toString());
-        firebase.addItemToListForTheFirstTime(item);
-        recreate();
-    }
+        //this will get called if the item is added from the add new item button[+]
+        if (position==Const.ADDITEM){
+            items.add(item);
+            firebase.addItemToList(item);
+            adapter.notifyItemInserted(items.size()+1);
 
-    @Override
-    public void addSpecificItem(int position) {
-        recreate();
-    }
-
-    @Override
-    public void setItemName(String itemName) {
-        Log.d(TAG, "setItemName: +" +itemName);
-        item.setItem_name(itemName);
-    }
-
-    @Override
-    public void setQuantity(int quantity) {
-        Log.d(TAG, "setQuantity: quant " + quantity);
-        item.setQuantity(quantity);
-    }
-
-    @Override
-    public void setlistName(String listName) {
-        Log.d(TAG, "setlistName: " + listName);
-        item.setList_name(listName);
-    }
-
-    @Override
-    public void setPrice(double itemPrice) {
-        Log.d(TAG, "setPrice: " + itemPrice);
-        item.setPrice(itemPrice);
-    }
-
-    @Override
-    public void openBrowser(int browser) {
+        }else{
+            items.set(position,item);
+            firebase.addItemToList(item);
+            adapter.notifyItemChanged(position,item);
+        }
 
     }
 
     @Override
-    public void addItemToList() {
-
+    public void setChanges(Item item, int position) {
+        Log.d(TAG, "setChanges: item " + item.toString() + " position  = " +position);
+        firebase.addItemToList(item);
+        items.set(position,item);
+        adapter.notifyItemChanged(position,item);
     }
 
-    @Override
-    public void addItemToFamilyList() {
-
-    }
 
 
     //----------------------------Firebase Code-----------------------------------
@@ -368,9 +335,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
             startActivity(intent);
         }
     }
-
-
-
 }
 
 

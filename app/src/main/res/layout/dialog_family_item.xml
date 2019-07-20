@@ -10,7 +10,7 @@
 
         <EditText
             android:id="@+id/etItemPrice"
-            android:layout_width="190dp"
+            android:layout_width="188dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -26,8 +26,8 @@
             android:id="@+id/etListName"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/background_leftround_walmart"
             android:fontFamily="@font/asap_medium"
             android:inputType="textPersonName"
@@ -44,9 +44,9 @@
             android:id="@+id/etItemName"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="8dp"
             android:hint="Item Name"
             android:inputType="text"
             android:maxLength="18"
@@ -60,15 +60,14 @@
 
         <EditText
             android:id="@+id/etQuantity"
-            android:layout_width="190dp"
+            android:layout_width="188dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:hint="Item Quantity"
             android:inputType="number"
             android:maxLength="6"
-            android:textSize="@dimen/medium"
-            android:text=""
+            android:text="1"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etItemPrice" />
@@ -77,49 +76,36 @@
             android:id="@+id/tvPrice"
             android:layout_width="70dp"
             android:layout_height="40dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="@string/field_quantity"
             android:textAlignment="center"
-            app:layout_constraintEnd_toStartOf="@+id/etItemPrice"
-            app:layout_constraintTop_toBottomOf="@+id/etItemName" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvQuantity" />
 
         <TextView
-            android:id="@+id/tvPrice"
+            android:id="@+id/tvQuantity"
             android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="@string/field_price"
-            app:layout_constraintEnd_toStartOf="@+id/etQuantity"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvThePrice" />
+            app:layout_constraintTop_toBottomOf="@+id/etItemName" />
 
         <Button
-            android:id="@+id/btnSetChanges"
+            android:id="@+id/btnAcceptIntoCart"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="set changes"
+            android:text="Accept Item Into Cart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etQuantity" />
-
-        <Button
-            android:id="@+id/btnRestoreToCart"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Restore To Cart"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnSetChanges" />
 
         <Button
             android:id="@+id/btnDeleteFromList"

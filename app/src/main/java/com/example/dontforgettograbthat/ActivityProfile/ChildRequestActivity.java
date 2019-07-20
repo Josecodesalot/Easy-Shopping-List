@@ -12,6 +12,7 @@ import com.example.dontforgettograbthat.Dialogs.AcceptOrRejectRequestDialog;
 import com.example.dontforgettograbthat.Interface.ChildrenRequestInterface;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
+import com.example.dontforgettograbthat.utils.Const;
 import com.example.dontforgettograbthat.utils.FirebaseMethods;
 import com.example.dontforgettograbthat.utils.RecyclerViewChildrenRequests;
 import com.example.dontforgettograbthat.utils.UserClient;
@@ -23,10 +24,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class RequestActivity extends AppCompatActivity implements ChildrenRequestInterface {
+public class ChildRequestActivity extends AppCompatActivity implements ChildrenRequestInterface {
 
-    private static final String TAG = "RequestItemsActivity";
-    private Context mContext = RequestActivity.this;
+    private static final String TAG = "FamilyListActivity";
+    private Context mContext = ChildRequestActivity.this;
 
     //  UTILS
     //RecyclerView Addapter
@@ -53,7 +54,7 @@ public class RequestActivity extends AppCompatActivity implements ChildrenReques
     private void setUpUserList() {
         Log.d(TAG, "setUpUserList: ");
         currentUser = ((UserClient)(getApplicationContext())).getUser();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("request").child(currentUser.getUsername());
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Const.FAMILY_USER_REQUEST).child(currentUser.getUsername());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

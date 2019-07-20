@@ -1,6 +1,6 @@
 package com.example.dontforgettograbthat.Interface;
 
-public interface IAddItem {
+public interface AddItemInterface {
     void setItemName(String itemName);
     void setQuantity(int quantity);
     void setlistName(String listName);

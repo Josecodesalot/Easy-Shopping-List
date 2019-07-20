@@ -14,8 +14,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ActivityProfile.ProfileInfoActivity"></activity>
         <activity android:name=".ActivityProfile.ChildrenMangementActivity"></activity>
-        <activity android:name=".ActivityProfile.RequestActivity" />
-        <activity android:name=".CartActivity.CartActivity">
+        <activity android:name=".ActivityProfile.ChildRequestActivity" />
+        <activity android:name=".ActivityCart.CartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +26,8 @@
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".AddItemActivity.AddItemActivity"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".HistoryActivity.HistoryActivity" />
-        <activity android:name=".ActivityRequestItems.RequestItemsActivity" />
+        <activity android:name=".ActivityHistory.HistoryActivity" />
+        <activity android:name=".ActivityFamilyList.FamilyListActivity" />
         <activity android:name=".ActivityProfile.UserSettingsActivity" />
 
         <meta-data

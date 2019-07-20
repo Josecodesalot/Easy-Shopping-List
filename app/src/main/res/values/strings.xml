@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DontForgetToGrabThat</string>
+    <string name="app_name">Simple Shopping List</string>
     <string name="create_account">No account? create an account today!</string>
     <string name="email_address">Email Address</string>
     <string name="shopping_list">Shopping-List</string>

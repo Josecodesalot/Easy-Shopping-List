@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.ActivityRequestItems.RequestItemsActivity;
-import com.example.dontforgettograbthat.CartActivity.CartActivity;
-import com.example.dontforgettograbthat.HistoryActivity.HistoryActivity;
+import com.example.dontforgettograbthat.ActivityFamilyList.FamilyListActivity;
+import com.example.dontforgettograbthat.ActivityCart.CartActivity;
+import com.example.dontforgettograbthat.ActivityHistory.HistoryActivity;
 import com.example.dontforgettograbthat.Interface.RecyclerViewInterface;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
@@ -40,6 +40,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
         ViewHolder holder = new ViewHolder(view);
 
+
         if (mContext instanceof CartActivity) {
             Log.d(TAG, "onCreateViewHolder: CartActivity");
             mInterface = (CartActivity) parent.getContext();
@@ -48,9 +49,9 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
             Log.d(TAG, "onCreateViewHolder: HistoryActvity");
             mInterface = (HistoryActivity) parent.getContext();
         }
-        if (mContext instanceof RequestItemsActivity) {
-            Log.d(TAG, "onCreateViewHolder: RequestItemsActivity");
-            mInterface = (RequestItemsActivity) parent.getContext();
+        if (mContext instanceof FamilyListActivity) {
+            Log.d(TAG, "onCreateViewHolder: FamilyListActivity");
+            mInterface = (FamilyListActivity) parent.getContext();
         }
         return holder;
     }
@@ -102,7 +103,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvItemName;
+        public  TextView tvItemName;
         TextView tvItemListName;
         TextView tvPrice;
         TextView tvItemQuantity;
@@ -112,7 +113,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
             super(itemView);
             tvItemName = itemView.findViewById(R.id.tvItemName);
             tvItemListName = itemView.findViewById(R.id.tvListName);
-            tvPrice = itemView.findViewById(R.id.tvtheprice);
+            tvPrice = itemView.findViewById(R.id.tvPrice);
             parentLayout = itemView.findViewById(R.id.list_root);
             tvItemQuantity =  itemView.findViewById(R.id.tvItemCount);
         }

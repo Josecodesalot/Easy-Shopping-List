@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.ActivityProfile.RequestActivity;
+import com.example.dontforgettograbthat.ActivityProfile.ChildRequestActivity;
 import com.example.dontforgettograbthat.Interface.ChildrenRequestInterface;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
@@ -71,8 +71,8 @@ public class RecyclerViewChildrenRequests extends RecyclerView.Adapter<RecyclerV
             tvUserName = itemView.findViewById(R.id.tvUserName);
             parentLayout = itemView.findViewById(R.id.list_root);
 
-                Log.d(TAG, "ViewHolder: RequestActivity");
-                mInterface = (RequestActivity)  itemView.getContext();
+                Log.d(TAG, "ViewHolder: ChildRequestActivity");
+                mInterface = (ChildRequestActivity)  itemView.getContext();
 
         }
     }

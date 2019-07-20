@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Button;
 
-import com.example.dontforgettograbthat.ActivityProfile.RequestActivity;
+import com.example.dontforgettograbthat.ActivityProfile.ChildRequestActivity;
 import com.example.dontforgettograbthat.Interface.ChildrenRequestInterface;
 import com.example.dontforgettograbthat.Models.User;
 import com.example.dontforgettograbthat.R;
@@ -39,7 +39,7 @@ public class AcceptOrRejectRequestDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dailog_add_reject_user, container, false);
-        mInterface = (RequestActivity) getContext();
+        mInterface = (ChildRequestActivity) getContext();
         setRetainInstance(true);
         referenceViews(view);
 

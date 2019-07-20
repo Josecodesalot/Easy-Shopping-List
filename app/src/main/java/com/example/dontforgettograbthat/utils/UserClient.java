@@ -32,6 +32,7 @@ public class UserClient extends Application {
     }
 
     public void initializeItem(){
+        item = new Item();
         this.item.setPrice(0.0);
         this.item.setItemKey("");
         this.item.setItem_name("");

@@ -1,28 +1,20 @@
 package com.example.dontforgettograbthat.AddItemActivity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import com.example.dontforgettograbthat.Dialogs.WebViewDialogueFragment;
-import com.example.dontforgettograbthat.Interface.IAddItem;
-import com.example.dontforgettograbthat.Models.Item;
+import com.example.dontforgettograbthat.Interface.AddItemInterface;
 import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.utils.Const;
-import com.example.dontforgettograbthat.utils.UserClient;
 
 
 public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragment implements View.OnClickListener, View.OnKeyListener, CheckBox.OnCheckedChangeListener{
@@ -37,7 +29,7 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
 
 
     //Interface
-    private IAddItem mInterface;
+    private AddItemInterface mInterface;
 
     //vars
 
@@ -235,5 +227,27 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
         }
 
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle bundle= getArguments();
+        if (bundle!=null){
+            reset();
+        }
+    }
+
+    public void reset(){
+        chkWalmart.callOnClick();
+        chkWalmart.setChecked(false);
+
+        etCostco.setText("");
+        etWalmart.setText("");
+        etCustomName.setText("");
+        etMetro.setText("");
+        etCustomPrice.setText("");
+        etZhers.setText("");
+
     }
 }

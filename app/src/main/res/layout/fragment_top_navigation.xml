@@ -6,7 +6,7 @@
     android:id="@+id/relLayoutParent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".CartActivity.CartActivity"
+    tools:context=".ActivityCart.CartActivity"
     android:background="@color/colorPrimary">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +26,7 @@
             android:fontFamily="@font/asap_medium"
             android:text="@string/shopping_list"
             android:textAlignment="center"
-            android:textColor="@color/gwhite"
+            android:textColor="@color/white"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

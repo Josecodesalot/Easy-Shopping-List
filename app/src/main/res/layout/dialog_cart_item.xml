@@ -73,27 +73,25 @@
             app:layout_constraintTop_toBottomOf="@+id/etItemPrice" />
 
         <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/field_price"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toStartOf="@+id/etItemPrice"
+            app:layout_constraintTop_toBottomOf="@+id/etItemName" />
+
+        <TextView
             android:id="@+id/tvQuantity"
             android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="@string/field_quantity"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toStartOf="@+id/etItemPrice"
-            app:layout_constraintTop_toBottomOf="@+id/etItemName" />
-
-        <TextView
-            android:id="@+id/tvtheprice"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="@string/field_price"
             app:layout_constraintEnd_toStartOf="@+id/etQuantity"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvQuantity" />
+            app:layout_constraintTop_toBottomOf="@+id/etItemPrice" />
 
         <Button
             android:id="@+id/btnSetChanges"
@@ -109,7 +107,7 @@
             app:layout_constraintTop_toBottomOf="@+id/etQuantity" />
 
         <Button
-            android:id="@+id/btnBought"
+            android:id="@+id/btnBoughtToHistory"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -127,10 +125,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
             android:text="delete from list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnBought" />
+            app:layout_constraintTop_toBottomOf="@+id/btnBoughtToHistory" />
 
 </android.support.constraint.ConstraintLayout>

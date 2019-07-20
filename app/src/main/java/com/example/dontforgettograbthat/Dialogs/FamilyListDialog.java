@@ -13,39 +13,35 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.dontforgettograbthat.ActivityHistory.HistoryActivity;
-import com.example.dontforgettograbthat.Interface.AddItemInterface;
-import com.example.dontforgettograbthat.Interface.HistoryInterface;
+import com.example.dontforgettograbthat.ActivityFamilyList.FamilyListActivity;
+import com.example.dontforgettograbthat.Interface.FamilyListInterface;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
-import com.example.dontforgettograbthat.utils.FirebaseMethods;
 import com.example.dontforgettograbthat.utils.NotNull;
 
-public class HistoryDialog extends DialogFragment implements View.OnClickListener{
+public class FamilyListDialog extends DialogFragment implements View.OnClickListener{
 
-    private static final String TAG = "HistoryDialog";
-    private Button btnDeleteFromCartList, btnAddToHistory;
+    private static final String TAG = "FamilyListDialog";
+    FamilyListInterface mInterface;
+
+    private Button btnDeleteFromCartList, btnAcceptIntoCart;
     private EditText etItemName, etListName, etPrice, etQuanity;
-
-    HistoryInterface mInterface;
-    AddItemInterface mAddInterface;
-
     private Item item;
     private int position;
     private Context mContext;
-
     private Button btnSetChanges;
 
-    public static HistoryDialog newInstance(Item item) {
-        HistoryDialog frag = new HistoryDialog();
-        frag.setItems(item);
+    public static FamilyListDialog newInstance(Item item, int position) {
+        FamilyListDialog frag = new FamilyListDialog();
+        frag.setItems(item, position);
         return frag;
     }
 
-    public void setItems(Item item) {
+    public void setItems(Item item, int position) {
         this.item=item;
-    }
+        this.position=position;
 
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -56,13 +52,11 @@ public class HistoryDialog extends DialogFragment implements View.OnClickListene
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_history , container, false);
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        referenceWidgets(view);
+        View view = inflater.inflate(R.layout.dialog_family_item, container, false);
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         referenceWidgets(view);
-        mInterface = (HistoryActivity) getContext();
+        mInterface = (FamilyListActivity) getContext();
 
 
         if (item != null) {
@@ -79,11 +73,10 @@ public class HistoryDialog extends DialogFragment implements View.OnClickListene
         return view;
     }
 
-
     public void referenceWidgets(View view){
 
         btnDeleteFromCartList = view.findViewById(R.id.btnDeleteFromList);
-        btnAddToHistory = view.findViewById(R.id.btnRestoreToCart);
+        btnAcceptIntoCart = view.findViewById(R.id.btnAcceptIntoCart);
         btnSetChanges = view.findViewById(R.id.btnSetChanges);
 
         etPrice = view.findViewById(R.id.etItemPrice);
@@ -91,7 +84,7 @@ public class HistoryDialog extends DialogFragment implements View.OnClickListene
         etListName = view.findViewById(R.id.etListName);
         etQuanity = view.findViewById(R.id.etQuantity);
 
-        btnAddToHistory.setOnClickListener(this);
+        btnAcceptIntoCart.setOnClickListener(this);
         btnDeleteFromCartList.setOnClickListener(this);
         btnSetChanges.setOnClickListener(this);
 
@@ -103,12 +96,12 @@ public class HistoryDialog extends DialogFragment implements View.OnClickListene
         switch (v.getId()){
 
             case R.id.btnDeleteFromList:
-                mInterface.deleteFromHistory(item,position);
+                mInterface.delete(position);
                 dismiss();
                 break;
 
             case R.id.btnRestoreToCart:
-                mInterface.restoreToCart(item,position);
+                mInterface.addToCartList(item, position);
                 dismiss();
                 break;
 
@@ -120,14 +113,13 @@ public class HistoryDialog extends DialogFragment implements View.OnClickListene
     }
 
     private Item getCurrentItem() {
-
         Item item = new Item();
         if (this.item!=null) {
             item.setItemKey(this.item.getItemKey());
         }
         item.setItem_name(etItemName.getText().toString());
         item.setList_name(etListName.getText().toString());
-        item.setQuantity(Long.parseLong(etQuanity.getText().toString()));
+        item.setQuantity(Integer.parseInt(etQuanity.getText().toString()));
         item.setPrice(Double.parseDouble(etPrice.getText().toString()));
 
         return item;

@@ -37,7 +37,6 @@ public class ProfileInfoActivity extends AppCompatActivity {
     private EditText username;
     private Button  submit, parentNameButton;
 
-
     //vars
     private User user;
     private String sUsername, sParentUsername;
@@ -64,6 +63,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
         firebaseDataExchangeListener();
         user = new User();
         user = ((UserClient)(getApplicationContext())).getUser();
+
         if (user!=null) {
             Log.d(TAG, "onCreate: user " + user.toString());
         }
@@ -137,22 +137,21 @@ public class ProfileInfoActivity extends AppCompatActivity {
         email.setText(mAuth.getCurrentUser().getEmail());
         username = findViewById(R.id.etUserName);
         parentNameButton = findViewById(R.id.btnSetUpParent);
-
         submit = findViewById(R.id.btnSendToFamilyList);
-         parentNameButton.setOnClickListener(new View.OnClickListener() {
+
+        parentNameButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 AddFamilyNameDialog dialog = new AddFamilyNameDialog();
+                 AddFamilyNameDialog dialog = AddFamilyNameDialog.newInstance(user, mContext);
                  dialog.show(getSupportFragmentManager(),"");
              }
          });
+
         if (user!=null){
 
             username.setText(user.getUsername());
 
         }
-
-
     }
 
     //Firebase Code

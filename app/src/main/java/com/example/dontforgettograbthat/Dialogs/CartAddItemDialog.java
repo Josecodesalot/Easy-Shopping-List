@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.dontforgettograbthat.CartActivity.CartActivity;
+import com.example.dontforgettograbthat.ActivityCart.CartActivity;
 import com.example.dontforgettograbthat.Interface.CartInterface;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
+import com.example.dontforgettograbthat.utils.Const;
+import com.example.dontforgettograbthat.utils.NotNull;
 
 
 public class CartAddItemDialog extends DialogFragment {
@@ -33,7 +35,8 @@ public class CartAddItemDialog extends DialogFragment {
         Log.d(TAG, "onCreateView: Started");
 
         mInterface = (CartActivity) getContext();
-
+        item = new Item();
+        item  = NotNull.item(item);
         ReferenceViews(view);
         RunButton();
         return view;
@@ -44,11 +47,16 @@ public class CartAddItemDialog extends DialogFragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                item.setItem_name(etItemName.getText().toString());
 
-                item = new Item(etItemName.getText().toString(), "default", 1,0.0,"");
+                if (!etQuantity.getText().toString().isEmpty()){
+                    long q = Long.parseLong(etQuantity.getText().toString());
+                    item.setQuantity(q);
+                }
+
                 Log.d(TAG, "onClick: Item = " + item.toString());
                 //sends Item to CartActivity so that cart activity can send it to Firebase and add it to the recyclerView
-                mInterface.addItem(item);
+                mInterface.addItem(item, Const.ADDITEM);
                 dismiss();
             }
         });

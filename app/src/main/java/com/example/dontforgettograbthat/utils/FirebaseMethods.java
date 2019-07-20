@@ -46,31 +46,26 @@ public class FirebaseMethods {
         }
     }
 
-    public void addItemToFamilyList(Item item, User currentUser){
-
-        String id = myRef.push().getKey();
-        item.setItemKey(id);
-        myRef.child(Const.familyListField).child(currentUser.getParent_name()).child(item.getItemKey()).setValue(item);
-        Log.d(TAG, "addItemToFamilyList: Item " + item.toString() + "into" + myRef);
+    public void setFamilyitem(Item item, User user){
+        if (item.getItemKey()==null||item.getItemKey().isEmpty()){
+            item.setItemKey(myRef.push().getKey());
+        }
+        myRef.child(Const.FAMILY_ITEM).child(user.getParent_name()).child(item.getItemKey()).setValue(item);
     }
+
+    public void deleteItemCart(Item item){
+        myRef.child(Const.ITEMS_FIELD).child(userID).child(item.getItemKey()).removeValue();
+    }
+
+    public void deleteFamilyListItem(Item item){
+        myRef.child(Const.FAMILY_ITEM).child(userID).child(item.getItemKey()).removeValue();
+    }
+
 
     public void deleteHistory(String itemKey) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Const.historyField).child(userID).child(itemKey);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Const.HISTORY_FIELD).child(userID).child(itemKey);
         ref.removeValue();
 
-    }
-
-    public void deleteRequestedItem(String itemKey, String familyName) {
-        if (userID != null) {
-            DatabaseReference dr = FirebaseDatabase.getInstance().getReference(Const.familyListField).child(familyName).child(itemKey);
-            dr.removeValue();
-        } else {
-            loginToast();
-        }
-    }
-
-    private void loginToast() {
-        Toast.makeText(mContext, "Please Signin to activate this feature", Toast.LENGTH_SHORT).show();
     }
 
     public void addItemToList(Item item) {
@@ -82,63 +77,29 @@ public class FirebaseMethods {
             item.setItemKey(s);
         }
 
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.itemsField).child(userID).child(item.getItemKey());
+        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.ITEMS_FIELD).child(userID).child(item.getItemKey());
         Log.d(TAG, "addItemToList: ref = " + ref.toString());
         ref.setValue(item);
-
-        }
-
-
-    public void addItemToList(String mItemName, String mListName, long mItemQuantity, double mItemPrice) {
-        Item item = new Item(mItemName,mListName,mItemQuantity,mItemPrice,"");
-
-        if (mAuth.getCurrentUser() != null) {
-            String id = myRef.push().getKey();
-            item.setItemKey(id);
-            myRef.child(Const.itemsField).child(userID).setValue(item);
-        }else {
-            Toast.makeText(mContext, "Error, Login, SignUp, or Send this to your won account through the Email Feature", Toast.LENGTH_LONG).show();
-        }
-    }
-    public void addItemToListForTheFirstTime (Item item){
-        Log.d(TAG, "addItemToListForTheFirstTime: started");
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("items").child(userID);
-        item.setItemKey(ref.push().getKey());
-        Log.d(TAG, "addItemToListForTheFirstTime: item " + item.toString() );
-        ref.child(item.getItemKey()).setValue(item);
-    }
-
-    public void sendRequest(String mItemName,String mListName, long mItemQuantity, Double mItemPrice,
-                            String familyName) {
-
-        Item item = new Item(mItemName, mListName, mItemQuantity, mItemPrice,"");
-        Log.d(TAG, "sendRequest: started");
-
-        if (mAuth.getCurrentUser() != null) {
-            item.setItemKey(myRef.push().getKey());
-            myRef.getRoot().child(Const.requestField).child(familyName).child(item.getItemKey()).setValue(item);
-
-        } else
-            Toast.makeText(mContext, "Error, Login, SignUp, or Send this to your won account through the Email Feature", Toast.LENGTH_LONG).show();
     }
 
     public void addItemToHistory(Item item) {
         if (mAuth.getCurrentUser() != null) {
 
-            myRef.child(Const.historyField)
-                    .child(mAuth.getCurrentUser().getUid()).child(item.getItemKey())
+            myRef.child(Const.HISTORY_FIELD)
+                    .child(userID).child(item.getItemKey())
                     .setValue(item);
+
         } else
             Toast.makeText(mContext, "Error, Login, SignUp, or Send this to your won account through the Email Feature", Toast.LENGTH_LONG).show();
     }
 
-    public void restoreItem(Item item) {
+    public void restoreFromHistoryToCart(Item item) {
         //Add to Cart,
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Const.itemsField).child(userID).child(item.getItemKey());
+        DatabaseReference ref = myRef.child(Const.ITEMS_FIELD).child(userID).child(item.getItemKey());
         ref.setValue(item);
 
         //Remove From History
-        DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference().child(Const.historyField).child(userID).child(item.getItemKey());
+        DatabaseReference historyRef = FirebaseDatabase.getInstance().getReference().child(Const.HISTORY_FIELD).child(userID).child(item.getItemKey());
         historyRef.removeValue();
     }
 
@@ -206,6 +167,7 @@ public class FirebaseMethods {
                     });
         }
     }
+    
 
     public void logoutAndClearStack() {
         mAuth.signOut();
@@ -218,44 +180,38 @@ public class FirebaseMethods {
     }
 
     // CHild Managerment
-
-    public void sendParentRequest(String parentsUsername, User user) {
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.requestField).child(parentsUsername).child(user.getUser_id());
-        ref.setValue(user);
-    }
-
     public void addNewUser(User user){
         Log.d(TAG, "addNewUser: called");
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.usersField).child(user.getUser_id());
+        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.USERS_FIELD).child(user.getUser_id());
         ref.setValue(user);
     }
 
+    public void sendParentRequest(String parentsUsername, User currentUser) {
+        myRef.child(Const.FAMILY_USER_REQUEST).child(parentsUsername).child(currentUser.getUser_id()).setValue(currentUser);
+        // Request -> Username -> UID -> User Object //
+
+    }
+
+    /*
+        acceptRequest
+        PARAMS currentUsername, is the username of the current user, User user, is he username of the child which sent the request
+     */
     public void acceptRequest (String currenUsername , User user){
         Log.d(TAG, "acceptRequest: user " + user.toString());
         //The User object user, should be the child request user with the updated ParentName from the current user,
         //the following method will update the child users account
         addNewUser(user);
-        Log.d(TAG, "acceptRequest: add user" + user.toString());
         //The following will delete the request
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.requestField).child(currenUsername).child(user.getUser_id());
-        Log.d(TAG, "acceptRequest: remove value at ref = " + ref.toString());
-        ref.removeValue();
-        if (ref.removeValue().isSuccessful()){
-            Log.d(TAG, "acceptRequest: removal should have been successful");
-        } else{
-            Log.d(TAG, "acceptRequest: removal not successful");
-        }
-        //The following will Add User to FamilyList
-        DatabaseReference thisref = mFirebaseDatabase.getReference().child(Const.familyListField).child(userID).child(user.getUser_id());
-        Log.d(TAG, "acceptRequest: adding user at ref " + thisref.toString());
-        thisref.setValue(user);
+        myRef.child(Const.FAMILY_USER_REQUEST).child(currenUsername).child(user.getUser_id()).removeValue();
+        //The following will Add User to FamilyListActivity
+        // family_user -> (Current User) UID -> ChildUserId --setvalue--> user
+        myRef.child(Const.FAMILY_USER).child(userID).child(user.getUser_id()).setValue(user);
     }
 
     public void sendUserToRequest (User currentUser , User user){
         Log.d(TAG, "sendUserToRequest: called with user " + user.toString());
         //removes child user from family
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.familyListField).child(currentUser.getUser_id()).child(user.getUser_id());
-        ref.removeValue();
+        myRef.child(Const.FAMILY_USER).child(currentUser.getUser_id()).child(user.getUser_id()).removeValue();
         //updates child users family name
         user.setParent_name("");
         addNewUser(user);
@@ -263,13 +219,11 @@ public class FirebaseMethods {
         sendParentRequest(currentUser.getUsername(),user);
     }
     public void deleteRequest (String currentUsername , String userKey){
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.requestField).child(currentUsername).child(userKey);
-        ref.removeValue();
+        myRef.child(Const.FAMILY_USER_REQUEST).child(currentUsername).child(userKey).removeValue();
     }
     public void  deleteFamilyMember (User currentUser , User user){
         // deletes child user from current users family node
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.familyListField).child(currentUser.getUser_id()).child(user.getUser_id());
-        ref.removeValue();
+        myRef.child(Const.FAMILY_USER).child(currentUser.getUser_id()).child(user.getUser_id()).removeValue();
         // updates child users parent setting
         user.setParent_name("");
         addNewUser(user);

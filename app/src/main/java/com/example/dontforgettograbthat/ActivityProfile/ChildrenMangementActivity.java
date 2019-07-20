@@ -67,7 +67,7 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
     private void setUpUserList() {
         Log.d(TAG, "setUpUserList: ");
         userCurrent = ((UserClient)(getApplicationContext())).getUser();
-        DatabaseReference ref = database.getReference().child(Const.familyListField).child(userCurrent.getUser_id());
+        DatabaseReference ref = database.getReference().child(Const.FAMILY_USER).child(userCurrent.getUser_id());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override

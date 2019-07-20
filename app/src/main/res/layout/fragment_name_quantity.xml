@@ -62,7 +62,7 @@
                 android:textSize="@dimen/Title" />
 
             <TextView
-                android:id="@+id/tvQuantity"
+                android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/etItemName"
@@ -77,7 +77,7 @@
                 android:id="@+id/etQuantity"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvQuantity"
+                android:layout_below="@+id/tvPrice"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/asap_medium"

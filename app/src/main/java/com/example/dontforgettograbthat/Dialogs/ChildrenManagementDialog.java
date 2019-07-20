@@ -66,7 +66,7 @@ public class ChildrenManagementDialog extends DialogFragment {
     private void referenceViews(View view) {
         username = view.findViewById(R.id.tvUserName);
         deleteChild = view.findViewById(R.id.btnReject);
-        sendBackToRequest = view.findViewById(R.id.btnSendBack);
+        sendBackToRequest = view.findViewById(R.id.btnRestoreToCart);
     }
 
 

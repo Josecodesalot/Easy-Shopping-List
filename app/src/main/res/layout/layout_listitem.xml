@@ -49,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/tvtheprice"
+        android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -58,20 +58,19 @@
         android:text="3.99"
         android:textSize="@dimen/Header"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/tvItemCount" />
 
     <TextView
         android:id="@+id/tvItemCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvtheprice"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/asap_medium"
         android:text="x3"
-        android:textSize="@dimen/Title"
+        android:textSize="@dimen/Header"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvtheprice" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

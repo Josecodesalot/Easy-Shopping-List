@@ -3,26 +3,21 @@ package com.example.dontforgettograbthat.AddItemActivity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.EditText;
 
-import com.example.dontforgettograbthat.Interface.IAddItem;
-import com.example.dontforgettograbthat.Models.Item;
+import com.example.dontforgettograbthat.Interface.AddItemInterface;
 import com.example.dontforgettograbthat.R;
-import com.example.dontforgettograbthat.utils.UserClient;
-
-import java.util.ArrayList;
+import com.example.dontforgettograbthat.utils.Const;
 
 public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
     private static final String TAG="AddNameAndQuan";
     private EditText itemName, itemQuantity;
-    private IAddItem mInterface;
+    private AddItemInterface mInterface;
 
     @Nullable
     @Override
@@ -78,5 +73,23 @@ public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
     private void referenceViews(View view) {
     itemName= view.findViewById(R.id.etItemName);
     itemQuantity = view.findViewById(R.id.etQuantity);
+    }
+
+    public void reset(){
+        Log.d(TAG, "reset: called");
+        itemName.setText("");
+        itemQuantity.setText("");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle bundle = getArguments();
+        if (bundle!=null){
+
+            reset();
+        }else{
+            Log.d(TAG, "onResume: bundle null");
+        }
     }
 }

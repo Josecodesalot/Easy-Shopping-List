@@ -72,7 +72,7 @@ public class RecyclerViewChildrenManagement extends RecyclerView.Adapter<Recycle
             tvUserName = itemView.findViewById(R.id.tvUserName);
             parentLayout = itemView.findViewById(R.id.list_root);
 
-            Log.d(TAG, "ViewHolder: RequestActivity");
+            Log.d(TAG, "ViewHolder: ChildRequestActivity");
             mInterface = (ChildrenMangementActivity)  itemView.getContext();
 
         }

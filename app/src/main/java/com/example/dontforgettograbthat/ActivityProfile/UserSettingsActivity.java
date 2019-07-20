@@ -96,7 +96,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         requestsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, RequestActivity.class);
+                Intent intent = new Intent(mContext, ChildRequestActivity.class);
                 startActivity(intent);
             }
         });

@@ -6,43 +6,33 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.dontforgettograbthat.CartActivity.CartActivity;
+import com.example.dontforgettograbthat.ActivityCart.CartActivity;
 import com.example.dontforgettograbthat.Interface.CartInterface;
-import com.example.dontforgettograbthat.Interface.IAddItem;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.R;
-import com.example.dontforgettograbthat.utils.FirebaseMethods;
-import com.example.dontforgettograbthat.utils.GetListDrawable;
-import com.example.dontforgettograbthat.utils.NumberTextWatcher;
-import com.example.dontforgettograbthat.utils.nonNull;
+import com.example.dontforgettograbthat.utils.NotNull;
 
-public class CartItemDialog extends DialogFragment implements View.OnClickListener {
+public class CartListDialog extends DialogFragment implements View.OnClickListener {
 
-    private static final String TAG = "CartItemDialog";
+    private static final String TAG = "CartListDialog";
+    CartInterface mInterface;
 
     private Button btnDeleteFromCartList, btnAddToHistory;
     private EditText etItemName, etListName, etPrice, etQuanity;
-
-    CartInterface mInterface;
-    IAddItem mAddInterface;
-
     private Item item;
     private int position;
     private Context mContext;
-
     private Button btnSetChanges;
 
-    public static CartItemDialog newInstance(Item item, int position) {
-        CartItemDialog frag = new CartItemDialog();
+    public static CartListDialog newInstance(Item item, int position) {
+        CartListDialog frag = new CartListDialog();
         frag.setItems(item, position);
         return frag;
     }
@@ -65,10 +55,10 @@ public class CartItemDialog extends DialogFragment implements View.OnClickListen
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         referenceWidgets(view);
         mInterface = (CartActivity) getContext();
-        mAddInterface = (CartActivity) getContext();
+
 
         if (item != null) {
-            item = nonNull.item(item);
+            item = NotNull.item(item);
             Log.d(TAG, "onCreateView: non Null item = " + item.toString());
 
             etListName.setText(item.getList_name());
@@ -84,7 +74,7 @@ public class CartItemDialog extends DialogFragment implements View.OnClickListen
     public void referenceWidgets(View view){
 
         btnDeleteFromCartList = view.findViewById(R.id.btnDeleteFromList);
-        btnAddToHistory = view.findViewById(R.id.btnBought);
+        btnAddToHistory = view.findViewById(R.id.btnBoughtToHistory);
         btnSetChanges = view.findViewById(R.id.btnSetChanges);
 
         etPrice = view.findViewById(R.id.etItemPrice);
@@ -104,22 +94,19 @@ public class CartItemDialog extends DialogFragment implements View.OnClickListen
         switch (v.getId()){
 
             case R.id.btnDeleteFromList:
-                mInterface.delete(item.getItemKey());
+                mInterface.delete(item.getItemKey(), position);
                 dismiss();
                 break;
 
-            case R.id.btnBought:
-                mInterface.addToHistory(item);
-                mInterface.delete(item.getItemKey());
+            case R.id.btnBoughtToHistory:
+                mInterface.addToHistory(item, position);
                 dismiss();
                 break;
 
             case R.id.btnSetChanges:
-                mInterface.addSpecificItem(position);
 
-                FirebaseMethods firebase = new FirebaseMethods(getActivity());
+                mInterface.setChanges(getCurrentItem(), position);
 
-                firebase.addItemToList(getCurrentItem());
                 dismiss();
         }
 
