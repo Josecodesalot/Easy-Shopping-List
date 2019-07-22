@@ -74,15 +74,17 @@
             app:layout_constraintTop_toBottomOf="@+id/etItemPrice" />
 
         <TextView
-            android:id="@+id/tvPrice"
+            android:id="@+id/tvQuantity"
             android:layout_width="70dp"
             android:layout_height="40dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="@string/field_quantity"
             android:textAlignment="center"
-            app:layout_constraintEnd_toStartOf="@+id/etItemPrice"
-            app:layout_constraintTop_toBottomOf="@+id/etItemName" />
+            app:layout_constraintEnd_toStartOf="@+id/etQuantity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
 
         <TextView
             android:id="@+id/tvPrice"
@@ -93,8 +95,9 @@
             android:gravity="center"
             android:text="@string/field_price"
             app:layout_constraintEnd_toStartOf="@+id/etQuantity"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvThePrice" />
+            app:layout_constraintTop_toBottomOf="@+id/etItemName" />
 
         <Button
             android:id="@+id/btnSetChanges"

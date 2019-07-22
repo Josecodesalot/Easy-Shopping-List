@@ -28,36 +28,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:elevation="2dp"
-        android:text="@string/submit"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/aSwitch" />
-
-    <Switch
-        android:id="@+id/aSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
-
     <TextView
-        android:id="@+id/tvMyList"    android:animateLayoutChanges="true"
+        android:id="@+id/tvMyList"
+        android:layout_width="150dp"
 
 
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="64dp"
+        android:animateLayoutChanges="true"
         android:background="@drawable/background_rounded_gwhite"
         android:fontFamily="@font/asap_medium"
         android:gravity="center"
@@ -65,20 +43,17 @@
         android:text="My List"
         android:textAlignment="center"
         android:textSize="@dimen/Title"
-        app:layout_constraintEnd_toStartOf="@id/aSwitch"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/aSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     <TextView
         android:id="@+id/tvFamilyList"
-        android:layout_width="0dp"
-        android:animateLayoutChanges="true"
-
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginEnd="8dp"
+
+        android:layout_marginTop="64dp"
+        android:animateLayoutChanges="true"
         android:background="@drawable/background_rounded_gwhite"
         android:fontFamily="@font/asap_medium"
         android:gravity="center"
@@ -87,9 +62,8 @@
         android:textAlignment="center"
         android:textSize="@dimen/Title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/aSwitch"
-        app:layout_constraintTop_toBottomOf="@id/aSwitch" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMyList" />
 
 
 </android.support.constraint.ConstraintLayout>

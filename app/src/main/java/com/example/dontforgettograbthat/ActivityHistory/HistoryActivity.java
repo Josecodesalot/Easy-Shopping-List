@@ -173,7 +173,6 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
         Log.d(TAG, "onStart: started get extras");
         mAuth.addAuthStateListener(mAuthListener);
         checkCurrentUser(mAuth.getCurrentUser());
-        Bundle bundle = getIntent().getExtras();
     }
 
     @Override
@@ -189,9 +188,6 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: started");
-        //TODO create a code so that this only recreates itself when recieving a custom code.
-       // recreate();
-
     }
 
     private void checkCurrentUser(FirebaseUser user){
@@ -203,12 +199,12 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
         }
     }
 
+    //--------- Override Methods From Interface ---------//
 
     @Override
     public void OpenDialog(int position) {
-        HistoryDialog dialog = HistoryDialog.newInstance(items.get(position));
-        dialog.show(getSupportFragmentManager(),"2");
-
+        HistoryDialog dialog = HistoryDialog.newInstance(items.get(position), position);
+        dialog.show(getSupportFragmentManager(),"history");
     }
 
     @Override
@@ -216,19 +212,22 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
         firebase.restoreFromHistoryToCart(item);
         items.remove(position);
         adapter.notifyItemRemoved(position);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void deleteFromHistory(Item item, int position) {
         firebase.deleteHistory(item.getItemKey());
         adapter.notifyItemRemoved(position);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void setChanges(Item item, int position) {
-        firebase.addItemToList(item);
+        firebase.additemToHistory(item);
         items.set(position,item);
         adapter.notifyItemChanged(position,item);
+        adapter.notifyDataSetChanged();
     }
 }
 

@@ -63,9 +63,7 @@ public class FirebaseMethods {
 
 
     public void deleteHistory(String itemKey) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Const.HISTORY_FIELD).child(userID).child(itemKey);
-        ref.removeValue();
-
+        myRef.child(Const.HISTORY_FIELD).child(userID).child(itemKey).removeValue();
     }
 
     public void addItemToList(Item item) {
@@ -80,6 +78,10 @@ public class FirebaseMethods {
         DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.CART_ITEM).child(userID).child(item.getItemKey());
         Log.d(TAG, "addItemToList: ref = " + ref.toString());
         ref.setValue(item);
+    }
+
+    public void additemToHistory(Item item){
+        myRef.child(Const.HISTORY_FIELD).child(userID).child(item.getItemKey()).setValue(item);
     }
 
     public void sendItemToHistory(Item item) {
@@ -182,14 +184,12 @@ public class FirebaseMethods {
     // CHild Managerment
     public void addNewUser(User user){
         Log.d(TAG, "addNewUser: called");
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(Const.USERS_FIELD).child(user.getUser_id());
-        ref.setValue(user);
+        myRef.child(Const.USERS_FIELD).child(user.getUser_id()).setValue(user);
     }
 
     public void sendParentRequest(String parentsUsername, User currentUser) {
         myRef.child(Const.FAMILY_USER_REQUEST).child(parentsUsername).child(currentUser.getUser_id()).setValue(currentUser);
         // Request -> Username -> UID -> User Object //
-
     }
 
     /*

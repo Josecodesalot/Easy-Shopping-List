@@ -60,6 +60,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
 
+        holder.tvPrice.setVisibility(View.VISIBLE);
         holder.tvItemListName.setText(items.get(position).getList_name());
         holder.tvItemName.setText(items.get(position).getItem_name());
         String price = "$" + items.get(position).getPrice();
@@ -69,14 +70,18 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
         if (items.get(position).getPrice()!=null) {
             if (items.get(position).getPrice() == 0.0) {
                 holder.tvPrice.setVisibility(View.GONE);
+            }else {
+                String quanitity = "x" + items.get(position).getQuantity();
+                holder.tvItemQuantity.setText(quanitity);
+                holder.tvItemQuantity.setVisibility(View.VISIBLE);
             }
-            String quanitity = "x" + items.get(position).getQuantity();
-            holder.tvItemQuantity.setText(quanitity);
         }
 
 
         if (items.get(position).getQuantity()==1){
             holder.tvItemQuantity.setVisibility(View.GONE);
+        }else{
+            holder.tvItemQuantity.setVisibility(View.VISIBLE);
         }
         Log.d(TAG, "onBindViewHolder: " + items.get(0).toString());
         holder.tvItemListName.setBackground(GetListDrawable.getDrawable(items.get(position).getList_name(),mContext));
@@ -86,7 +91,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Log.d(TAG, "onClick: positon = " + position);
                 mInterface.OpenDialog(position);
             }
 
@@ -97,6 +102,8 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
 
     @Override
     public int getItemCount() {
+        Log.d(TAG, "getItemCount: itemsize " + items.size());
+        items.trimToSize();
         return items.size();
     }
 
@@ -118,4 +125,5 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
             tvItemQuantity =  itemView.findViewById(R.id.tvItemCount);
         }
     }
+
 }

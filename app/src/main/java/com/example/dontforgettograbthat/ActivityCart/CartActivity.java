@@ -64,7 +64,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     //ItemVrars
     private String itemName;
     private Long itemCountLong;
-
     public String familyName;
 
     @Override
@@ -211,43 +210,51 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
     @Override
     public void OpenDialog(int position) {
-        Log.d(TAG, "OpenDialog: " + items.get(position).toString());
         CartListDialog dialog = CartListDialog.newInstance(items.get(position), position);
         dialog.show(getSupportFragmentManager(),"tag");
 
     }
     @Override
     public void addToHistory(Item item, int position) {
+
         Log.d(TAG, "addToHistory: " + item.toString());
         firebase.sendItemToHistory(item);
         items.remove(position);
         adapter.notifyItemRemoved(position);
+        adapter.notifyDataSetChanged();
+        setUpTotal();
 
     }
     @Override
     public void delete(String itemKey, int position) {
         Log.d(TAG, "delete: " + itemKey);
-
         firebase.deleteItemCart(items.get(position));
         items.remove(position);
         adapter.notifyItemRemoved(position);
+        adapter.notifyDataSetChanged();
+        Log.d(TAG, "delete: adapter size = " +adapter.getItemCount());
+        setUpTotal();
 
     }
     @Override
     public void addItem(Item item, int position) {
         Log.d(TAG, "addItem: called with item = " + item.toString());
         //this will get called if the item is added from the add new item button[+]
+
         if (position==Const.ADDITEM){
             items.add(item);
             firebase.addItemToList(item);
-            adapter.notifyItemInserted(items.size()+1);
+            adapter.notifyItemInserted(items.size());
+            adapter.notifyDataSetChanged();
+            setUpTotal();
 
         }else{
             items.set(position,item);
             firebase.addItemToList(item);
             adapter.notifyItemChanged(position,item);
+            adapter.notifyDataSetChanged();
+            setUpTotal();
         }
-
     }
 
     @Override
@@ -256,7 +263,11 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         firebase.addItemToList(item);
         items.set(position,item);
         adapter.notifyItemChanged(position,item);
+        adapter.notifyDataSetChanged();
+        setUpTotal();
     }
+
+
 
 
 

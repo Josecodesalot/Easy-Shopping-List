@@ -48,17 +48,13 @@ public class FamilyListActivity extends AppCompatActivity implements RecyclerVie
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseMethods firebase;
-
     private FirebaseDatabase database;
-    private DatabaseReference myRef;
 
     //vars
     private RecyclerViewItems adapter;
     private User user;
 
     private ArrayList<Item>items;
-
-    public String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,11 +206,12 @@ public class FamilyListActivity extends AppCompatActivity implements RecyclerVie
     @Override
     public void addToCartList(Item item, int posiion) {
         Log.d(TAG, "addToCartList: calle");
-        //This delets the item from this family list, and adds it to the users personal List
+        //This deletes the item from this family list, and adds it to the users personal List
         firebase.addItemToList(item);
         firebase.deleteFamilyListItem(item);
         items.remove(posiion);
         adapter.notifyItemRemoved(posiion);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -223,6 +220,7 @@ public class FamilyListActivity extends AppCompatActivity implements RecyclerVie
         firebase.deleteFamilyListItem(items.get(position));
         items.remove(position);
         adapter.notifyItemRemoved(position);
+        adapter.notifyDataSetChanged();
     }
     
 }

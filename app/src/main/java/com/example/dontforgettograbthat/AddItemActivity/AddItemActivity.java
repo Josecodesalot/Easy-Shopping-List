@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -48,7 +49,8 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = mFirebaseDatabase.getReference();
     private FirebaseMethods firebase;
 
     @Override
@@ -172,6 +174,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
     @Override
     public void addItemToList() {
         Log.d(TAG, "addItemToList: called");
+        item.setItemKey(myRef.push().getKey());
         firebase.addItemToList(item);
         reset();
     }
@@ -185,6 +188,11 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
             firebase.setFamilyitem(item,user);
            reset();
         }
+    }
+
+    @Override
+    public void setPage(int i) {
+        viewPager.setCurrentItem(i);
     }
 
     public void reset(){

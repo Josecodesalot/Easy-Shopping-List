@@ -8,4 +8,5 @@ public interface AddItemInterface {
     void openBrowser(int browser);
     void addItemToList();
     void addItemToFamilyList();
+    void setPage(int i);
 }

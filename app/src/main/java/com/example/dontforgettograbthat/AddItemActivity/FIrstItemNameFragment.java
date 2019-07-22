@@ -8,7 +8,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.dontforgettograbthat.Interface.AddItemInterface;
 import com.example.dontforgettograbthat.R;
@@ -22,7 +24,7 @@ public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_name_quantity, container,false);
+        View view = inflater.inflate(R.layout.fragment_name_quantity, container, false);
         Log.d(TAG, "onCreateView: ");
         referenceViews(view);
 
@@ -35,7 +37,7 @@ public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
                 if (!hasFocus) {
                     Log.d(TAG, "onFocusChange: Item Name data sent");
                     mInterface.setItemName(itemName.getText().toString());
-               }
+                }
             }
         });
 
@@ -54,19 +56,30 @@ public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
             @Override
 
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                    if (!itemQuantity.getText().toString().equals("")){
+                if (!hasFocus) {
+                    if (!itemQuantity.getText().toString().equals("")) {
                         mInterface.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
                         Log.d(TAG, "onFocusChange: itemQuantity sending data");
 
-                    }else {
+                    } else {
                         mInterface.setQuantity(0);
                         Log.d(TAG, "onFocusChange: itemQuantity sending data ");
                     }
                 }
             }
         });
-        return view;
+
+        itemQuantity.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    mInterface.setPage(1);
+                }
+                return false;
+            }
+        });
+    return view;
     }
 
 

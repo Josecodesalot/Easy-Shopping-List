@@ -3,6 +3,7 @@
     <color name="colorPrimary">#D32F2F</color>
     <color name="colorprimarydark">#1C3144</color>
     <color name="colorAccent">#bfbfbf</color>
+    <color name="primary_contrast">#fff</color>
 
     <color name="white">#ffff</color>
     <color name="gwhite">#ffff</color>
@@ -10,6 +11,8 @@
     <color name="light_grey">#ecf0f1</color>
     <color name="medium_grey">#D3D4D9</color>
     <color name="grey">#bfbfbf</color>
+
+
 
 
     <color name="black">#0D0106</color>

@@ -39,23 +39,7 @@
             >
         </android.support.v7.widget.RecyclerView>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/list"
-            android:layout_marginTop="-50dp">
 
-            <TextView
-                android:id="@+id/tvTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="Total:  "
-                android:textColor="@color/gwhite"
-                android:textSize="24sp"
-                android:paddingRight="20dp"
-                tools:layout_marginEnd="20dp"  />
-        </RelativeLayout>
     </RelativeLayout>
 
 

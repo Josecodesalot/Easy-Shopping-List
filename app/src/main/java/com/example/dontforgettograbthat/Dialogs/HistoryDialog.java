@@ -36,14 +36,15 @@ public class HistoryDialog extends DialogFragment implements View.OnClickListene
 
     private Button btnSetChanges;
 
-    public static HistoryDialog newInstance(Item item) {
+    public static HistoryDialog newInstance(Item item, int position) {
         HistoryDialog frag = new HistoryDialog();
-        frag.setItems(item);
+        frag.setItems(item, position);
         return frag;
     }
 
-    public void setItems(Item item) {
+    public void setItems(Item item, int position) {
         this.item=item;
+        this.position=position;
     }
 
 
@@ -94,8 +95,6 @@ public class HistoryDialog extends DialogFragment implements View.OnClickListene
         btnAddToHistory.setOnClickListener(this);
         btnDeleteFromCartList.setOnClickListener(this);
         btnSetChanges.setOnClickListener(this);
-
-
     }
 
     @Override
