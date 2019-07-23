@@ -40,14 +40,10 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
     private DatabaseReference myRef;
     private User userCurrent;
     //Vars
-    ArrayList<User> users ;
-
-    //Widgets
-    private RecyclerView recyclerView;
-    private RecyclerViewChildrenManagement adapter;
+    private ArrayList<User> users ;
 
     private static final String TAG = "ChildrenMangement";
-    private Context mContext = ChildrenMangementActivity.this;
+    private final Context mContext = ChildrenMangementActivity.this;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,8 +85,9 @@ public class ChildrenMangementActivity extends AppCompatActivity implements Chil
         });
     }
     private void setUpRecyclerView() {
-        recyclerView = findViewById(R.id.recyclerView);
-        adapter = new RecyclerViewChildrenManagement(
+        //Widgets
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RecyclerViewChildrenManagement adapter = new RecyclerViewChildrenManagement(
                 mContext,
                 users);
         Log.d(TAG, "onCreate: setUp ReciclerView");

@@ -17,11 +17,12 @@ import com.example.dontforgettograbthat.R;
 
 public class AcceptOrRejectRequestDialog extends DialogFragment {
 
-    TextView username;
-    Button deleteRequest, acceptIntoFamily;
-    ChildrenRequestInterface mInterface;
+    private TextView username;
+    private Button deleteRequest;
+    private Button acceptIntoFamily;
+    private ChildrenRequestInterface mInterface;
     private static final String TAG = "AcceptOrRejectRequestDi";
-    User user;
+    private User user;
 
 
 
@@ -31,7 +32,7 @@ public class AcceptOrRejectRequestDialog extends DialogFragment {
         return frag;
     }
 
-    public void setUser(User user) {
+    private void setUser(User user) {
         this.user=user;
     }
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private String email, password;
 
     //constants
-    private Context mContext = LoginActivity.this;
+    private final Context mContext = LoginActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,12 +129,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isStringNull(String string){
         Log.d(TAG, "Checking if string is null");
-        if (string.equals("")){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return string.equals("");
     }
 
     private void setUpWidgets(){
@@ -142,6 +138,8 @@ public class LoginActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.etPassword);
         mSubmitBtn = findViewById(R.id.btnSendToFamilyList);
         mCreateAccount = findViewById(R.id.tvCreateAccount);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
     }
 

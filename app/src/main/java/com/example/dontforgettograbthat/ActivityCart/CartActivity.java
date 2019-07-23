@@ -38,15 +38,15 @@ import java.util.ArrayList;
 public class CartActivity extends AppCompatActivity implements RecyclerViewInterface, CartInterface {
 
     private static final String TAG = "CartActivity";
-    private Context mContext = CartActivity.this;
+    private final Context mContext = CartActivity.this;
 
     //Widgets
-    public RecyclerView recyclerView;
-    public ImageView addItemIcon;
-    public TextView total;
+    private RecyclerView recyclerView;
+    private ImageView addItemIcon;
+    private TextView total;
 
     //Vars
-    public Item item;
+    private Item item;
 
     //firebase
     private FirebaseAuth mAuth;
@@ -59,7 +59,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     private ArrayList<Item> items;
 
     private RecyclerViewItems adapter;
-    public User user;
+    private User user;
 
     //ItemVrars
     private String itemName;

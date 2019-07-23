@@ -8,7 +8,7 @@ import android.widget.EditText;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
-public class NumberTextWatcher implements TextWatcher {
+class NumberTextWatcher implements TextWatcher {
 
     private final DecimalFormat df;
     private final DecimalFormat dfnd;

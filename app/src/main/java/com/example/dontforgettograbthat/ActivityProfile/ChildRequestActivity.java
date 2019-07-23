@@ -27,19 +27,19 @@ import java.util.ArrayList;
 public class ChildRequestActivity extends AppCompatActivity implements ChildrenRequestInterface {
 
     private static final String TAG = "FamilyListActivity";
-    private Context mContext = ChildRequestActivity.this;
+    private final Context mContext = ChildRequestActivity.this;
 
     //  UTILS
     //RecyclerView Addapter
-    RecyclerViewChildrenRequests adapter;
+    private RecyclerViewChildrenRequests adapter;
     //FirebaseMethods
-    FirebaseMethods firebase;
+    private FirebaseMethods firebase;
     //Vars
-    ArrayList<User> users = new ArrayList<>();
-    User currentUser;
+    private final ArrayList<User> users = new ArrayList<>();
+    private User currentUser;
     //Widgets
-    RecyclerView recyclerView;
-    AcceptOrRejectRequestDialog dialog;
+    private RecyclerView recyclerView;
+    private AcceptOrRejectRequestDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

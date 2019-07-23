@@ -88,7 +88,7 @@ public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
     itemQuantity = view.findViewById(R.id.etQuantity);
     }
 
-    public void reset(){
+    private void reset(){
         Log.d(TAG, "reset: called");
         itemName.setText("");
         itemQuantity.setText("");

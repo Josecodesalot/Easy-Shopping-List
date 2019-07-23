@@ -22,9 +22,8 @@ import com.example.dontforgettograbthat.utils.NotNull;
 public class FamilyListDialog extends DialogFragment implements View.OnClickListener{
 
     private static final String TAG = "FamilyListDialog";
-    FamilyListInterface mInterface;
+    private FamilyListInterface mInterface;
 
-    private Button btnDeleteFromCartList, btnAcceptIntoCart;
     private EditText etItemName, etListName, etPrice, etQuanity;
     private Item item;
     private int position;
@@ -35,7 +34,7 @@ public class FamilyListDialog extends DialogFragment implements View.OnClickList
         return frag;
     }
 
-    public void setItems(Item item, int position) {
+    private void setItems(Item item, int position) {
         this.item=item;
         this.position=position;
 
@@ -76,10 +75,10 @@ public class FamilyListDialog extends DialogFragment implements View.OnClickList
         return view;
     }
 
-    public void referenceWidgets(View view){
+    private void referenceWidgets(View view){
 
-        btnDeleteFromCartList = view.findViewById(R.id.btnDeleteFromList);
-        btnAcceptIntoCart = view.findViewById(R.id.btnAcceptIntoCart);
+        Button btnDeleteFromCartList = view.findViewById(R.id.btnDeleteFromList);
+        Button btnAcceptIntoCart = view.findViewById(R.id.btnAcceptIntoCart);
 
         etPrice = view.findViewById(R.id.etItemPrice);
         etItemName = view.findViewById(R.id.etItemName);

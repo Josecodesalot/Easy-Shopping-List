@@ -35,14 +35,14 @@ import java.util.ArrayList;
 public class FamilyListActivity extends AppCompatActivity implements RecyclerViewInterface, FamilyListInterface {
 
     private static final String TAG = "FamilyListActivity";
-    private Context mContext = FamilyListActivity.this;
+    private final Context mContext = FamilyListActivity.this;
     public DatabaseReference reference;
 
     //Constants
     private String REFRESH_CODE="REFRESH_CODE";
 
     //Widgets
-    public RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     //firebase
     private FirebaseAuth mAuth;

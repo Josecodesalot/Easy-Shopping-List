@@ -3,7 +3,6 @@
     <string name="create_account">No account? create an account today!</string>
     <string name="email_address">Email Address</string>
     <string name="shopping_list">Shopping-List</string>
-    <string name="requests">Requests</string>
     <string name="password">Password</string>
     <string name="user_name">User name</string>
     <string name="user">user</string>
@@ -49,4 +48,35 @@
     <string name="login">Login</string>
     <string name="send_to_email">Send to Email</string>
     <string name="dialog_unauthenticated_tip">Tip: If you do not want to lose your data, and you already have an account, send this item to your own email (associated with this app) and it will show up as an external request</string>
+    <string name="manage_children">Manage Children</string>
+    <string name="connect_your_whole_famnily_set_up_a_username_and_then_click_on_the_button_below_to_connect_with_your_parents_shopping_list">Connect Your whole famnily! set up a username, and then click on the button below to connect with your parents shopping list!</string>
+    <string name="type_your_desired_user_name">type your desired user name</string>
+    <string name="add_change_see_parent_s_name">add/change/see Parent\'s Name</string>
+    <string name="requests">Requests</string>
+    <string name="profile_settings">Profile Settings</string>
+    <string name="child_requests">Child Requests</string>
+
+    <string name="signout">signout</string>
+    <string name="accept_into_family">Accept Into Family</string>
+    <string name="delete_request">Delete Request</string>
+    <string name="share_items_with_your_parents">Share Items With Your Parents!</string>
+    <string name="type_in_your_parents_username_and_they_will_get_a_request_to_add_you_to_their_shopping_list_so_that_you_can_send_them_items_to_buy">Type in your parents username, and they will get a request to add you to their shopping list, so that you can send them items to buy!</string>
+    <string name="send_request">Send Request</string>
+    <string name="parent_username_here">Parent Username here</string>
+
+    <string name="bought">Bought</string>
+    <string name="send_back_to_requests">Send Back To Requests</string>
+    <string name="delete_child">Delete Child</string>
+
+    <string name="accept_item_into_cart">Accept Item Into Cart</string>
+
+    <string name="set_changes">set changes</string>
+    <string name="restore_to_cart">Restore To Cart</string>
+    <string name="delete_from_list">delete from list</string>
+    <string name="add_item_to_list">Add Item To List!</string>
+    <string name="my_list">My List</string>
+    <string name="family_list">Family List</string>
+    <string name="listname">ListName</string>
+    <string name="item_name_eg_bread">Item Name eg. Bread</string>
+
 </resources>

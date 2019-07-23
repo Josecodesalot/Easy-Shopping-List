@@ -21,8 +21,8 @@ import java.io.OutputStream;
 import java.net.CacheRequest;
 
 public class WebViewDialogueFragment extends DialogFragment {
-    public WebView wv;
-    public Button btnClose;
+    private WebView wv;
+    private Button btnClose;
     private static final String TAG = "WebViewDialogueFragment";
 
     @Override

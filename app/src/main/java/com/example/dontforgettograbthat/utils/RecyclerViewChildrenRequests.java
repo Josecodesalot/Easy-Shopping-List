@@ -21,7 +21,7 @@ public class RecyclerViewChildrenRequests extends RecyclerView.Adapter<RecyclerV
     private static final String TAG = "RecyclerViewChildr";
 
 
-    private ArrayList<User> mUser ;
+    private final ArrayList<User> mUser ;
 
     public RecyclerViewChildrenRequests(Context mContext, ArrayList<User> mUser) {
         this.mUser = mUser;
@@ -31,8 +31,7 @@ public class RecyclerViewChildrenRequests extends RecyclerView.Adapter<RecyclerV
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_user, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -60,12 +59,12 @@ public class RecyclerViewChildrenRequests extends RecyclerView.Adapter<RecyclerV
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvUserName;
-        TextView tvUserEmail;
-        ConstraintLayout parentLayout;
-        ChildrenRequestInterface mInterface;
+        final TextView tvUserName;
+        final TextView tvUserEmail;
+        final ConstraintLayout parentLayout;
+        final ChildrenRequestInterface mInterface;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             tvUserEmail = itemView.findViewById(R.id.tvUserEmail);
             tvUserName = itemView.findViewById(R.id.tvUserName);

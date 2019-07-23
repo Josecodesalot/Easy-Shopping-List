@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.dontforgettograbthat.R;
@@ -19,19 +20,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity
+
+{
 
     private static final String TAG = "RegisterActivity";
 
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
     private FirebaseMethods firebaseMethods;
 
     //widgets
@@ -39,19 +39,19 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mPassword;
     private EditText mUsername;
     private Button submitBtn;
+    private ProgressBar progressBar;
 
     //Constants
     final private Context mContext = RegisterActivity.this;
 
     //vars
-    private String email, username, password;
-    private Boolean allowUserToRegister, emailExists;
+    private String email, password;
+    private  boolean emailExists;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        allowUserToRegister=false;
         emailExists= false;
         setContentView(R.layout.activity_register);
         Log.d(TAG, "onCreate: started");
@@ -69,6 +69,8 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = findViewById(R.id.etEmail);
         mPassword = findViewById(R.id.etPassword);
         submitBtn = findViewById(R.id.btnSendToFamilyList);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private void submitButtonLogic(){
@@ -80,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 password = mPassword.getText().toString();
 
-                emailExists(email);
+                singUp();
             }
         });
     }
@@ -89,9 +91,9 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "singUp: started");
         if(inputsArentEmpty(email, password)&&!emailExists){
             Log.d(TAG, "singUp: shold call firebase methods");
-            ////mProgressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
             // loadingPleaseWait.setVisibility(View.VISIBLE);
-            firebaseMethods.registerNewEmail(email, password);
+            firebaseMethods.registerNewEmail(email, password, progressBar);
             mAuth.signOut();
             Intent intent = new Intent(mContext, LoginActivity.class);
             intent.putExtra("key","emailsent");
@@ -101,16 +103,8 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void emailExists(final String email){
-        Log.d(TAG, "emailExists: " + email);
-        Query ref = FirebaseDatabase.getInstance().getReference().child("users").equalTo(email);
 
 
-        if (!emailExists){
-            singUp();
-        }
-
-    }
 
     private boolean inputsArentEmpty(String email, String password){
         Log.d(TAG, "inputsArentEmpty: checking inputs for null values.");
@@ -148,8 +142,8 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
 
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = mFirebaseDatabase.getReference();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -183,4 +177,5 @@ public class RegisterActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
 }

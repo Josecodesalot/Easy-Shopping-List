@@ -33,12 +33,11 @@ import java.util.ArrayList;
 public class AddItemActivity extends AppCompatActivity implements AddItemInterface {
 
     private static final String TAG = "AddItemActivity";
-    private Context mContext = AddItemActivity.this;
+    private final Context mContext = AddItemActivity.this;
 
     //Widgets
     private WebViewDialogueFragment webDialog;
     private ViewPager viewPager;
-    private TabLayout tabLayout;
     private SectionsPagerAdapter adapter;
     //vars
     private ArrayList<String> url;
@@ -50,7 +49,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef = mFirebaseDatabase.getReference();
+    private final DatabaseReference myRef = mFirebaseDatabase.getReference();
     private FirebaseMethods firebase;
 
     @Override
@@ -163,7 +162,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
         viewPager = findViewById(R.id.container);
         viewPager.setAdapter(adapter);
 
-        tabLayout = findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_add);
@@ -195,7 +194,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
         viewPager.setCurrentItem(i);
     }
 
-    public void reset(){
+    private void reset(){
         Bundle bundle = new Bundle();
         bundle.putString(Const.REFRESH,Const.REFRESH);
         adapter.getItem(0).setArguments(bundle);

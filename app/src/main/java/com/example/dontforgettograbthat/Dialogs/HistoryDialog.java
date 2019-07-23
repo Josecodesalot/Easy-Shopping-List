@@ -24,17 +24,14 @@ import com.example.dontforgettograbthat.utils.NotNull;
 public class HistoryDialog extends DialogFragment implements View.OnClickListener{
 
     private static final String TAG = "HistoryDialog";
-    private Button btnDeleteFromCartList, btnAddToHistory;
     private EditText etItemName, etListName, etPrice, etQuanity;
 
-    HistoryInterface mInterface;
+    private HistoryInterface mInterface;
     AddItemInterface mAddInterface;
 
     private Item item;
     private int position;
     private Context mContext;
-
-    private Button btnSetChanges;
 
     public static HistoryDialog newInstance(Item item, int position) {
         HistoryDialog frag = new HistoryDialog();
@@ -42,7 +39,7 @@ public class HistoryDialog extends DialogFragment implements View.OnClickListene
         return frag;
     }
 
-    public void setItems(Item item, int position) {
+    private void setItems(Item item, int position) {
         this.item=item;
         this.position=position;
     }
@@ -81,11 +78,11 @@ public class HistoryDialog extends DialogFragment implements View.OnClickListene
     }
 
 
-    public void referenceWidgets(View view){
+    private void referenceWidgets(View view){
 
-        btnDeleteFromCartList = view.findViewById(R.id.btnDeleteFromList);
-        btnAddToHistory = view.findViewById(R.id.btnRestoreToCart);
-        btnSetChanges = view.findViewById(R.id.btnSetChanges);
+        Button btnDeleteFromCartList = view.findViewById(R.id.btnDeleteFromList);
+        Button btnAddToHistory = view.findViewById(R.id.btnRestoreToCart);
+        Button btnSetChanges = view.findViewById(R.id.btnSetChanges);
 
         etPrice = view.findViewById(R.id.etItemPrice);
         etItemName = view.findViewById(R.id.etItemName);

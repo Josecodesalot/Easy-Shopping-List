@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.example.dontforgettograbthat.Login.LoginActivity;
 import com.example.dontforgettograbthat.Models.Item;
 import com.example.dontforgettograbthat.Models.User;
@@ -26,13 +29,13 @@ public class FirebaseMethods {
     private static final String TAG = "FirebaseMethods";
 
     //firebase
-    private FirebaseAuth mAuth;
+    private final FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
+    private final FirebaseDatabase mFirebaseDatabase;
+    private final DatabaseReference myRef;
     private String userID;
 
-    private Context mContext;
+    private final Context mContext;
 
 
     public FirebaseMethods(Context context) {
@@ -107,15 +110,16 @@ public class FirebaseMethods {
 
     //---------------------Authentication---------------//
 
-    public void addNewUser(String email, String username, String parentName) {
+    private void addNewUser(String email, String username, String parentName) {
         User user = new User(mAuth.getCurrentUser().getUid(), email, username, parentName);
         myRef.child(mContext.getString(R.string.dbname_users))
                 .child(mAuth.getCurrentUser().getUid())
                 .setValue(user);
     }
 
-    public void registerNewEmail(final String email, String password) {
+    public void registerNewEmail(final String email, String password, final ProgressBar progressBar) {
         Log.d(TAG, "registerNewEmail: this happened");
+        final int number;
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -123,16 +127,19 @@ public class FirebaseMethods {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-
                         if (task.getException() instanceof FirebaseAuthWeakPasswordException){
                             Toast.makeText(mContext, "Error, password too weak", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException){
                             Toast.makeText(mContext, "Error, invalid e-mail ", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
+
                         //method calls if email is already registered
                         if (task.getException() instanceof FirebaseAuthUserCollisionException){
                             Toast.makeText(mContext, "Error, Email Already Exists", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -151,7 +158,7 @@ public class FirebaseMethods {
     }
 
 
-    public void sendVerificationEmail() {
+    private void sendVerificationEmail() {
         Log.d(TAG, "sendVerificationEmail: ");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

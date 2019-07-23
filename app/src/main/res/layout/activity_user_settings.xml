@@ -32,7 +32,7 @@
             android:layout_marginTop="25dp"
             android:background="@drawable/background_rounded_gwhite"
             android:fontFamily="@font/asap_medium"
-            android:text="Profile Settings"
+            android:text="@string/profile_settings"
             />
 
         <Button
@@ -42,7 +42,7 @@
             android:layout_marginTop="25dp"
             android:background="@drawable/background_rounded_gwhite"
             android:fontFamily="@font/asap_medium"
-            android:text="Child Requests" />
+            android:text="@string/child_requests" />
 
         <Button
             android:id="@+id/btnManageChildren"
@@ -51,7 +51,7 @@
             android:layout_marginTop="25dp"
             android:background="@drawable/background_rounded_gwhite"
             android:fontFamily="@font/asap_medium"
-            android:text="Manage Children" />
+            android:text="@string/manage_children" />
 
         <Button
             android:id="@+id/btnSignout"
@@ -60,7 +60,7 @@
             android:layout_marginTop="25dp"
             android:background="@drawable/background_rounded_gwhite"
             android:fontFamily="@font/asap_medium"
-            android:text="signout" />
+            android:text="@string/signout" />
 
 
     </LinearLayout>

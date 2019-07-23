@@ -38,7 +38,7 @@ public class ThirdAddItemToListOrFamilyList extends android.support.v4.app.Fragm
         return view;
     }
 
-    public void referenceWidgets(View view){
+    private void referenceWidgets(View view){
         tvFamilyList = view.findViewById(R.id.tvFamilyList);
         tvYourList = view.findViewById(R.id.tvMyList);
     }

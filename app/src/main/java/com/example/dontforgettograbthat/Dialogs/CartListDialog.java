@@ -22,14 +22,11 @@ import com.example.dontforgettograbthat.utils.NotNull;
 public class CartListDialog extends DialogFragment implements View.OnClickListener {
 
     private static final String TAG = "CartListDialog";
-    CartInterface mInterface;
+    private CartInterface mInterface;
 
-    private Button btnDeleteFromCartList, btnAddToHistory;
     private EditText etItemName, etListName, etPrice, etQuanity;
     private Item item;
     private int position;
-    private Context mContext;
-    private Button btnSetChanges;
 
     public static CartListDialog newInstance(Item item, int position) {
         CartListDialog frag = new CartListDialog();
@@ -37,14 +34,14 @@ public class CartListDialog extends DialogFragment implements View.OnClickListen
         return frag;
     }
 
-    public void setItems(Item item, int position) {
+    private void setItems(Item item, int position) {
         this.item=item;
         this.position=position;
     }
     @Override
     public void onAttach(Context context) {
 
-        this.mContext = context;
+        Context mContext = context;
         super.onAttach(context);
     }
 
@@ -71,11 +68,11 @@ public class CartListDialog extends DialogFragment implements View.OnClickListen
         return view;
     }
 
-    public void referenceWidgets(View view){
+    private void referenceWidgets(View view){
 
-        btnDeleteFromCartList = view.findViewById(R.id.btnDeleteFromList);
-        btnAddToHistory = view.findViewById(R.id.btnBoughtToHistory);
-        btnSetChanges = view.findViewById(R.id.btnSetChanges);
+        Button btnDeleteFromCartList = view.findViewById(R.id.btnDeleteFromList);
+        Button btnAddToHistory = view.findViewById(R.id.btnBoughtToHistory);
+        Button btnSetChanges = view.findViewById(R.id.btnSetChanges);
 
         etPrice = view.findViewById(R.id.etItemPrice);
         etItemName = view.findViewById(R.id.etItemName);

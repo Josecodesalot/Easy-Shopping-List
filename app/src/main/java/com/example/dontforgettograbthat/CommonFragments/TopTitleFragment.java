@@ -18,7 +18,7 @@ import com.example.dontforgettograbthat.R;
 import com.example.dontforgettograbthat.ActivityFamilyList.FamilyListActivity;
 
 public class TopTitleFragment extends android.support.v4.app.Fragment {
-    private ImageView analytics, add, request, profile, cart;
+    private ImageView analytics, addItem, familyList, userSettings, cart;
     private TextView title;
 
     @Nullable
@@ -39,7 +39,8 @@ public class TopTitleFragment extends android.support.v4.app.Fragment {
             title.setText("Your Profile");
         }
         if (getActivity() instanceof FamilyListActivity){
-            title.setText("Your Requests");
+            title.setText("Your Family Requests");
+
         }
         if (getActivity() instanceof HistoryActivity){
             title.setText("Purchase History");
@@ -58,14 +59,14 @@ public class TopTitleFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        add.setOnClickListener(new View.OnClickListener() {
+        addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddItemActivity.class);
                 startActivity(intent);
             }
         });
-        request.setOnClickListener(new View.OnClickListener() {
+        familyList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), FamilyListActivity.class);
@@ -86,7 +87,7 @@ public class TopTitleFragment extends android.support.v4.app.Fragment {
                 startActivity(intent);
             }
         });
-        profile.setOnClickListener(new View.OnClickListener() {
+        userSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), UserSettingsActivity.class);
@@ -97,10 +98,10 @@ public class TopTitleFragment extends android.support.v4.app.Fragment {
 
     private void ReferenceViews(View view) {
         analytics = view.findViewById(R.id.analyticsIcon);
-        add = view.findViewById(R.id.addIcon);
-        request = view.findViewById(R.id.requestIcon);
+        addItem = view.findViewById(R.id.addIcon);
+        familyList = view.findViewById(R.id.requestIcon);
         title = view.findViewById(R.id.tvTitlePage);
-        profile=  view.findViewById(R.id.profile);
+        userSettings =  view.findViewById(R.id.profile);
         cart =  view.findViewById(R.id.cart);
 
     }

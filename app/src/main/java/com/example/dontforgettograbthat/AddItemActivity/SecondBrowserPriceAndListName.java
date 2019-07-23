@@ -24,7 +24,6 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
     //Widgets
     private CheckBox chkWalmart, chkCostco, chkZhers, chkMetro, chkCustom;
     private EditText etWalmart, etCostco, etZhers, etMetro, etCustomPrice;
-    private TextView tvWalmart, tvCostco, tvZhers, tvMetro;
     private EditText etCustomName;
 
 
@@ -80,10 +79,10 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
             etMetro.setOnKeyListener(this);
             etCustomPrice.setOnKeyListener(this);
 
-            tvWalmart = view.findViewById(R.id.tvWalmart);
-            tvCostco = view.findViewById(R.id.tvCostco);
-            tvZhers= view.findViewById(R.id.tvZhers);
-            tvMetro= view.findViewById(R.id.tvMetro);
+            TextView tvWalmart = view.findViewById(R.id.tvWalmart);
+            TextView tvCostco = view.findViewById(R.id.tvCostco);
+            TextView tvZhers = view.findViewById(R.id.tvZhers);
+            TextView tvMetro = view.findViewById(R.id.tvMetro);
             etCustomName = view.findViewById(R.id.etCustomName);
 
             tvWalmart.setOnClickListener(this);
@@ -191,7 +190,7 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
         }
     }
 
-    public boolean hasText(EditText et){
+    private boolean hasText(EditText et){
         return !et.getText().toString().equals("");
     }
 
@@ -238,7 +237,7 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
         }
     }
 
-    public void reset(){
+    private void reset(){
         chkWalmart.callOnClick();
         chkWalmart.setChecked(false);
 

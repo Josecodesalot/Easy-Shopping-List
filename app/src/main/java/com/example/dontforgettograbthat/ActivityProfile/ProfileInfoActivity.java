@@ -30,17 +30,15 @@ import com.google.firebase.database.ValueEventListener;
 public class ProfileInfoActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileInfoActivity";
-    Context mContext = ProfileInfoActivity.this;
+    private final Context mContext = ProfileInfoActivity.this;
 
-    //Widgets
-    private TextView email;
     private EditText username;
-    private Button  submit, parentNameButton;
+    private Button  submit;
 
     //vars
     private User user;
     private String sUsername, sParentUsername;
-    private Boolean allowUsername, allowParentName;
+    private Boolean allowParentName;
 
     //firebase
     private FirebaseAuth mAuth;
@@ -53,9 +51,9 @@ public class ProfileInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_info);
-        Log.d(TAG, "onCreate: Started");;
+        Log.d(TAG, "onCreate: Started");
 
-        allowUsername = false;
+        Boolean allowUsername = false;
 
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
@@ -133,10 +131,11 @@ public class ProfileInfoActivity extends AppCompatActivity {
 
 
     private void setUpWidgets() {
-        email = findViewById(R.id.tvEmail);
+        //Widgets
+        TextView email = findViewById(R.id.tvEmail);
         email.setText(mAuth.getCurrentUser().getEmail());
         username = findViewById(R.id.etUserName);
-        parentNameButton = findViewById(R.id.btnSetUpParent);
+        Button parentNameButton = findViewById(R.id.btnSetUpParent);
         submit = findViewById(R.id.btnSendToFamilyList);
 
         parentNameButton.setOnClickListener(new View.OnClickListener() {

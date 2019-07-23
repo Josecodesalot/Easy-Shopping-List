@@ -15,7 +15,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/background_rounded_gwhite"
-        android:text="Manage Children"
+        android:text="@string/manage_children"
         android:textColor="@color/black"
         android:padding="15dp"
         android:textSize="@dimen/Header"

@@ -27,17 +27,17 @@ import com.google.firebase.database.ValueEventListener;
 
 public class AddFamilyNameDialog extends DialogFragment {
 
-    public EditText etParentname;
-    public String sParentName;
-    public Button submit;
-    public boolean allowFamilyName;
+    private EditText etParentname;
+    private String sParentName;
+    private Button submit;
+    private boolean allowFamilyName;
     private FirebaseMethods firebase;
-    private DatabaseReference myRef= FirebaseDatabase.getInstance().getReference();
+    private final DatabaseReference myRef= FirebaseDatabase.getInstance().getReference();
     private static final String TAG = "AddFamilyNameDialog";
-    public Context mContext;
+    private Context mContext;
 
 
-    User user;
+    private User user;
 
     public static  AddFamilyNameDialog newInstance(User user, Context mContext) {
         AddFamilyNameDialog frag = new AddFamilyNameDialog();
@@ -45,7 +45,7 @@ public class AddFamilyNameDialog extends DialogFragment {
         return frag;
     }
 
-    public void setUser(User user, Context mContext){
+    private void setUser(User user, Context mContext){
         this.user = user;
         this.mContext = mContext;
     }

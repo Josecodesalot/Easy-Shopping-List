@@ -21,7 +21,7 @@ public class RecyclerViewChildrenManagement extends RecyclerView.Adapter<Recycle
     private static final String TAG = "RecyclerViewChildr";
 
 
-    private ArrayList<User> mUser ;
+    private final ArrayList<User> mUser ;
 
     public RecyclerViewChildrenManagement(Context mContext, ArrayList<User> mUser) {
         this.mUser = mUser;
@@ -31,8 +31,7 @@ public class RecyclerViewChildrenManagement extends RecyclerView.Adapter<Recycle
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_user, parent, false);
-        RecyclerViewChildrenManagement.ViewHolder holder = new RecyclerViewChildrenManagement.ViewHolder(view);
-        return holder;
+        return new ViewHolder(view);
     }
 
 
@@ -61,12 +60,12 @@ public class RecyclerViewChildrenManagement extends RecyclerView.Adapter<Recycle
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvUserName;
-        TextView tvUserEmail;
-        ConstraintLayout parentLayout;
-        ChildrenManagementInterface mInterface;
+        final TextView tvUserName;
+        final TextView tvUserEmail;
+        final ConstraintLayout parentLayout;
+        final ChildrenManagementInterface mInterface;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             tvUserEmail = itemView.findViewById(R.id.tvUserEmail);
             tvUserName = itemView.findViewById(R.id.tvUserName);

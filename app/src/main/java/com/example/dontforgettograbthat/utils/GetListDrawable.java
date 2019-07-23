@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.example.dontforgettograbthat.R;
 
-public class GetListDrawable {
+class GetListDrawable {
 
     public static Drawable getDrawable(String tvListName, Context mContext){
         Drawable color;

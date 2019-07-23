@@ -23,9 +23,9 @@ import java.util.ArrayList;
 public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.ViewHolder>{
     private static final String TAG = "RecyclerViewItems";
 
-    private ArrayList<Item> items;
-    private Context mContext;
-    RecyclerViewInterface mInterface;
+    private final ArrayList<Item> items;
+    private final Context mContext;
+    private RecyclerViewInterface mInterface;
 
     public RecyclerViewItems(Context context,
                              ArrayList<Item> items) {
@@ -110,13 +110,13 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public  TextView tvItemName;
-        TextView tvItemListName;
-        TextView tvPrice;
-        TextView tvItemQuantity;
-        ConstraintLayout parentLayout;
+        final TextView tvItemName;
+        final TextView tvItemListName;
+        final TextView tvPrice;
+        final TextView tvItemQuantity;
+        final ConstraintLayout parentLayout;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             tvItemName = itemView.findViewById(R.id.tvItemName);
             tvItemListName = itemView.findViewById(R.id.tvListName);

@@ -25,8 +25,8 @@ public class CartAddItemDialog extends DialogFragment {
     private static final String TAG = "CartAddItemDialog";
     private EditText etItemName, etQuantity;
     private ImageView addBtn;
-    public Item item;
-    CartInterface mInterface;
+    private Item item;
+    private CartInterface mInterface;
 
     @Nullable
     @Override

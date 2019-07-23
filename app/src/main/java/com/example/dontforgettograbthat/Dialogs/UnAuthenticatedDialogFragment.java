@@ -60,7 +60,7 @@ public class UnAuthenticatedDialogFragment extends DialogFragment {
         return view;
     }
 
-    public void referenceWidgets(View view){
+    private void referenceWidgets(View view){
         login = view.findViewById(R.id.btnLogin);
         register = view.findViewById(R.id.btnRegister);
         sendToEmail = view.findViewById(R.id.btnSendToEmail);

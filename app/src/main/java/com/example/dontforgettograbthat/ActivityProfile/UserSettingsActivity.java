@@ -27,20 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 public class UserSettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "UserSettingsActivity";
-    private Context mContext = UserSettingsActivity.this;
-
-    //WIdgets
-    private Button signoutBtn, btnUserSettings, requestsBtn, manageChildrenBtn ;
+    private final Context mContext = UserSettingsActivity.this;
 
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseMethods firebase;
-    private FirebaseDatabase database;
     private DatabaseReference myRef;
-
-    //vars
-    private User user;
 
 
     @Override
@@ -49,24 +42,26 @@ public class UserSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_settings);
         Log.d(TAG, "onCreate: Started");
         setupFirebaseAuth();
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         firebase = new FirebaseMethods(mContext);
         firebaseDataExchangeListener();
-        user = new User();
+        //vars
+        User user = new User();
         user = ((UserClient)(getApplicationContext())).getUser();
         referenceWidgets();
 
     }
 
-    public void referenceWidgets (){
+    private void referenceWidgets(){
         //signoutBtn has an onclick which creates a Signout
-        signoutBtn = findViewById(R.id.btnSignout);
+        //WIdgets
+        Button signoutBtn = findViewById(R.id.btnSignout);
         //btnUserSettings is a button that sends a request to the family defined in etParentname if that family exists
         //the request will give the family manager the choice to allow items into their Main ShoppingCart
-        btnUserSettings = findViewById(R.id.btnProfileInfo);
+        Button btnUserSettings = findViewById(R.id.btnProfileInfo);
 
-        requestsBtn = findViewById(R.id.btnChildRequests);
-        manageChildrenBtn = findViewById(R.id.btnManageChildren);
+        Button requestsBtn = findViewById(R.id.btnChildRequests);
+        Button manageChildrenBtn = findViewById(R.id.btnManageChildren);
 
         manageChildrenBtn.setOnClickListener(new View.OnClickListener() {
             @Override

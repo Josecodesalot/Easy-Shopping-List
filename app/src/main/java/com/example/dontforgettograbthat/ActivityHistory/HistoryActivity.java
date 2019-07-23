@@ -35,14 +35,14 @@ import java.util.ArrayList;
 public class HistoryActivity extends AppCompatActivity implements RecyclerViewInterface, HistoryInterface {
 
     private static final String TAG = "AddItemActivity";
-    private Context mContext = HistoryActivity.this;
+    private final Context mContext = HistoryActivity.this;
 
     //Constants
 
     //Widgets
-    public RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
-    public TextView total;
+    private TextView total;
 
     //firebase
     private FirebaseAuth mAuth;
@@ -50,12 +50,10 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
     private FirebaseMethods firebase;
 
     private FirebaseDatabase database;
-    private DatabaseReference myRef;
 
     //vars
     private ArrayList<Item> items;
     private RecyclerViewItems adapter;
-    private String familyName;
     private User user;
 
     @Override
@@ -69,7 +67,7 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
         database = FirebaseDatabase.getInstance();
         user = new User();
         user = ((UserClient)(getApplicationContext())).getUser();
-        familyName = user.getParent_name();
+        String familyName = user.getParent_name();
         Log.d(TAG, "onCreate: family name setting = " + familyName);
 
         firebaseDataExchangeListener();
@@ -96,7 +94,7 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
     }
     private void firebaseRetrieve() {
         Log.d(TAG, "firebaseRetrieve: creatiung database and getitnga reference");
-        myRef = database.getReference();
+        DatabaseReference myRef = database.getReference();
         Query query = myRef.child("history").child(user.getUser_id());
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
