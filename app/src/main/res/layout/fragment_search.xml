@@ -1,242 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:paddingHorizontal="20dp"
-    >
+    android:layout_width="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/relLayout2"
 
-        <LinearLayout
-            android:id="@+id/parentLayout"
-            android:layout_width="match_parent"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:orientation="vertical">
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/asap_medium"
+            android:text="@string/find_description"
+            android:textSize="@dimen/small_print"
 
-            <RelativeLayout
-                android:id="@+id/relLayout2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-2dp">
+            />
+        <!-->       Walmart          <-->
 
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/asap_medium"
-                    android:text="@string/find_description"
-                    android:textSize="@dimen/small_print"
+        <CheckBox
+            android:id="@+id/chkWalmart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tvWalmart"
 
-                    />
-                <!-->       Walmart          <-->
+            />
 
-                <CheckBox
-                    android:id="@+id/chkWalmart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/tvWalmart"
+        <TextView
+            android:id="@+id/tvWalmart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/description"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/chkWalmart"
+            android:fontFamily="@font/doppio_one"
+            android:text="Walmart"
 
-                    />
+            android:textColor="@color/black"
+            android:textSize="@dimen/Title" />
 
-                <TextView
-                    android:id="@+id/tvWalmart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/description"
-                    android:layout_marginTop="20dp"
-                    android:layout_toRightOf="@+id/chkWalmart"
-                    android:fontFamily="@font/doppio_one"
-                    android:text="Walmart"
-
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/Title" />
-
-                <EditText
-                    android:id="@+id/etWalmartPrice"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/tvWalmart"
-                    android:layout_marginLeft="70dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_toRightOf="@+id/tvWalmart"
-                    android:background="@drawable/black_border_square"
-                    android:hint="$"
-                    android:inputType="numberDecimal"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp" />
+        <EditText
+            android:id="@+id/etWalmartPrice"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tvWalmart"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/tvWalmart"
+            android:background="@drawable/black_border_square"
+            android:hint="$"
+            android:inputType="numberDecimal"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
 
 
-                <!-->       Costco          <-->
-                <CheckBox
-                    android:id="@+id/chkCostco"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/tvCostco"
+        <!-->       Costco          <-->
+        <CheckBox
+            android:id="@+id/chkCostco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tvCostco"
 
-                    />
+            />
 
-                <TextView
-                    android:id="@+id/tvCostco"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvWalmart"
-                    android:layout_marginTop="20dp"
-                    android:layout_toRightOf="@+id/chkCostco"
-                    android:fontFamily="@font/doppio_one"
-                    android:text="Costco"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/Title" />
+        <TextView
+            android:id="@+id/tvCostco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvWalmart"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/chkCostco"
+            android:fontFamily="@font/doppio_one"
+            android:text="Costco"
+            android:textColor="@color/black"
+            android:textSize="@dimen/Title" />
 
-                <EditText
-                    android:id="@+id/etCostcoPrice"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/tvCostco"
-                    android:layout_alignStart="@+id/etWalmartPrice"
-                    android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@+id/tvCostco"
-                    android:background="@drawable/black_border_square"
-                    android:hint="$"
-                    android:inputType="numberDecimal"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
+        <EditText
+            android:id="@+id/etCostcoPrice"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tvCostco"
+            android:layout_alignStart="@+id/etWalmartPrice"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/tvCostco"
+            android:background="@drawable/black_border_square"
+            android:hint="$"
+            android:inputType="numberDecimal"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
 
-                    />
-
-
-                <!-->       zhers          <-->
-                <CheckBox
-                    android:id="@+id/chkZhers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/tvZhers"
-
-                    />
-
-                <TextView
-                    android:id="@+id/tvZhers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvCostco"
-                    android:layout_marginTop="20dp"
-                    android:layout_toEndOf="@+id/chkZhers"
-                    android:fontFamily="@font/doppio_one"
-                    android:text="Zhers"
-
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/Title" />
-
-                <EditText
-                    android:id="@+id/etZhersPrice"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignBaseline="@+id/tvZhers"
-                    android:layout_alignStart="@+id/etWalmartPrice"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/black_border_square"
-                    android:hint="$"
-                    android:inputType="numberDecimal"
-                    android:paddingStart="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp" />
-
-                <!-->       metro          <-->
-
-                <CheckBox
-                    android:id="@+id/chkMetro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/tvMetro"
-
-                    />
-
-                <TextView
-                    android:id="@+id/tvMetro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvZhers"
-                    android:layout_marginTop="20dp"
-                    android:layout_toEndOf="@+id/chkMetro"
-                    android:fontFamily="@font/doppio_one"
-                    android:text="Metro"
-
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/Title" />
-
-                <EditText
-                    android:id="@+id/etMetroPrice"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignBaseline="@+id/tvMetro"
-                    android:layout_alignStart="@+id/etWalmartPrice"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/black_border_square"
-                    android:hint="$"
-                    android:inputType="numberDecimal"
-                    android:paddingStart="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp" />
+            />
 
 
-                <!-->         Custom List        <-->
+        <!-->       zhers          <-->
+        <CheckBox
+            android:id="@+id/chkZhers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tvZhers"
 
-                <CheckBox
-                    android:id="@+id/chkCustom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/etCustomName"
+            />
+
+        <TextView
+            android:id="@+id/tvZhers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvCostco"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/chkZhers"
+            android:fontFamily="@font/doppio_one"
+            android:text="Zhers"
+
+            android:textColor="@color/black"
+            android:textSize="@dimen/Title" />
+
+        <EditText
+            android:id="@+id/etZhersPrice"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+
+            android:layout_alignBaseline="@+id/tvZhers"
+            android:layout_alignStart="@+id/etWalmartPrice"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/black_border_square"
+            android:hint="$"
+            android:inputType="numberDecimal"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
+        <!-->       metro          <-->
+
+        <CheckBox
+            android:id="@+id/chkMetro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tvMetro"
+
+            />
+
+        <TextView
+            android:id="@+id/tvMetro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvZhers"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/chkMetro"
+            android:fontFamily="@font/doppio_one"
+            android:text="Metro"
+
+            android:textColor="@color/black"
+            android:textSize="@dimen/Title" />
+
+        <EditText
+            android:id="@+id/etMetroPrice"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+
+            android:layout_alignBaseline="@+id/tvMetro"
+            android:layout_alignStart="@+id/etWalmartPrice"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/black_border_square"
+            android:hint="$"
+            android:inputType="numberDecimal"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
 
 
-                    />
+        <!-->         Custom List        <-->
 
-                <EditText
-                    android:id="@+id/etCustomName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvMetro"
-                    android:layout_marginTop="20dp"
-                    android:layout_toEndOf="@+id/chkMetro"
-                    android:fontFamily="@font/doppio_one"
-                    android:hint="Edit here"
-                    android:maxLength="10"
-
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/Title" />
-
-                <EditText
-                    android:id="@+id/etCustom"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignBaseline="@+id/etCustomName"
-                    android:layout_alignStart="@+id/etWalmartPrice"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/black_border_square"
-                    android:hint="$"
-                    android:inputType="numberDecimal"
-                    android:paddingStart="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp" />
+        <CheckBox
+            android:id="@+id/chkCustom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/etCustomName"
 
 
-            </RelativeLayout>
+            />
 
-        </LinearLayout>
-    </ScrollView>
+        <EditText
+            android:id="@+id/etCustomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvMetro"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/chkMetro"
+            android:fontFamily="@font/doppio_one"
+            android:hint="Edit here"
+            android:maxLength="10"
+
+            android:textColor="@color/black"
+            android:textSize="@dimen/Title" />
+
+        <EditText
+            android:id="@+id/etCustom"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+
+            android:layout_alignBaseline="@+id/etCustomName"
+            android:layout_alignStart="@+id/etWalmartPrice"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/black_border_square"
+            android:hint="$"
+            android:inputType="numberDecimal"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
 
 
-</ScrollView>
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

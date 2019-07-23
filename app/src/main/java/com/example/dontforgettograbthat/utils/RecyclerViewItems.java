@@ -84,7 +84,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
             holder.tvItemQuantity.setVisibility(View.VISIBLE);
         }
         Log.d(TAG, "onBindViewHolder: " + items.get(0).toString());
-        holder.tvItemListName.setBackground(GetListDrawable.getDrawable(items.get(position).getList_name(),mContext));
+        //holder.tvItemListName.setBackground(GetListDrawable.getDrawable(items.get(position).getList_name(),mContext));
 
         //this method will hide un used features in the recyclerview
 

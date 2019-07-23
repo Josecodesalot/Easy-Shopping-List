@@ -1,17 +1,18 @@
-package com.example.dontforgettograbthat.AddItemActivity;
+package com.example.dontforgettograbthat.ActivityAddItem;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+
 import com.example.dontforgettograbthat.Interface.AddItemInterface;
 import com.example.dontforgettograbthat.R;
 
 public class ThirdAddItemToListOrFamilyList extends android.support.v4.app.Fragment  {
     private AddItemInterface mInterface;
-    private TextView tvFamilyList, tvYourList;
+    private Button btnFamilyLis, btnYourList;
 
 
     @Nullable
@@ -22,14 +23,14 @@ public class ThirdAddItemToListOrFamilyList extends android.support.v4.app.Fragm
 
         mInterface = (AddItemActivity) getContext();
 
-        tvFamilyList.setOnClickListener(new View.OnClickListener() {
+        btnFamilyLis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mInterface.addItemToFamilyList();
             }
         });
 
-        tvYourList.setOnClickListener(new View.OnClickListener() {
+        btnYourList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mInterface.addItemToList();
@@ -39,7 +40,7 @@ public class ThirdAddItemToListOrFamilyList extends android.support.v4.app.Fragm
     }
 
     private void referenceWidgets(View view){
-        tvFamilyList = view.findViewById(R.id.tvFamilyList);
-        tvYourList = view.findViewById(R.id.tvMyList);
+        btnFamilyLis = view.findViewById(R.id.tvFamilyList);
+        btnYourList = view.findViewById(R.id.tvMyList);
     }
 }

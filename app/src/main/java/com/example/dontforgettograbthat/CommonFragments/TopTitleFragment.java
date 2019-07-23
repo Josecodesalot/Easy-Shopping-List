@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dontforgettograbthat.ActivityProfile.UserSettingsActivity;
-import com.example.dontforgettograbthat.AddItemActivity.AddItemActivity;
+import com.example.dontforgettograbthat.ActivityAddItem.AddItemActivity;
 import com.example.dontforgettograbthat.ActivityHistory.HistoryActivity;
 import com.example.dontforgettograbthat.ActivityCart.CartActivity;
 import com.example.dontforgettograbthat.R;

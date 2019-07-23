@@ -14,10 +14,10 @@
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
-        android:padding="10dp"
         android:fontFamily="@font/asap_medium"
+        android:padding="10dp"
         android:text="@string/add_item_to_list"
         android:textColor="@color/black"
         android:textSize="@dimen/Header"
@@ -26,38 +26,37 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TextView
+    <Button
         android:id="@+id/tvMyList"
         android:layout_width="150dp"
-
-
+        android:padding="10dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:animateLayoutChanges="true"
         android:background="@drawable/background_rounded_gwhite"
         android:fontFamily="@font/asap_medium"
         android:gravity="center"
-        android:padding="10dp"
         android:text="@string/my_list"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="@dimen/Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
-    <TextView
+    <Button
         android:id="@+id/tvFamilyList"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="64dp"
+        android:padding="10dp"
+        android:layout_marginTop="32dp"
         android:animateLayoutChanges="true"
         android:background="@drawable/background_rounded_gwhite"
         android:fontFamily="@font/asap_medium"
         android:gravity="center"
-        android:padding="10dp"
         android:text="@string/family_list"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="@dimen/Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

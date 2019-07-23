@@ -1,4 +1,4 @@
-package com.example.dontforgettograbthat.AddItemActivity;
+package com.example.dontforgettograbthat.ActivityAddItem;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-import com.example.dontforgettograbthat.ActivityCart.CartActivity;
+
 import com.example.dontforgettograbthat.Dialogs.WebViewDialogueFragment;
 import com.example.dontforgettograbthat.Interface.AddItemInterface;
 import com.example.dontforgettograbthat.Login.LoginActivity;

@@ -1,4 +1,4 @@
-package com.example.dontforgettograbthat.AddItemActivity;
+package com.example.dontforgettograbthat.ActivityAddItem;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

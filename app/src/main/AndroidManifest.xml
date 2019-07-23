@@ -7,9 +7,9 @@
     <application
         android:name=".utils.UserClient"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher72"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_launcher72"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ActivityProfile.ProfileInfoActivity"></activity>
@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".Login.RegisterActivity" />
         <activity android:name=".Login.LoginActivity" />
-        <activity android:name=".AddItemActivity.AddItemActivity"
+        <activity android:name=".ActivityAddItem.AddItemActivity"
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ActivityHistory.HistoryActivity" />
         <activity android:name=".ActivityFamilyList.FamilyListActivity" />

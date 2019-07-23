@@ -1,4 +1,4 @@
-package com.example.dontforgettograbthat.AddItemActivity;
+package com.example.dontforgettograbthat.ActivityAddItem;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.example.dontforgettograbthat.Interface.AddItemInterface;
 import com.example.dontforgettograbthat.R;
-import com.example.dontforgettograbthat.utils.Const;
 
 public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
     private static final String TAG="AddNameAndQuan";
