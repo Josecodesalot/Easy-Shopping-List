@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/background_leftround_walmart"
+            android:background="@drawable/background_rounded_primary"
             android:fontFamily="@font/asap_medium"
             android:inputType="textPersonName"
             android:maxLength="10"

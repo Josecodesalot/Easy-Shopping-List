@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#D32F2F</color>
+    <color name="colorPrimary">#A4C491</color>
     <color name="colorprimarydark">#1C3144</color>
     <color name="colorAccent">#bfbfbf</color>
-    <color name="primary_contrast">#fff</color>
+    <color name="primary_contrast">#000000</color>
 
     <color name="white">#ffff</color>
     <color name="gwhite">#ffff</color>
@@ -15,7 +15,7 @@
 
 
 
-    <color name="black">#0D0106</color>
+    <color name="black">#000000</color>
     <color name="link_blue">#005ce6</color>
 
 
@@ -29,7 +29,7 @@
     <color name="costco">#D32F2F</color>
     <color name="zhers">#C2185B</color>
     <color name="metro">#388E3C</color>
-    <color name="custom1">#D32E2E</color>
+    <color name="custom1">#503047</color>
 
     <color name="custom2">#7C4DFF</color>
     <color name="custom3">#18FFFF</color>
