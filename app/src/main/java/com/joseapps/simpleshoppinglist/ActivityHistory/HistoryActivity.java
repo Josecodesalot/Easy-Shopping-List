@@ -18,7 +18,7 @@ import com.joseapps.simpleshoppinglist.Models.Item;
 import com.joseapps.simpleshoppinglist.Models.User;
 import com.joseapps.simpleshoppinglist.R;
 import com.joseapps.simpleshoppinglist.utils.FirebaseMethods;
-import com.joseapps.simpleshoppinglist.utils.RecyclerViewItems;
+import com.joseapps.simpleshoppinglist.Adapters.RecyclerViewItems;
 import com.joseapps.simpleshoppinglist.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -200,12 +200,6 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
     //--------- Override Methods From Interface ---------//
 
     @Override
-    public void OpenDialog(int position) {
-        HistoryDialog dialog = HistoryDialog.newInstance(items.get(position), position);
-        dialog.show(getSupportFragmentManager(),"history");
-    }
-
-    @Override
     public void restoreToCart(Item item, int position) {
         firebase.restoreFromHistoryToCart(item);
         items.remove(position);
@@ -226,6 +220,12 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
         items.set(position,item);
         adapter.notifyItemChanged(position,item);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void OpenDialog(Item item, int position) {
+        HistoryDialog dialog = HistoryDialog.newInstance(items.get(position), position);
+        dialog.show(getSupportFragmentManager(),"history");
     }
 }
 

@@ -14,17 +14,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.joseapps.simpleshoppinglist.ActivityProfile.ProfileInfoActivity;
+import com.joseapps.simpleshoppinglist.Adapters.RecyclerviewItemTabs;
 import com.joseapps.simpleshoppinglist.Dialogs.CartAddItemDialog;
 import com.joseapps.simpleshoppinglist.Dialogs.CartListDialog;
 import com.joseapps.simpleshoppinglist.Interface.CartInterface;
 import com.joseapps.simpleshoppinglist.Interface.RecyclerViewInterface;
+import com.joseapps.simpleshoppinglist.Interface.RvTopTabsInterface;
 import com.joseapps.simpleshoppinglist.Login.LoginActivity;
 import com.joseapps.simpleshoppinglist.Models.Item;
 import com.joseapps.simpleshoppinglist.Models.User;
 import com.joseapps.simpleshoppinglist.R;
 import com.joseapps.simpleshoppinglist.utils.Const;
 import com.joseapps.simpleshoppinglist.utils.FirebaseMethods;
-import com.joseapps.simpleshoppinglist.utils.RecyclerViewItems;
+import com.joseapps.simpleshoppinglist.utils.ItemListHelper;
+import com.joseapps.simpleshoppinglist.Adapters.RecyclerViewItems;
 import com.joseapps.simpleshoppinglist.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,37 +38,40 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class CartActivity extends AppCompatActivity implements RecyclerViewInterface, CartInterface {
+public class CartActivity extends AppCompatActivity implements RecyclerViewInterface, CartInterface, RvTopTabsInterface {
 
     private static final String TAG = "CartActivity";
     private final Context mContext = CartActivity.this;
 
     //Widgets
     private RecyclerView recyclerView;
+    private RecyclerView rvItemTabsView;
     private ImageView addItemIcon;
     private TextView total;
-
-    //Vars
-    private Item item;
 
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseMethods firebase;
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
+    private FirebaseMethods firebase = new FirebaseMethods(mContext);
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference();
 
     //vars
     private ArrayList<Item> items;
-
+    private HashMap<String, ArrayList<Item>> itemsMapByListName;
+    //adapters
     private RecyclerViewItems adapter;
+    private RecyclerviewItemTabs rvItemTabsAdapter;
+
+    //Util
+    private ItemListHelper itemListHelper;
+
+    //model class
     private User user;
 
-    //ItemVrars
-    private String itemName;
-    private Long itemCountLong;
-    public String familyName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +80,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
         Log.d(TAG, "onCreate: started");
         user = new User();
-        item = new Item();
         items= new ArrayList<>();
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
@@ -89,9 +94,8 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
             setUpUserClient();
             //Widget are referenced and simple onClicks are set up
             referenceWidgets();
-            //This method sets up the recyclerView which displays Items in the Cart and their onClickListeners
-            //It does this by retrieving the data form Firebase realtimeDatabase
-            fromFirebaseToRecyclerView();
+            //TODO white comment as to how below works
+            setUpItemsFromFirebase();
             //total count of all items in the recyclerView
             setUpTotal();
 
@@ -123,6 +127,11 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
     }
 
+    public void resetItemListAndRecyclerView(){
+        itemListHelper.updateItems(items);
+
+    }
+
     private void setUser() {
         ((UserClient)(getApplicationContext())).setUser(user);
         Log.d(TAG, "onDataChange: " + user.toString());
@@ -148,19 +157,22 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         }
     }
 
-    private void fromFirebaseToRecyclerView() {
-        Log.d(TAG, "fromFirebaseToRecyclerView: creatiung database and getitnga reference");
-        Log.d(TAG, "fromFirebaseToRecyclerView: user = " + user.getUser_id());
+    private void setUpItemsFromFirebase() {
+        Log.d(TAG, "setUpItemsFromFirebase: creatiung database and getitnga reference");
+        Log.d(TAG, "setUpItemsFromFirebase: user = " + user.getUser_id());
         Query refrence = database.getReference().child(Const.CART_ITEM).child(mAuth.getCurrentUser().getUid()).orderByChild(Const.LISTNAME);
-        Log.d(TAG, "fromFirebaseToRecyclerView: ref " + refrence.toString());
+        Log.d(TAG, "setUpItemsFromFirebase: ref " + refrence.toString());
 
         items = new ArrayList<>();
+        items.clear();
+
         refrence.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: Called");
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                        Log.d(TAG, "onDataChange: singleSnapSHot = " +dataSnapshot.toString());
                         try {
                             items.add(singleSnapshot.getValue(Item.class));
 
@@ -173,13 +185,15 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
                     setUpTotal();
                 }
 
-                adapter = new RecyclerViewItems(
-                        mContext,
-                        items);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-            }
+                Log.d(TAG, "onDataChange: items = " + items);
 
+                itemListHelper = new ItemListHelper(items);
+                itemsMapByListName = itemListHelper.getItemMapByListName();
+                Log.d(TAG, "onDataChange: hash = " +itemsMapByListName.toString());
+                setUpListItemRecyclerView();
+                setUpTopTabRecyclerView();
+
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -187,8 +201,23 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
             }
         });
     }
+
+    private void setUpListItemRecyclerView(){
+        adapter = new RecyclerViewItems(
+                mContext,
+                items);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+    }
+
+    private void setUpTopTabRecyclerView(){
+
+        rvItemTabsAdapter = new RecyclerviewItemTabs(mContext, itemListHelper.getListNames());
+        rvItemTabsView.setAdapter(rvItemTabsAdapter);
+    }
     private void referenceWidgets() {
 
+        rvItemTabsView = findViewById(R.id.rvTabs);
         recyclerView = findViewById(R.id.list);
         total = findViewById(R.id.tvTotal);
         addItemIcon = findViewById(R.id.addImg);
@@ -211,44 +240,59 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
 
     @Override
-    public void OpenDialog(int position) {
-        CartListDialog dialog = CartListDialog.newInstance(items.get(position), position);
+    public void OpenDialog(Item item, int position) {
+
+        CartListDialog dialog = CartListDialog.newInstance(item, position);
         dialog.show(getSupportFragmentManager(),"tag");
 
     }
     @Override
-    public void addToHistory(Item item, int position) {
+    public void addToHistory(Item item, int position, String originalListName) {
 
         Log.d(TAG, "addToHistory: " + item.toString());
         firebase.sendItemToHistory(item);
+
         items.remove(position);
         adapter.notifyItemRemoved(position);
         adapter.notifyDataSetChanged();
+
+        resetTopTabRecyclerView();
         setUpTotal();
 
     }
     @Override
-    public void delete(String itemKey, int position) {
-        Log.d(TAG, "delete: " + itemKey);
+    public void delete(Item item, int position, String originalListName) {
         firebase.deleteItemCart(items.get(position));
         items.remove(position);
         adapter.notifyItemRemoved(position);
         adapter.notifyDataSetChanged();
+
+        itemsMapByListName.remove(originalListName);
+
+        resetTopTabRecyclerView();
+
         Log.d(TAG, "delete: adapter size = " +adapter.getItemCount());
         setUpTotal();
 
     }
     @Override
-    public void addItem(Item item, int position) {
+    public void addItem(final Item item, int position, String originalListName) {
         Log.d(TAG, "addItem: called with item = " + item.toString());
         //this will get called if the item is added from the add new item button[+]
 
         if (position==Const.ADDITEM){
+
             items.add(item);
+
+
+
             firebase.addItemToList(item);
-            adapter.notifyItemInserted(items.size());
             adapter.notifyDataSetChanged();
+            addToLocalMap(item);
+
             setUpTotal();
+
+            resetTopTabRecyclerView();
 
         }else{
             items.set(position,item);
@@ -256,17 +300,54 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
             adapter.notifyItemChanged(position,item);
             adapter.notifyDataSetChanged();
             setUpTotal();
+            editItemToLocalMap(item,position,originalListName);
+            resetTopTabRecyclerView();
         }
+
     }
 
     @Override
-    public void setChanges(Item item, int position) {
+    public void setChanges(Item item, int position, String originalListName) {
         Log.d(TAG, "setChanges: item " + item.toString() + " position  = " +position);
         firebase.addItemToList(item);
         items.set(position,item);
+
+        editItemToLocalMap(item,position,originalListName);
+
         adapter.notifyItemChanged(position,item);
         adapter.notifyDataSetChanged();
+        resetTopTabRecyclerView();
         setUpTotal();
+    }
+
+    public void addToLocalMap(Item item){
+        if (itemsMapByListName.get(item.getList_name())!=null){
+            itemsMapByListName.get(item.getList_name()).add(item);
+        }else{
+            ArrayList <Item> ar = new ArrayList<>();
+            ar.add(item);
+            itemsMapByListName.put(item.getList_name(),ar);
+        }
+    }
+
+    public void editItemToLocalMap(Item item, int position, String originalItemListName){
+        itemsMapByListName.get(originalItemListName).remove(position);
+
+        if (itemsMapByListName.get(item.getList_name())!=null){
+            itemsMapByListName.get(item.getList_name()).set(position,item);
+        }else{
+            ArrayList <Item> ar = new ArrayList<>();
+            ar.add(item);
+            itemsMapByListName.put(item.getList_name(),ar);
+        }
+    }
+
+    public void resetTopTabRecyclerView(){
+        Log.d(TAG, "resetTopTabRecyclerView: ");
+        rvItemTabsAdapter =  new RecyclerviewItemTabs(mContext, new ArrayList<>(itemsMapByListName.keySet()));
+        rvItemTabsView.setAdapter(rvItemTabsAdapter);
+        Log.d(TAG, "resetTopTabRecyclerView: items = " + items.toString());
+        Log.d(TAG, "resetTopTabRecyclerView: items map = " + itemsMapByListName.toString());
     }
 
 
@@ -322,10 +403,12 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: started authStateListnerCreated");
 
-        Log.d(TAG, "onStart: started get extras");
+
         mAuth.addAuthStateListener(mAuthListener);
         checkCurrentUser(mAuth.getCurrentUser());
+        //setUpItemsFromFirebase();
 
     }
 
@@ -338,7 +421,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         }
     }
 
-
     private void checkCurrentUser(FirebaseUser user){
         Log.d(TAG, "checkCurrentUser: checking if user is logged in.");
 
@@ -347,6 +429,12 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
             Intent intent = new Intent(mContext, LoginActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void setRvData(String listName) {
+        adapter = new RecyclerViewItems(mContext, itemsMapByListName.get(listName));
+        recyclerView.setAdapter(adapter);
     }
 }
 

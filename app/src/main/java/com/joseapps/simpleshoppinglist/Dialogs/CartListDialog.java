@@ -27,6 +27,7 @@ public class CartListDialog extends DialogFragment implements View.OnClickListen
     private EditText etItemName, etListName, etPrice, etQuanity;
     private Item item;
     private int position;
+    private String originalItemListName;
 
     public static CartListDialog newInstance(Item item, int position) {
         CartListDialog frag = new CartListDialog();
@@ -57,7 +58,7 @@ public class CartListDialog extends DialogFragment implements View.OnClickListen
         if (item != null) {
             item = NotNull.item(item);
             Log.d(TAG, "onCreateView: non Null item = " + item.toString());
-
+            originalItemListName = item.getList_name();
             etListName.setText(item.getList_name());
             etItemName.setText(item.getItem_name());
             String stPrice = item.getPrice().toString();
@@ -91,18 +92,18 @@ public class CartListDialog extends DialogFragment implements View.OnClickListen
         switch (v.getId()){
 
             case R.id.btnDeleteFromList:
-                mInterface.delete(item.getItemKey(), position);
+                mInterface.delete(item, position,item.getList_name());
                 dismiss();
                 break;
 
             case R.id.btnBoughtToHistory:
-                mInterface.addToHistory(item, position);
+                mInterface.addToHistory(item, position,item.getList_name());
                 dismiss();
                 break;
 
             case R.id.btnSetChanges:
 
-                mInterface.setChanges(getCurrentItem(), position);
+                mInterface.setChanges(getCurrentItem(), position, item.getList_name());
 
                 dismiss();
         }

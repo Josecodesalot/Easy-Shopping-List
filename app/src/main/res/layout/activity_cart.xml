@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relLayoutParent"
     android:layout_width="match_parent"
@@ -8,77 +9,78 @@
     android:background="@color/colorPrimary">
 
 
-    <RelativeLayout
-
-        android:id="@+id/topViewParent"
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.joseapps.simpleshoppinglist.CommonFragments.TopTitleFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_top_navigation"
+        tools:layout_editor_absoluteX="-16dp" />
 
+    <ImageView
+        android:id="@+id/addImg"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="28dp"
+        android:background="@mipmap/ic_quick_add_round"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Top Title -->
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_softedge_white"
+        android:elevation="2dp"
+        android:padding="5pt"
+        android:visibility="gone"
+        android:text="Total:  "
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_marginEnd="20dp" />
 
-
-        <!--SendBack button -->
-
-        <fragment
-            android:id="@+id/fragment"
-            android:name="com.joseapps.simpleshoppinglist.CommonFragments.TopTitleFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-
-    <RelativeLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/topViewParent"
-        android:layout_centerHorizontal="true"
-        >
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvTabs"
+        tools:listitem="@layout/layout_listitem"></android.support.v7.widget.RecyclerView>
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="50dp"
-            >
-        </android.support.v7.widget.RecyclerView>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/list"
-            android:layout_marginTop="-50dp">
-
-            <TextView
-                android:id="@+id/tvTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="Total:  "
-                android:textColor="@color/gwhite"
-                android:textSize="24sp"
-                tools:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_centerVertical="true"
-                />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_plus"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/addImg"
-                />
-
-        </RelativeLayout>
-    </RelativeLayout>
-
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvTabs"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layoutDirection="ltr"
+        android:layoutMode="clipBounds"
+        android:orientation="horizontal"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment"
+        tools:itemCount="6"
+        tools:listitem="@layout/layout_item_tabs" />
 
 
     <!-- Bottom Navigation View-->
 
 
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

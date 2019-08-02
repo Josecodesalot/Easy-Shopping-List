@@ -18,7 +18,7 @@ import com.joseapps.simpleshoppinglist.Models.User;
 import com.joseapps.simpleshoppinglist.R;
 import com.joseapps.simpleshoppinglist.utils.Const;
 import com.joseapps.simpleshoppinglist.utils.FirebaseMethods;
-import com.joseapps.simpleshoppinglist.utils.RecyclerViewItems;
+import com.joseapps.simpleshoppinglist.Adapters.RecyclerViewItems;
 import com.joseapps.simpleshoppinglist.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -194,12 +194,6 @@ public class FamilyListActivity extends AppCompatActivity implements RecyclerVie
         }
     }
 
-    @Override
-    public void OpenDialog(int position) {
-        FamilyListDialog dialog = FamilyListDialog.newInstance(items.get(position),position);
-        dialog.show(getSupportFragmentManager(),"1");
-    }
-
 
     @Override
     public void addToCartList(Item item, int posiion) {
@@ -220,7 +214,12 @@ public class FamilyListActivity extends AppCompatActivity implements RecyclerVie
         adapter.notifyItemRemoved(position);
         adapter.notifyDataSetChanged();
     }
-    
+
+    @Override
+    public void OpenDialog(Item item, int position) {
+        FamilyListDialog dialog = FamilyListDialog.newInstance(items.get(position),position);
+        dialog.show(getSupportFragmentManager(),"1");
+    }
 }
 
 

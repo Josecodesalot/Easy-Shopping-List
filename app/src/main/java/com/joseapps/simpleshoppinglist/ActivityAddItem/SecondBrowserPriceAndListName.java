@@ -35,7 +35,7 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_second_fragment_search, container, false);
         Log.d(TAG, "onCreateView: ");
         //references all views
         referenceViews(view);
@@ -71,7 +71,7 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
             etCostco= view.findViewById(R.id.etCostcoPrice);
             etZhers= view.findViewById(R.id.etZhersPrice);
             etMetro= view.findViewById(R.id.etMetroPrice);
-            etCustomPrice = view.findViewById(R.id.etCustom);
+            etCustomPrice = view.findViewById(R.id.etCustomPrice);
 
             etWalmart.setOnKeyListener(this);
             etCostco.setOnKeyListener(this);
@@ -84,6 +84,7 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
             TextView tvZhers = view.findViewById(R.id.tvZhers);
             TextView tvMetro = view.findViewById(R.id.tvMetro);
             etCustomName = view.findViewById(R.id.etCustomName);
+            etCustomName.setOnKeyListener(this);
 
             tvWalmart.setOnClickListener(this);
             tvCostco.setOnClickListener(this);
@@ -222,6 +223,14 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
                     mInterface.setPrice(d);
                 }
                 break;
+            case R.id.etCustomName:
+                if (chkCustom.isChecked()&&hasText(etCustomName)){
+                    mInterface.setlistName(etCustomName.getText().toString());
+                }
+            case R.id.etCustomPrice:
+                if (chkCustom.isChecked()&&hasText(etCustomPrice)){
+                    mInterface.setPrice(Double.parseDouble(etCustomPrice.getText().toString()));
+                }
 
         }
 

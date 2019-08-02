@@ -1,4 +1,4 @@
-package com.joseapps.simpleshoppinglist.utils;
+package com.joseapps.simpleshoppinglist.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,20 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.joseapps.simpleshoppinglist.ActivityProfile.ChildrenMangementActivity;
-import com.joseapps.simpleshoppinglist.Interface.ChildrenManagementInterface;
+import com.joseapps.simpleshoppinglist.ActivityProfile.ChildRequestActivity;
+import com.joseapps.simpleshoppinglist.Interface.ChildrenRequestInterface;
 import com.joseapps.simpleshoppinglist.Models.User;
 import com.joseapps.simpleshoppinglist.R;
 
 import java.util.ArrayList;
 
-public class RecyclerViewChildrenManagement extends RecyclerView.Adapter<RecyclerViewChildrenManagement.ViewHolder>{
+public class RecyclerViewChildrenRequests extends RecyclerView.Adapter<RecyclerViewChildrenRequests.ViewHolder>{
     private static final String TAG = "RecyclerViewChildr";
 
 
     private final ArrayList<User> mUser ;
 
-    public RecyclerViewChildrenManagement(Context mContext, ArrayList<User> mUser) {
+    public RecyclerViewChildrenRequests(Context mContext, ArrayList<User> mUser) {
         this.mUser = mUser;
         Log.d(TAG, "RecyclerViewChildrenRequests: " + mUser.toString());
     }
@@ -34,9 +34,8 @@ public class RecyclerViewChildrenManagement extends RecyclerView.Adapter<Recycle
         return new ViewHolder(view);
     }
 
-
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerViewChildrenManagement.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
 
         holder.tvUserName.setText(mUser.get(position).getUsername());
@@ -47,7 +46,7 @@ public class RecyclerViewChildrenManagement extends RecyclerView.Adapter<Recycle
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.mInterface.OpenDialog(position);
+                holder.mInterface.dialog(position);
             }
         });
     }
@@ -57,13 +56,12 @@ public class RecyclerViewChildrenManagement extends RecyclerView.Adapter<Recycle
         return mUser.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         final TextView tvUserName;
         final TextView tvUserEmail;
         final ConstraintLayout parentLayout;
-        final ChildrenManagementInterface mInterface;
+        final ChildrenRequestInterface mInterface;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -71,8 +69,8 @@ public class RecyclerViewChildrenManagement extends RecyclerView.Adapter<Recycle
             tvUserName = itemView.findViewById(R.id.tvUserName);
             parentLayout = itemView.findViewById(R.id.list_root);
 
-            Log.d(TAG, "ViewHolder: ChildRequestActivity");
-            mInterface = (ChildrenMangementActivity)  itemView.getContext();
+                Log.d(TAG, "ViewHolder: ChildRequestActivity");
+                mInterface = (ChildRequestActivity)  itemView.getContext();
 
         }
     }

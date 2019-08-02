@@ -1,4 +1,4 @@
-package com.joseapps.simpleshoppinglist.utils;
+package com.joseapps.simpleshoppinglist.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -17,7 +17,7 @@ import com.joseapps.simpleshoppinglist.Models.User;
 import com.joseapps.simpleshoppinglist.R;
 import com.joseapps.simpleshoppinglist.utils.Const;
 import com.joseapps.simpleshoppinglist.utils.FirebaseMethods;
-import com.joseapps.simpleshoppinglist.utils.RecyclerViewChildrenManagement;
+import com.joseapps.simpleshoppinglist.Adapters.RecyclerViewChildrenManagement;
 
 import com.joseapps.simpleshoppinglist.utils.UserClient;
 import com.google.firebase.auth.FirebaseAuth;

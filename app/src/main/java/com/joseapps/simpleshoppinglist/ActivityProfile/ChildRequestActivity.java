@@ -14,7 +14,7 @@ import com.joseapps.simpleshoppinglist.Models.User;
 import com.joseapps.simpleshoppinglist.R;
 import com.joseapps.simpleshoppinglist.utils.Const;
 import com.joseapps.simpleshoppinglist.utils.FirebaseMethods;
-import com.joseapps.simpleshoppinglist.utils.RecyclerViewChildrenRequests;
+import com.joseapps.simpleshoppinglist.Adapters.RecyclerViewChildrenRequests;
 import com.joseapps.simpleshoppinglist.utils.UserClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

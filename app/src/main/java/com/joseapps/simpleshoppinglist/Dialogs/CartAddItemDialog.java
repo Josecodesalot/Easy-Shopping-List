@@ -56,7 +56,7 @@ public class CartAddItemDialog extends DialogFragment {
 
                 Log.d(TAG, "onClick: Item = " + item.toString());
                 //sends Item to CartActivity so that cart activity can send it to Firebase and add it to the recyclerView
-                mInterface.addItem(item, Const.ADDITEM);
+                mInterface.addItem(item, Const.ADDITEM,"");
                 dismiss();
             }
         });

@@ -1,4 +1,4 @@
-package com.joseapps.simpleshoppinglist.utils;
+package com.joseapps.simpleshoppinglist.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -54,11 +54,12 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
             Log.d(TAG, "onCreateViewHolder: FamilyListActivity");
             mInterface = (FamilyListActivity) parent.getContext();
         }
+
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
 
         holder.tvPrice.setVisibility(View.VISIBLE);
@@ -95,7 +96,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: positon = " + position);
-                mInterface.OpenDialog(position);
+                mInterface.OpenDialog(items.get(position), holder.getAdapterPosition());
             }
 
         });
