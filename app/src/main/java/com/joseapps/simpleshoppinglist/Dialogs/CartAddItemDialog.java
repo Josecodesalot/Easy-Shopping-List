@@ -37,6 +37,7 @@ public class CartAddItemDialog extends DialogFragment {
         mInterface = (CartActivity) getContext();
         item = new Item();
         item  = NotNull.item(item);
+        item.setList_name("default");
         ReferenceViews(view);
         RunButton();
         return view;
@@ -53,6 +54,7 @@ public class CartAddItemDialog extends DialogFragment {
                     long q = Long.parseLong(etQuantity.getText().toString());
                     item.setQuantity(q);
                 }
+
 
                 Log.d(TAG, "onClick: Item = " + item.toString());
                 //sends Item to CartActivity so that cart activity can send it to Firebase and add it to the recyclerView

@@ -67,6 +67,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:animateLayoutChanges="false"
         android:layoutDirection="ltr"
         android:layoutMode="clipBounds"
         android:orientation="horizontal"

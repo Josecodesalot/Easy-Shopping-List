@@ -61,6 +61,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     //vars
     private ArrayList<Item> items;
     private HashMap<String, ArrayList<Item>> itemsMapByListName;
+    private ArrayList<Item> booleanList;
     //adapters
     private RecyclerViewItems adapter;
     private RecyclerviewItemTabs rvItemTabsAdapter;
@@ -211,9 +212,9 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     }
 
     private void setUpTopTabRecyclerView(){
-
         rvItemTabsAdapter = new RecyclerviewItemTabs(mContext, itemListHelper.getListNames());
         rvItemTabsView.setAdapter(rvItemTabsAdapter);
+
     }
     private void referenceWidgets() {
 
@@ -435,6 +436,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     public void setRvData(String listName) {
         adapter = new RecyclerViewItems(mContext, itemsMapByListName.get(listName));
         recyclerView.setAdapter(adapter);
+
     }
 }
 

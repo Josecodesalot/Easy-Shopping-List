@@ -31,6 +31,10 @@ public class TopTitleFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
+    public void setTitle(String title){
+        this.title.setText(title);
+    }
+
     private void setTopTitle() {
         if (getActivity() instanceof CartActivity){
             title.setText("Shopping-List");
@@ -40,7 +44,6 @@ public class TopTitleFragment extends android.support.v4.app.Fragment {
         }
         if (getActivity() instanceof FamilyListActivity){
             title.setText("Your Family Requests");
-
         }
         if (getActivity() instanceof HistoryActivity){
             title.setText("Purchase History");

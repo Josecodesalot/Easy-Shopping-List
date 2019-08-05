@@ -10,5 +10,19 @@
 
     </style>
 
+    <style name="EditTextOne" parent="Widget.AppCompat.EditText">
+        <item name="android:colorControlNormal" >@color/control_normal_one</item>
+        <item name="android:colorControlActivated" >@color/control_activated_one</item>
+        <item name="android:colorControlHighlight" >@color/control_highlight_one</item>
+
+    </style>
+
+    <style name="EditTextTwo" parent="Widget.AppCompat.EditText">
+        <item name="android:colorControlNormal" >@color/control_normal_two</item>
+        <item name="android:colorControlActivated" >@color/control_activated_two</item>
+        <item name="android:colorControlHighlight" >@color/control_highlight_two</item>
+
+    </style>
+
 
 </resources>
