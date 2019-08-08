@@ -122,7 +122,7 @@ public class RecyclerViewItems extends RecyclerView.Adapter<RecyclerViewItems.Vi
 
         ViewHolder(View itemView) {
             super(itemView);
-            tvItemName = itemView.findViewById(R.id.tvItemName);
+            tvItemName = itemView.findViewById(R.id.etItemName);
             tvItemListName = itemView.findViewById(R.id.tvListName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             parentLayout = itemView.findViewById(R.id.list_root);

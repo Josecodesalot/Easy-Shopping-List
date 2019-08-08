@@ -29,6 +29,7 @@
         <activity android:name="com.joseapps.simpleshoppinglist.ActivityHistory.HistoryActivity" />
         <activity android:name="com.joseapps.simpleshoppinglist.ActivityFamilyList.FamilyListActivity" />
         <activity android:name="com.joseapps.simpleshoppinglist.ActivityProfile.UserSettingsActivity" />
+        <activity android:name=".ActivityAddItem.WebViewSearchActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"

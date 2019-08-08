@@ -58,6 +58,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
         setContentView(R.layout.activity_add_item);
         Log.d(TAG, "onCreate: started");
 
+
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         setupFirebaseAuth();
         firebaseDataExchangeListener();
@@ -68,12 +69,27 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
 
         user = new User();
         user = ((UserClient)(getApplicationContext())).getUser();
-        Log.d(TAG, "onCreate: user = " + user.toString());
         item = new Item("","default_list",1,0.0,"");
 
 
         setUrlArray();
         setUpViewPager();
+
+        Bundle bundle = getIntent().getExtras();
+
+
+        if (bundle!= null){
+            if (bundle.get(Const.WEBVIEWCODE)!=null){
+                Log.d(TAG, "onCreate: args Code = " + bundle.getString(Const.WEBVIEWCODE));
+                Log.d(TAG, "onCreate: itemname = " + bundle.getString(Const.ITEMNAME));
+                Log.d(TAG, "onCreate: new price = " + bundle.getString(Const.sMetro));
+                adapter.getItem(0).setArguments(bundle);
+                adapter.getItem(1).setArguments(bundle);
+                adapter.getItem(0).onResume();
+                adapter.getItem(1).onResume();
+                viewPager.setCurrentItem(1);
+            }
+        }
     }
 
     @Override
@@ -111,25 +127,35 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
     }
 
     @Override
-    public void openBrowser(int browser) {
+    public void openBrowser(int browser, String warlmart, String costco, String zhers, String metro) {
+        webBundle.putString(Const.ITEMNAME, item.getItem_name());
+
         if (browser == Const.WALMART){
-            webBundle.putString("key", item.getItem_name());
-            webBundle.putString("url", url.get(Const.WALMART));
+            webBundle.putString(Const.URL, url.get(Const.WALMART));
+            webBundle.putString(Const.WHICHLIST,Const.sWalmart);
         }
         if (browser == Const.COSTCO){
-            webBundle.putString("key", item.getItem_name());
-            webBundle.putString("url", url.get(Const.COSTCO));
+            webBundle.putString(Const.URL, url.get(Const.COSTCO));
+            webBundle.putString(Const.WHICHLIST,Const.sCostco);
         }
         if (browser == Const.ZHERS){
-            webBundle.putString("key", item.getItem_name());
-            webBundle.putString("url", url.get(Const.ZHERS));
+            webBundle.putString(Const.URL, url.get(Const.ZHERS));
+            webBundle.putString(Const.WHICHLIST,Const.sZhers);
         }
         if (browser == Const.METRO){
-            webBundle.putString("key", item.getItem_name());
-            webBundle.putString("url", url.get(Const.METRO));
+            webBundle.putString(Const.URL, url.get(Const.METRO));
+            webBundle.putString(Const.WHICHLIST,Const.sMetro);
         }
-        webDialog.setArguments(webBundle);
-        webDialog.show(getSupportFragmentManager(), "1");
+
+        webBundle.putString(Const.sWalmart,warlmart);
+        webBundle.putString(Const.sCostco,costco);
+        webBundle.putString(Const.sZhers,zhers);
+        webBundle.putString(Const.sMetro,metro);
+
+
+        Intent intent = new Intent (mContext, WebViewSearchActivity.class);
+        intent.putExtras(webBundle);
+        startActivity(intent);
     }
 
 
@@ -206,9 +232,6 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
     }
 
 
-
-
-
     //----------------------------Firebase Code-----------------------------------
 
     private void setupFirebaseAuth() {
@@ -256,6 +279,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
         Log.d(TAG, "onStart: started");
         mAuth.addAuthStateListener(mAuthListener);
         checkCurrentUser(mAuth.getCurrentUser());
+
     }
 
     @Override
@@ -275,6 +299,8 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
             startActivity(intent);
         }
     }
+
+
 }
 
 

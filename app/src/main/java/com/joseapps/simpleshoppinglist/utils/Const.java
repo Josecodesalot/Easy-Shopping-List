@@ -32,5 +32,13 @@ public class Const {
     public static final int ADDITEM = 9999;
     public static final String REFRESH = "REFRESH";
 
+    //code for car and webview
+
+    public static final String WEBVIEWCODE = "WEBVIEWCODE";
+    public static final String ITEMNAME = "ITEMNAME";
+    public static final String ITEMPRICE = "ITEMPRRICE";
+    public static final String URL ="URL";
+    public static final String WHICHLIST = "WHICHLIST";
+
 
 }

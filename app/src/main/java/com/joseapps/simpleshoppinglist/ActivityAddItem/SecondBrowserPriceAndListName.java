@@ -16,6 +16,8 @@ import com.joseapps.simpleshoppinglist.Interface.AddItemInterface;
 import com.joseapps.simpleshoppinglist.R;
 import com.joseapps.simpleshoppinglist.utils.Const;
 
+import java.util.ArrayList;
+
 
 public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragment implements View.OnClickListener, View.OnKeyListener, CheckBox.OnCheckedChangeListener{
     //Constants
@@ -25,6 +27,7 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
     private CheckBox chkWalmart, chkCostco, chkZhers, chkMetro, chkCustom;
     private EditText etWalmart, etCostco, etZhers, etMetro, etCustomPrice;
     private EditText etCustomName;
+    private String sWalmartPrice, sCostcoPrice,sZhersPrice,sMetroPrice;
 
 
     //Interface
@@ -48,6 +51,7 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
         etMetro.setOnKeyListener(this);
         etCustomPrice.setOnKeyListener(this);
 
+
         return view;
 
     }
@@ -58,8 +62,8 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
             chkWalmart = view.findViewById(R.id.chkWalmart);
             chkCostco = view.findViewById(R.id.chkCostco);
             chkZhers = view.findViewById(R.id.chkZhers);
-            chkMetro= view.findViewById(R.id.chkMetro);
-            chkCustom=view.findViewById(R.id.chkCustom);
+            chkMetro = view.findViewById(R.id.chkMetro);
+            chkCustom = view.findViewById(R.id.chkCustom);
 
             chkWalmart.setOnCheckedChangeListener(this);
             chkCostco.setOnCheckedChangeListener(this);
@@ -67,11 +71,18 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
             chkMetro.setOnCheckedChangeListener(this);
             chkCustom.setOnCheckedChangeListener(this);
 
-            etWalmart= view.findViewById(R.id.etWalmartPrice);
-            etCostco= view.findViewById(R.id.etCostcoPrice);
-            etZhers= view.findViewById(R.id.etZhersPrice);
-            etMetro= view.findViewById(R.id.etMetroPrice);
+            etWalmart = view.findViewById(R.id.etWalmartPrice);
+            etCostco = view.findViewById(R.id.etCostcoPrice);
+            etZhers = view.findViewById(R.id.etZhersPrice);
+            etMetro = view.findViewById(R.id.etMetroPrice);
             etCustomPrice = view.findViewById(R.id.etCustomPrice);
+
+            etWalmart.setText(sWalmartPrice);
+            etCostco.setText(sCostcoPrice);
+            etZhers.setText(sZhersPrice);
+            etMetro.setText(sMetroPrice);
+
+
 
             etWalmart.setOnKeyListener(this);
             etCostco.setOnKeyListener(this);
@@ -98,22 +109,28 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
 
     @Override
     public void onClick(View v) {
+        int webCode = 0;
         switch (v.getId()){
-
-
             case R.id.tvWalmart:
-                mInterface.openBrowser(Const.WALMART);
+                webCode = Const.WALMART;
                 break;
             case R.id.tvCostco:
-                mInterface.openBrowser(Const.COSTCO);
+                webCode = Const.COSTCO;
                 break;
             case R.id.tvZhers:
-                mInterface.openBrowser(Const.ZHERS);
+                webCode = Const.ZHERS;
                 break;
             case R.id.tvMetro:
-                mInterface.openBrowser(Const.METRO);
+                webCode = Const.METRO;
                 break;
         }
+
+        String walmart = etWalmart.getText().toString();
+        String costco = etCostco.getText().toString();
+        String zhers = etZhers.getText().toString();
+        String metro = etMetro.getText().toString();
+
+        mInterface.openBrowser(webCode, walmart,costco,zhers,metro );
     }
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -240,9 +257,17 @@ public class SecondBrowserPriceAndListName extends android.support.v4.app.Fragme
     @Override
     public void onResume() {
         super.onResume();
-        Bundle bundle= getArguments();
+        Bundle bundle = getArguments();
         if (bundle!=null){
-            reset();
+            if (bundle.get(Const.REFRESH)!=null){
+                reset();
+            }
+            if (bundle.getString(Const.WEBVIEWCODE)!=null){
+                sWalmartPrice=(bundle.getString(Const.sWalmart));
+                sCostcoPrice=(bundle.getString(Const.sCostco));
+                sZhersPrice=(bundle.getString(Const.sZhers));
+                sMetroPrice=(bundle.getString(Const.sMetro));
+            }
         }
     }
 

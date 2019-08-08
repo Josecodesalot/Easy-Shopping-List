@@ -14,11 +14,13 @@ import android.widget.TextView;
 
 import com.joseapps.simpleshoppinglist.Interface.AddItemInterface;
 import com.joseapps.simpleshoppinglist.R;
+import com.joseapps.simpleshoppinglist.utils.Const;
 
 public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
     private static final String TAG="AddNameAndQuan";
     private EditText itemName, itemQuantity;
     private AddItemInterface mInterface;
+    private String sItemName;
 
     @Nullable
     @Override
@@ -81,9 +83,9 @@ public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
     return view;
     }
 
-
     private void referenceViews(View view) {
     itemName= view.findViewById(R.id.etItemName);
+    itemName.setText(sItemName);
     itemQuantity = view.findViewById(R.id.etQuantity);
     }
 
@@ -98,10 +100,12 @@ public class FIrstItemNameFragment extends android.support.v4.app.Fragment {
         super.onResume();
         Bundle bundle = getArguments();
         if (bundle!=null){
-
-            reset();
-        }else{
-            Log.d(TAG, "onResume: bundle null");
+            if (bundle.get(Const.REFRESH)!=null){
+                reset();
+            }
+            if (bundle.get(Const.WEBVIEWCODE)!=null){
+                sItemName = bundle.getString(Const.ITEMNAME);
+            }
         }
     }
 }
