@@ -59,7 +59,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     private DatabaseReference myRef = database.getReference();
 
     //vars
-    private ArrayList<Item> items;
+
     private HashMap<String, ArrayList<Item>> itemsMapByListName;
     private ArrayList<Item> booleanList;
     //adapters
@@ -81,7 +81,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
         Log.d(TAG, "onCreate: started");
         user = new User();
-        items= new ArrayList<>();
         setupFirebaseAuth();
         database = FirebaseDatabase.getInstance();
         firebase = new FirebaseMethods(mContext);
@@ -97,9 +96,6 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
             referenceWidgets();
             //TODO white comment as to how below works
             setUpItemsFromFirebase();
-            //total count of all items in the recyclerView
-            setUpTotal();
-
         }
     }
 
@@ -128,18 +124,13 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
 
     }
 
-    public void resetItemListAndRecyclerView(){
-        itemListHelper.updateItems(items);
-
-    }
-
     private void setUser() {
         ((UserClient)(getApplicationContext())).setUser(user);
         Log.d(TAG, "onDataChange: " + user.toString());
 
     }
 
-    private void setUpTotal() {
+    private void setUpTotal(ArrayList<Item> items) {
         Log.d(TAG, "setUpTotal: started " + items.toString() );
         double totalPrice = 0.0;
 
@@ -159,13 +150,13 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     }
 
     private void setUpItemsFromFirebase() {
+        final ArrayList<Item> items;
         Log.d(TAG, "setUpItemsFromFirebase: creatiung database and getitnga reference");
         Log.d(TAG, "setUpItemsFromFirebase: user = " + user.getUser_id());
         Query refrence = database.getReference().child(Const.CART_ITEM).child(mAuth.getCurrentUser().getUid()).orderByChild(Const.LISTNAME);
         Log.d(TAG, "setUpItemsFromFirebase: ref " + refrence.toString());
 
         items = new ArrayList<>();
-        items.clear();
 
         refrence.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -183,7 +174,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
                     }
                 }
                 if (items != null) {
-                    setUpTotal();
+                    setUpTotal(items);
                 }
 
                 Log.d(TAG, "onDataChange: items = " + items);
@@ -206,7 +197,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     private void setUpListItemRecyclerView(){
         adapter = new RecyclerViewItems(
                 mContext,
-                items);
+                new ArrayList<Item>());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
     }
@@ -253,27 +244,20 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         Log.d(TAG, "addToHistory: " + item.toString());
         firebase.sendItemToHistory(item);
 
-        items.remove(position);
+        itemsMapByListName.get(originalListName).remove(position);
         adapter.notifyItemRemoved(position);
         adapter.notifyDataSetChanged();
 
         resetTopTabRecyclerView();
-        setUpTotal();
 
     }
     @Override
     public void delete(Item item, int position, String originalListName) {
-        firebase.deleteItemCart(items.get(position));
-        items.remove(position);
-        adapter.notifyItemRemoved(position);
+        firebase.deleteItemCart(itemsMapByListName.get(originalListName).get(position));
         adapter.notifyDataSetChanged();
-
-        itemsMapByListName.remove(originalListName);
-
+        itemsMapByListName.get(originalListName).remove(position);
         resetTopTabRecyclerView();
-
         Log.d(TAG, "delete: adapter size = " +adapter.getItemCount());
-        setUpTotal();
 
     }
     @Override
@@ -282,26 +266,16 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         //this will get called if the item is added from the add new item button[+]
 
         if (position==Const.ADDITEM){
-
-            items.add(item);
-
-
-
+            addToLocalMap(item);
             firebase.addItemToList(item);
             adapter.notifyDataSetChanged();
-            addToLocalMap(item);
-
-            setUpTotal();
-
             resetTopTabRecyclerView();
 
         }else{
-            items.set(position,item);
+            itemsMapByListName.get(originalListName).set(position,item);
             firebase.addItemToList(item);
             adapter.notifyItemChanged(position,item);
             adapter.notifyDataSetChanged();
-            setUpTotal();
-            editItemToLocalMap(item,position,originalListName);
             resetTopTabRecyclerView();
         }
 
@@ -311,14 +285,11 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
     public void setChanges(Item item, int position, String originalListName) {
         Log.d(TAG, "setChanges: item " + item.toString() + " position  = " +position);
         firebase.addItemToList(item);
-        items.set(position,item);
-
-        editItemToLocalMap(item,position,originalListName);
-
+        setChangesToLocalMap(item, position, originalListName);
         adapter.notifyItemChanged(position,item);
         adapter.notifyDataSetChanged();
         resetTopTabRecyclerView();
-        setUpTotal();
+
     }
 
     public void addToLocalMap(Item item){
@@ -331,11 +302,11 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         }
     }
 
-    public void editItemToLocalMap(Item item, int position, String originalItemListName){
+    public void setChangesToLocalMap(Item item, int position, String originalItemListName){
         itemsMapByListName.get(originalItemListName).remove(position);
 
         if (itemsMapByListName.get(item.getList_name())!=null){
-            itemsMapByListName.get(item.getList_name()).set(position,item);
+            itemsMapByListName.get(item.getList_name()).add(item);
         }else{
             ArrayList <Item> ar = new ArrayList<>();
             ar.add(item);
@@ -347,13 +318,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerViewInter
         Log.d(TAG, "resetTopTabRecyclerView: ");
         rvItemTabsAdapter =  new RecyclerviewItemTabs(mContext, new ArrayList<>(itemsMapByListName.keySet()));
         rvItemTabsView.setAdapter(rvItemTabsAdapter);
-        Log.d(TAG, "resetTopTabRecyclerView: items = " + items.toString());
-        Log.d(TAG, "resetTopTabRecyclerView: items map = " + itemsMapByListName.toString());
     }
-
-
-
-
 
     //----------------------------Firebase Code-----------------------------------
 

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.joseapps.simpleshoppinglist.Dialogs.WebViewDialogueFragment;
 import com.joseapps.simpleshoppinglist.Interface.AddItemInterface;
 import com.joseapps.simpleshoppinglist.Login.LoginActivity;
 import com.joseapps.simpleshoppinglist.Models.Item;
@@ -36,7 +35,6 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
     private final Context mContext = AddItemActivity.this;
 
     //Widgets
-    private WebViewDialogueFragment webDialog;
     private ViewPager viewPager;
     private SectionsPagerAdapter adapter;
     //vars
@@ -58,26 +56,19 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
         setContentView(R.layout.activity_add_item);
         Log.d(TAG, "onCreate: started");
 
-
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         setupFirebaseAuth();
         firebaseDataExchangeListener();
         firebase = new FirebaseMethods(mContext);
 
-        webDialog = new WebViewDialogueFragment();
         webBundle = new Bundle();
-
         user = new User();
         user = ((UserClient)(getApplicationContext())).getUser();
         item = new Item("","default_list",1,0.0,"");
 
-
         setUrlArray();
         setUpViewPager();
-
         Bundle bundle = getIntent().getExtras();
-
-
         if (bundle!= null){
             if (bundle.get(Const.WEBVIEWCODE)!=null){
                 Log.d(TAG, "onCreate: args Code = " + bundle.getString(Const.WEBVIEWCODE));
@@ -93,6 +84,23 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: started");
+        mAuth.addAuthStateListener(mAuthListener);
+        checkCurrentUser(mAuth.getCurrentUser());
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    @Override
     public void setItemName(String itemName) {
         item.setItem_name(itemName);
         Log.d(TAG, "setItemName: Recieved  " + itemName);
@@ -104,6 +112,8 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
             }
         }
     }
+
+
     //              Interface           //
     @Override
     public void setQuantity(int quantity) {
@@ -220,6 +230,8 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
         viewPager.setCurrentItem(i);
     }
 
+    //------------ End Of Interface ----------------/
+
     private void reset(){
         Bundle bundle = new Bundle();
         bundle.putString(Const.REFRESH,Const.REFRESH);
@@ -273,22 +285,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemInterfa
         };
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: started");
-        mAuth.addAuthStateListener(mAuthListener);
-        checkCurrentUser(mAuth.getCurrentUser());
 
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
 
     private void checkCurrentUser(FirebaseUser user){
         Log.d(TAG, "checkCurrentUser: checking if user is logged in.");
